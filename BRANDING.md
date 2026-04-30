@@ -67,8 +67,9 @@ The Scene Ready logo is a pair of upward-pointing chevrons (navy over red) repre
 ### Brand Colors
 
 ```css
---navy-900: #0F1A30;   /* Darkest navy — dark mode sidebar, deep backgrounds */
---navy-700: #1B2A4A;   /* Primary brand navy — sidebar, headings, primary surfaces */
+--navy-950: #0A1220;   /* Deepest navy — dark mode sidebar only */
+--navy-900: #0F1A30;   /* Darkest navy — dark mode page background, deep backgrounds */
+--navy-700: #1B2A4A;   /* Primary brand navy — sidebar (light mode), headings, primary surfaces */
 --navy-500: #2A3F6A;   /* Mid navy — focus rings, hover states, secondary elements */
 --navy-300: #4A6491;   /* Light navy — decorative, muted accents */
 --navy-100: #C5D0E0;   /* Very light navy — subtle tints, tag backgrounds */
@@ -186,14 +187,16 @@ The Scene Ready logo is a pair of upward-pointing chevrons (navy over red) repre
 
 ### Text Colors
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| --text-primary | #111827 | Headings, primary body text |
-| --text-secondary | #6B7280 | Supporting text, descriptions, metadata |
-| --text-tertiary | #9CA3AF | Placeholders, disabled text, timestamps |
-| --text-inverse | #FFFFFF | Text on dark backgrounds (nav, sidebar, dark buttons) |
-| --text-brand | #1B2A4A | Branded headings, navigation items |
-| --text-accent | #C8102E | Links, CTAs, highlighted terms |
+These are **semantic aliases**, not primitives — values shown are light-mode; dark mode flips them automatically (see [Dark Mode](#dark-mode)). Always reference these tokens for text color rather than hardcoding `--gray-900` etc.
+
+| Token | Light Mode | Dark Mode | Usage |
+|-------|-----------|-----------|-------|
+| --text-primary | #111827 | #F3F4F6 | Headings, primary body text |
+| --text-secondary | #6B7280 | #9CA3AF | Supporting text, descriptions, metadata |
+| --text-tertiary | #9CA3AF | #6B7280 | Placeholders, disabled text, timestamps |
+| --text-inverse | #FFFFFF | #FFFFFF | Text on dark surfaces (sidebar, dark buttons) |
+| --text-brand | #1B2A4A | #FFFFFF | Branded headings, navigation items |
+| --text-accent | #C8102E | #E8334E | Links, CTAs, highlighted terms |
 
 ### Typography Rules
 
@@ -454,26 +457,37 @@ For domain-specific icons not in Lucide (SCBA mask, Maltese cross, SAR grid), cr
 
 Dark mode is critical for emergency services — used in apparatus cabs, command posts, and nighttime operations.
 
+### Wiring
+
+Dark mode is activated by setting `data-theme="dark"` on any ancestor element (typically `<html>` or `<body>`). The semantic aliases in [`tokens.css`](./tokens.css) flip automatically — components that reference `--bg-page`, `--text-primary`, `--border`, `--success-fg`, etc. update without per-component dark-mode CSS.
+
+```html
+<html data-theme="dark">
+```
+
 ### Color Mapping
 
-| Element | Light Mode | Dark Mode |
-|---------|-----------|-----------|
-| Page background | #F9FAFB | #0F1A30 (Navy 900) |
-| Card background | #FFFFFF | #1B2A4A (Navy 700) |
-| Elevated surface | #FFFFFF | #2A3F6A (Navy 500) |
-| Primary text | #111827 | #F3F4F6 (Gray 100) |
-| Secondary text | #6B7280 | #9CA3AF (Gray 400) |
-| Tertiary text | #9CA3AF | #6B7280 (Gray 600) |
-| Borders | #E5E7EB | rgba(255, 255, 255, 0.1) |
-| Sidebar | #1B2A4A | #0A1220 (deeper than Navy 900) |
-| Input background | #FFFFFF | #1B2A4A (Navy 700) |
-| Input border | #D1D5DB | rgba(255, 255, 255, 0.15) |
-| Red accent | #C8102E | #E8334E (Red 500, lifted) |
-| Success | #059669 | #34D399 (lifted) |
-| Warning | #D97706 | #FBBF24 (lifted) |
-| Danger | #DC2626 | #F87171 (lifted) |
-| Info | #2563EB | #60A5FA (lifted) |
-| Shadows | rgba(0,0,0, 0.08–0.15) | rgba(0,0,0, 0.3–0.5) |
+The table below documents what each semantic alias resolves to in each mode. Every row maps to a token in `tokens.css`; component CSS should reference the **token**, not the literal value.
+
+| Element | Token | Light Mode | Dark Mode |
+|---------|-------|-----------|-----------|
+| Page background | `--bg-page` | #F9FAFB | #0F1A30 (Navy 900) |
+| Card background | `--bg-card` | #FFFFFF | #1B2A4A (Navy 700) |
+| Elevated surface | `--bg-elevated` | #FFFFFF | #2A3F6A (Navy 500) |
+| Sidebar | `--bg-sidebar` | #1B2A4A | #0A1220 (Navy 950) |
+| Input background | `--bg-input` | #FFFFFF | #1B2A4A (Navy 700) |
+| Primary text | `--text-primary` | #111827 | #F3F4F6 (Gray 100) |
+| Secondary text | `--text-secondary` | #6B7280 | #9CA3AF (Gray 400) |
+| Tertiary text | `--text-tertiary` | #9CA3AF | #6B7280 (Gray 600) |
+| Borders | `--border` | #E5E7EB | rgba(255,255,255,0.10) |
+| Input border | `--border-input` | #D1D5DB | rgba(255,255,255,0.15) |
+| Red accent | `--accent`, `--text-accent` | #C8102E | #E8334E (Red 500, lifted) |
+| Focus ring | `--focus-ring` | #2A3F6A (Navy 500) | #E8334E (Red 500) |
+| Success | `--success-fg` | #059669 | #34D399 (lifted) |
+| Warning | `--warning-fg` | #D97706 | #FBBF24 (lifted) |
+| Danger | `--danger-fg` | #DC2626 | #F87171 (lifted) |
+| Info | `--info-fg` | #2563EB | #60A5FA (lifted) |
+| Shadows | `--shadow-sm`–`-2xl` | rgba(0,0,0,0.05–0.20) | rgba(0,0,0,0.30–0.50) |
 
 ### Dark Mode Rules
 
@@ -557,117 +571,26 @@ Scene Ready must meet **WCAG 2.1 Level AA** compliance.
 - **Errors**: Never communicate errors through color alone — always include icon + text message
 - **Motion**: All animations respect `prefers-reduced-motion`
 
-**Focus ring CSS**:
+**Focus ring CSS** (single rule — `--focus-ring` and `--focus-ring-shadow` flip automatically in dark mode):
 ```css
 :focus-visible {
-  outline: 2px solid var(--navy-500);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(42, 63, 106, 0.2);
-}
-
-[data-theme='dark'] :focus-visible {
-  outline: 2px solid var(--red-500);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(232, 51, 78, 0.25);
+  box-shadow: 0 0 0 4px var(--focus-ring-shadow);
 }
 ```
 
 ---
 
-## Complete CSS Variables Block
+## CSS Variables
 
-Copy this into the application root stylesheet. All component styles must reference these tokens.
+The canonical token definitions live in [`tokens.css`](./tokens.css). Import that file at the application root; all component styles must reference these tokens rather than hardcoding values.
 
-```css
-:root {
-  /* Brand */
-  --navy-900: #0F1A30;
-  --navy-700: #1B2A4A;
-  --navy-500: #2A3F6A;
-  --navy-300: #4A6491;
-  --navy-100: #C5D0E0;
-  --navy-50:  #E8ECF2;
-
-  --red-700:  #C8102E;
-  --red-500:  #E8334E;
-  --red-300:  #F28C9A;
-  --red-100:  #FCE4E8;
-  --red-50:   #FFF1F3;
-
-  /* Neutrals */
-  --gray-900: #111827;
-  --gray-800: #1F2937;
-  --gray-700: #374151;
-  --gray-600: #6B7280;
-  --gray-500: #9CA3AF;
-  --gray-400: #9CA3AF;
-  --gray-300: #D1D5DB;
-  --gray-200: #E5E7EB;
-  --gray-100: #F3F4F6;
-  --gray-50:  #F9FAFB;
-  --white:    #FFFFFF;
-
-  /* Semantic */
-  --success:     #059669;
-  --success-bg:  #ECFDF5;
-  --warning:     #D97706;
-  --warning-bg:  #FFFBEB;
-  --danger:      #DC2626;
-  --danger-bg:   #FEF2F2;
-  --info:        #2563EB;
-  --info-bg:     #EFF6FF;
-
-  /* Typography */
-  --font-sans:      'Barlow', system-ui, -apple-system, sans-serif;
-  --font-condensed: 'Barlow Condensed', system-ui, sans-serif;
-  --font-mono:      'JetBrains Mono', Consolas, Monaco, monospace;
-
-  --text-xs:   0.75rem;
-  --text-sm:   0.875rem;
-  --text-base: 1rem;
-  --text-lg:   1.125rem;
-  --text-xl:   1.25rem;
-  --text-2xl:  1.5rem;
-  --text-3xl:  1.875rem;
-  --text-4xl:  2.25rem;
-  --text-5xl:  3rem;
-
-  /* Spacing */
-  --space-1:  4px;   --space-2:  8px;
-  --space-3:  12px;  --space-4:  16px;
-  --space-5:  20px;  --space-6:  24px;
-  --space-8:  32px;  --space-10: 40px;
-  --space-12: 48px;  --space-16: 64px;
-  --space-20: 80px;  --space-24: 96px;
-
-  /* Radius */
-  --radius-sm:   4px;
-  --radius-md:   6px;
-  --radius-lg:   8px;
-  --radius-xl:   12px;
-  --radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md:  0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-lg:  0 4px 12px rgba(0, 0, 0, 0.12);
-  --shadow-xl:  0 10px 25px rgba(0, 0, 0, 0.15);
-  --shadow-2xl: 0 20px 60px rgba(0, 0, 0, 0.2);
-
-  /* Motion */
-  --duration-fast:   100ms;
-  --duration-normal: 200ms;
-  --duration-slow:   300ms;
-  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Layout */
-  --sidebar-width:     256px;
-  --sidebar-collapsed: 64px;
-  --topbar-height:     64px;
-  --content-max-width: 1280px;
-}
+```html
+<link rel="stylesheet" href="tokens.css">
 ```
+
+When a token value changes, update `tokens.css` and any per-section table in this document that quotes the value inline.
 
 ---
 
