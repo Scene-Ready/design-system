@@ -584,13 +584,29 @@ Scene Ready must meet **WCAG 2.1 Level AA** compliance.
 
 ## CSS Variables
 
-The canonical token definitions live in [`tokens.css`](./tokens.css). Import that file at the application root; all component styles must reference these tokens rather than hardcoding values.
+The canonical token definitions live in [`tokens.css`](./tokens.css). All component styles must reference these tokens rather than hardcoding values.
 
-```html
-<link rel="stylesheet" href="tokens.css">
+Install the design system as an npm dependency from git:
+
+```sh
+npm install git+https://github.com/scene-ready/design-system.git#v0.1.0
 ```
 
-When a token value changes, update `tokens.css` and any per-section table in this document that quotes the value inline.
+Then import the tokens once at the application root, before any component styles:
+
+```css
+@import "@scene-ready/design-system/tokens.css";
+```
+
+Or from a JS/TS entry:
+
+```js
+import "@scene-ready/design-system/tokens.css";
+```
+
+See the [README](./README.md) for full install, versioning, and asset-import instructions.
+
+When a token value changes, update `tokens.css` and any per-section table in this document that quotes the value inline, then bump `version` in `package.json` and tag the release.
 
 ---
 

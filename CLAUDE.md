@@ -4,13 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-This is a **design-system reference repository for Scene Ready** (sceneready.tech — software for Fire, EMS, and Search & Rescue). It is documentation + brand assets, not an application:
+This is the **`@scene-ready/design-system` package** for Scene Ready (sceneready.tech — software for Fire, EMS, and Search & Rescue). It is documentation + brand assets distributed as a git-installed npm package, not an application:
 
 - `BRANDING.md` — the authoritative spec (~600 lines) covering brand identity, color palette, typography, spacing, components, dark mode, and accessibility.
-- `tokens.css` — the canonical, machine-readable design tokens (CSS custom properties). Downstream Scene Ready apps import this file directly; `BRANDING.md` is the prose that describes how to use them.
+- `tokens.css` — the canonical, machine-readable design tokens (CSS custom properties). Downstream Scene Ready apps import this file via `@scene-ready/design-system/tokens.css`; `BRANDING.md` is the prose that describes how to use them.
 - `assets/` — official logo SVGs (`scene-ready-brandmark.svg`, `-icon.svg`, `-appicon.svg`, reversed variants for dark backgrounds) and `favicon.ico`.
+- `package.json` — declares the package as `@scene-ready/design-system` with `exports` for `./tokens.css`, `./assets/*`, and `./BRANDING.md`. Marked `private: true` so it is never published to the public npm registry.
+- `README.md` — consumer-facing install + usage docs.
 
-There is no package.json, no build system, no tests, and no source code to compile. Common tasks are editing `BRANDING.md` or adding/updating assets.
+Consumers install from git (e.g. `npm install git+https://github.com/scene-ready/design-system.git#v0.1.0`). There is no build system, no tests, and no source code to compile — `tokens.css` is the artifact. Common tasks are editing `BRANDING.md`, adding/updating assets, or bumping a token value.
+
+**When you change a token value, you must also bump `version` in `package.json` and tag the commit (`git tag vX.Y.Z`)** so consumers can pin to the new release.
 
 ## Working in this repo
 

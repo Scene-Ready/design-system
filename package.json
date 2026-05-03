@@ -1,0 +1,39 @@
+{
+  "name": "@scene-ready/design-system",
+  "version": "0.1.0",
+  "description": "Scene Ready design system — canonical CSS tokens, brand assets, and usage spec for Fire/EMS/SAR software.",
+  "private": true,
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scene-ready/design-system.git"
+  },
+  "homepage": "https://github.com/scene-ready/design-system#readme",
+  "bugs": {
+    "url": "https://github.com/scene-ready/design-system/issues"
+  },
+  "type": "module",
+  "exports": {
+    "./tokens.css": "./tokens.css",
+    "./assets/*": "./assets/*",
+    "./BRANDING.md": "./BRANDING.md",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "tokens.css",
+    "assets",
+    "BRANDING.md"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "css-variables",
+    "scene-ready"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
