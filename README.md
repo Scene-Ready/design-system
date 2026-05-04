@@ -7,8 +7,9 @@ This package ships:
 - **`tokens.css`** — design tokens as CSS custom properties (primitives + semantic aliases, with built-in dark mode via `[data-theme="dark"]`).
 - **`assets/`** — official logo SVGs (standard + reversed for dark backgrounds), app icon, and favicon.
 - **`BRANDING.md`** — the full design system specification (color, typography, spacing, components, accessibility).
+- **`./emails`** — themed email wrappers (`wrapSimpleMessage`, `wrapIncidentAlert`, `wrapDigest`) for transactional, incident, and digest emails. See [`emails/README.md`](./emails/README.md).
 
-It is published only via git. There is no build step — `tokens.css` is the artifact.
+`tokens.css` and assets are published as static files — no build step. The email wrappers are the only JavaScript code; they depend on `mjml` and are intended for server-side use only.
 
 ## Install
 
@@ -19,7 +20,7 @@ npm install git+https://github.com/scene-ready/design-system.git
 Pin to a tag for reproducible builds:
 
 ```sh
-npm install git+https://github.com/scene-ready/design-system.git#v0.1.0
+npm install git+https://github.com/scene-ready/design-system.git#v0.2.0
 ```
 
 Equivalent in `package.json`:
@@ -27,7 +28,7 @@ Equivalent in `package.json`:
 ```json
 {
   "dependencies": {
-    "@scene-ready/design-system": "git+https://github.com/scene-ready/design-system.git#v0.1.0"
+    "@scene-ready/design-system": "git+https://github.com/scene-ready/design-system.git#v0.2.0"
   }
 }
 ```
@@ -95,6 +96,21 @@ Available files in `assets/`:
 - `scene-ready-favicon.svg` / `favicon.ico` — favicon
 
 Use `-reversed` variants on dark backgrounds.
+
+### Themed emails
+
+```js
+import { wrapSimpleMessage } from "@scene-ready/design-system";
+
+const html = wrapSimpleMessage({
+  subject: "Reset your Scene Ready password",
+  headline: "Reset your password",
+  body: "We received a request to reset your password.",
+  cta: { label: "Reset password", url: "https://app.sceneready.tech/reset?t=..." },
+});
+```
+
+Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrapDigest` — each returning a complete HTML document string. Light + dark themes activate automatically via `prefers-color-scheme`. **Server-side only** (depends on `mjml`). See [`emails/README.md`](./emails/README.md) for full API and dark-mode client matrix.
 
 ## Versioning
 
