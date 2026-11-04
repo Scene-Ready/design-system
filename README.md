@@ -9,7 +9,7 @@ This package ships:
 - **`BRANDING.md`** — the full design system specification (color, typography, spacing, components, accessibility).
 - **`./emails`** — themed email wrappers (`wrapSimpleMessage`, `wrapIncidentAlert`, `wrapDigest`) for transactional, incident, and digest emails. See [`emails/README.md`](./emails/README.md).
 
-`tokens.css` and assets are published as static files — no build step. The email wrappers are the only JavaScript code; they depend on `mjml` and are intended for server-side use only.
+`tokens.css` and assets are published as static files — no build step. The email wrappers are the only JavaScript code; they need `mjml` and are intended for server-side use only. `mjml` is an **optional peer dependency**, so apps that only use the tokens and assets don't install it — see [Themed emails](#themed-emails).
 
 ## Install
 
@@ -20,7 +20,7 @@ npm install git+https://github.com/scene-ready/design-system.git
 Pin to a tag for reproducible builds:
 
 ```sh
-npm install git+https://github.com/scene-ready/design-system.git#v0.2.0
+npm install git+https://github.com/scene-ready/design-system.git#v0.3.0
 ```
 
 Equivalent in `package.json`:
@@ -28,7 +28,7 @@ Equivalent in `package.json`:
 ```json
 {
   "dependencies": {
-    "@scene-ready/design-system": "git+https://github.com/scene-ready/design-system.git#v0.2.0"
+    "@scene-ready/design-system": "git+https://github.com/scene-ready/design-system.git#v0.3.0"
   }
 }
 ```
@@ -99,6 +99,12 @@ Use `-reversed` variants on dark backgrounds.
 
 ### Themed emails
 
+The email wrappers need `mjml`, which this package lists as an optional peer dependency. Install it alongside the design system in any service that sends email:
+
+```sh
+npm install mjml@^4.18.0
+```
+
 ```js
 import { wrapSimpleMessage } from "@scene-ready/design-system";
 
@@ -110,11 +116,11 @@ const html = wrapSimpleMessage({
 });
 ```
 
-Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrapDigest` — each returning a complete HTML document string. Light + dark themes activate automatically via `prefers-color-scheme`. **Server-side only** (depends on `mjml`). See [`emails/README.md`](./emails/README.md) for full API and dark-mode client matrix.
+Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrapDigest` — each returning a complete HTML document string. Light + dark themes activate automatically via `prefers-color-scheme`. **Server-side only** (needs `mjml`). See [`emails/README.md`](./emails/README.md) for full API and dark-mode client matrix.
 
 ## Versioning
 
-This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, `v0.2.0`, …) on this repo.
+This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, `v0.2.0`, `v0.3.0`, …) on this repo.
 
 Always pin to a tag in your `package.json` rather than tracking `main` — token changes can be visually breaking even when they're technically backwards-compatible CSS.
 
