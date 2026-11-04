@@ -1,6 +1,6 @@
 {
   "name": "@scene-ready/design-system",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Scene Ready design system — canonical CSS tokens, brand assets, themed email wrappers, and usage spec for Fire/EMS/SAR software.",
   "private": true,
   "license": "UNLICENSED",
@@ -44,7 +44,15 @@
   "engines": {
     "node": ">=18"
   },
-  "dependencies": {
+  "peerDependencies": {
+    "mjml": "^4.18.0"
+  },
+  "peerDependenciesMeta": {
+    "mjml": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
     "mjml": "^4.18.0"
   }
 }

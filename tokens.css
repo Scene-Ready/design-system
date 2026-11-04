@@ -22,6 +22,7 @@
   --navy-100: #C5D0E0;
   --navy-50:  #E8ECF2;
 
+  --red-900:  #9A0C24;   /* Red Dark — primary button hover */
   --red-700:  #C8102E;
   --red-500:  #E8334E;
   --red-300:  #F28C9A;
@@ -51,6 +52,7 @@
   --danger:         #DC2626;
   --danger-bg:      #FEF2F2;
   --danger-light:   #F87171;
+  --danger-dark:    #B91C1C;   /* danger button hover */
   --info:           #2563EB;
   --info-bg:        #EFF6FF;
   --info-light:     #60A5FA;
@@ -133,11 +135,30 @@
   --focus-ring:        var(--navy-500);
   --focus-ring-shadow: rgba(42, 63, 106, 0.2);
 
+  /* Interaction states */
+  --accent-hover:        var(--red-900);   /* primary button hover */
+  --danger-hover:        var(--danger-dark);
+  --bg-secondary:        var(--navy-700);  /* secondary (navy) button fill */
+  --bg-secondary-hover:  var(--navy-900);
+  --bg-hover:            var(--gray-100);  /* ghost button / nav item hover */
+  --bg-disabled:         var(--gray-200);  /* disabled button */
+  --bg-input-disabled:   var(--gray-100);
+  --text-disabled:       var(--gray-400);
+
   /* Mode-aware semantic status (lifts in dark mode) */
   --success-fg: var(--success);
   --warning-fg: var(--warning);
   --danger-fg:  var(--danger);
   --info-fg:    var(--info);
+  --neutral-fg: var(--gray-600);
+
+  /* Mode-aware tinted status surfaces — badges, banners, inline notices.
+     Pair with the matching --*-fg. (The --*-bg primitives are light-only.) */
+  --success-surface: var(--success-bg);
+  --warning-surface: var(--warning-bg);
+  --danger-surface:  var(--danger-bg);
+  --info-surface:    var(--info-bg);
+  --neutral-surface: var(--gray-100);
 }
 
 [data-theme='dark'] {
@@ -165,11 +186,29 @@
   --focus-ring:        var(--red-500);
   --focus-ring-shadow: rgba(232, 51, 78, 0.25);
 
+  /* Interaction states */
+  --accent-hover:        var(--red-700);
+  --danger-hover:        var(--danger-dark);
+  --bg-secondary:        var(--navy-500);  /* navy-700 would vanish on cards */
+  --bg-secondary-hover:  var(--navy-300);
+  --bg-hover:            rgba(255, 255, 255, 0.08);
+  --bg-disabled:         rgba(255, 255, 255, 0.08);
+  --bg-input-disabled:   rgba(255, 255, 255, 0.05);
+  --text-disabled:       var(--gray-600);
+
   /* Lifted semantic status */
   --success-fg: var(--success-light);
   --warning-fg: var(--warning-light);
   --danger-fg:  var(--danger-light);
   --info-fg:    var(--info-light);
+  --neutral-fg: var(--gray-400);
+
+  /* Status surfaces: translucent lifted tints instead of glaring light fills */
+  --success-surface: rgba(52, 211, 153, 0.14);
+  --warning-surface: rgba(251, 191, 36, 0.14);
+  --danger-surface:  rgba(248, 113, 113, 0.14);
+  --info-surface:    rgba(96, 165, 250, 0.14);
+  --neutral-surface: rgba(255, 255, 255, 0.08);
 
   /* Heavier shadows in dark mode for visible depth */
   --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.30);

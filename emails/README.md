@@ -13,8 +13,10 @@ Each function takes a structured input object and returns a complete HTML docume
 ## Install
 
 ```sh
-npm install git+https://github.com/scene-ready/design-system.git#v0.2.0
+npm install git+https://github.com/scene-ready/design-system.git#v0.3.0 mjml@^4.18.0
 ```
+
+`mjml` is an optional peer dependency of the package: apps that only use `tokens.css` and the logo assets don't get it, so services that send email install it themselves.
 
 ## Server-side only
 

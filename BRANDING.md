@@ -75,6 +75,7 @@ The Scene Ready logo is a pair of upward-pointing chevrons (navy over red) repre
 --navy-100: #C5D0E0;   /* Very light navy — subtle tints, tag backgrounds */
 --navy-50:  #E8ECF2;   /* Barely navy — light mode subtle backgrounds */
 
+--red-900:  #9A0C24;   /* Red Dark — primary button hover only */
 --red-700:  #C8102E;   /* Primary brand red — CTAs, accent, active states */
 --red-500:  #E8334E;   /* Mid red — dark mode accent (lifted for contrast) */
 --red-300:  #F28C9A;   /* Light red — decorative, muted accent */
@@ -115,12 +116,23 @@ The Scene Ready logo is a pair of upward-pointing chevrons (navy over red) repre
 --danger:      #DC2626;
 --danger-bg:   #FEF2F2;
 --danger-light: #F87171;   /* Dark mode lifted variant */
+--danger-dark: #B91C1C;    /* Danger button hover */
 
 /* Info — new assignment, system update, informational notice, in training */
 --info:        #2563EB;
 --info-bg:     #EFF6FF;
 --info-light:  #60A5FA;    /* Dark mode lifted variant */
 ```
+
+The `--*-bg` tints above are **light-mode primitives** — on a dark surface they glare. For badges, banners, and inline notices use the mode-aware aliases instead, which switch to translucent lifted tints in dark mode:
+
+| Status | Surface token | Foreground token |
+|--------|---------------|------------------|
+| Success | `--success-surface` | `--success-fg` |
+| Warning | `--warning-surface` | `--warning-fg` |
+| Danger | `--danger-surface` | `--danger-fg` |
+| Info | `--info-surface` | `--info-fg` |
+| Neutral | `--neutral-surface` | `--neutral-fg` |
 
 ### Color Usage Ratios
 
@@ -300,12 +312,14 @@ The standard web application layout uses a fixed left sidebar with a scrollable 
 
 | Variant | Background | Text | Border | Hover State | Usage |
 |---------|------------|------|--------|-------------|-------|
-| Primary | #C8102E (Red 700) | White | None | #9A0C24 (Red Dark) | Main CTAs: Save, Submit, Confirm |
-| Secondary | #1B2A4A (Navy 700) | White | None | #0F1A30 (Navy 900) | Secondary actions: View, Details |
-| Outline | Transparent | Navy 700 | 1px Navy 700 | Navy 700 bg, white text | Tertiary: Cancel, Back, Filter |
-| Ghost | Transparent | Navy 700 | None | Gray 100 bg | Inline actions, icon buttons |
-| Danger | #DC2626 | White | None | #B91C1C | Destructive: Delete, Remove |
-| Disabled | Gray 200 | Gray 400 | None | No change (cursor: default) | Any inactive button |
+| Primary | #C8102E (Red 700) `--accent` | White | None | #9A0C24 (Red Dark) `--accent-hover` | Main CTAs: Save, Submit, Confirm |
+| Secondary | #1B2A4A (Navy 700) `--bg-secondary` | White | None | #0F1A30 (Navy 900) `--bg-secondary-hover` | Secondary actions: View, Details |
+| Outline | Transparent | Navy 700 `--text-brand` | 1px Navy 700 | Navy 700 bg, white text | Tertiary: Cancel, Back, Filter |
+| Ghost | Transparent | Navy 700 `--text-brand` | None | Gray 100 bg `--bg-hover` | Inline actions, icon buttons |
+| Danger | #DC2626 `--danger` | White | None | #B91C1C `--danger-hover` | Destructive: Delete, Remove |
+| Disabled | Gray 200 `--bg-disabled` | Gray 400 `--text-disabled` | None | No change (cursor: default) | Any inactive button |
+
+Use the tokens shown, not the hex values — they adjust for dark mode (see [Color Mapping](#color-mapping)).
 
 **Button Sizes**:
 | Size | Height | Horizontal Padding | Font Size | Radius |
@@ -332,8 +346,8 @@ All buttons use `font-family: var(--font-sans)` and `font-weight: 600`. Icon + t
 | Error border | 2px solid #DC2626 (Danger) |
 | Error ring | box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) |
 | Error message | 13px, Danger color, displayed below input with 4px top margin |
-| Disabled bg | #F3F4F6 (Gray 100) |
-| Disabled text | #9CA3AF (Gray 400) |
+| Disabled bg | #F3F4F6 (Gray 100) — `--bg-input-disabled` |
+| Disabled text | #9CA3AF (Gray 400) — `--text-disabled` |
 | Label | 13px / Barlow Medium (500) / --text-secondary / 4px margin-bottom |
 
 ### Cards
@@ -388,11 +402,11 @@ All buttons use `font-family: var(--font-sans)` and `font-weight: 600`. Icon + t
 
 | Status | Background | Text/Dot Color | Operational Mapping |
 |--------|------------|----------------|---------------------|
-| Success | #ECFDF5 | #059669 | On Duty, In Service, Current, Passed |
-| Warning | #FFFBEB | #D97706 | Responding, Maintenance Due, Review Needed, Expiring |
-| Danger | #FEF2F2 | #DC2626 | Out of Service, Expired, Failed, Overdue |
-| Info | #EFF6FF | #2563EB | In Training, New Assignment, Updated |
-| Neutral | #F3F4F6 | #6B7280 | Off Duty, Inactive, Archived |
+| Success | #ECFDF5 `--success-surface` | #059669 `--success-fg` | On Duty, In Service, Current, Passed |
+| Warning | #FFFBEB `--warning-surface` | #D97706 `--warning-fg` | Responding, Maintenance Due, Review Needed, Expiring |
+| Danger | #FEF2F2 `--danger-surface` | #DC2626 `--danger-fg` | Out of Service, Expired, Failed, Overdue |
+| Info | #EFF6FF `--info-surface` | #2563EB `--info-fg` | In Training, New Assignment, Updated |
+| Neutral | #F3F4F6 `--neutral-surface` | #6B7280 `--neutral-fg` | Off Duty, Inactive, Archived |
 | Brand | navy-700 at 8% | #1B2A4A (dot: #C8102E) | On Scene |
 
 Badge specs: `font-size: 12px; font-weight: 600; font-family: var(--font-condensed); text-transform: uppercase; letter-spacing: 0.03em; padding: 3px 10px; border-radius: 9999px;` with a 6px dot before the label.
@@ -487,6 +501,16 @@ The table below documents what each semantic alias resolves to in each mode. Eve
 | Warning | `--warning-fg` | #D97706 | #FBBF24 (lifted) |
 | Danger | `--danger-fg` | #DC2626 | #F87171 (lifted) |
 | Info | `--info-fg` | #2563EB | #60A5FA (lifted) |
+| Neutral status | `--neutral-fg` | #6B7280 | #9CA3AF (Gray 400) |
+| Status surfaces | `--success-surface`, `--warning-surface`, `--danger-surface`, `--info-surface` | #ECFDF5 / #FFFBEB / #FEF2F2 / #EFF6FF | Lifted color at 14% opacity |
+| Neutral surface | `--neutral-surface` | #F3F4F6 | rgba(255,255,255,0.08) |
+| Primary hover | `--accent-hover` | #9A0C24 (Red Dark) | #C8102E (Red 700) |
+| Danger hover | `--danger-hover` | #B91C1C | #B91C1C |
+| Secondary button | `--bg-secondary` / `--bg-secondary-hover` | #1B2A4A / #0F1A30 | #2A3F6A / #4A6491 (Navy 500 / 300) |
+| Hover overlay | `--bg-hover` | #F3F4F6 | rgba(255,255,255,0.08) |
+| Disabled button | `--bg-disabled` | #E5E7EB | rgba(255,255,255,0.08) |
+| Disabled input | `--bg-input-disabled` | #F3F4F6 | rgba(255,255,255,0.05) |
+| Disabled text | `--text-disabled` | #9CA3AF | #6B7280 (Gray 600) |
 | Shadows | `--shadow-sm`–`-2xl` | rgba(0,0,0,0.05–0.20) | rgba(0,0,0,0.30–0.50) |
 
 ### Dark Mode Rules
@@ -589,7 +613,7 @@ The canonical token definitions live in [`tokens.css`](./tokens.css). All compon
 Install the design system as an npm dependency from git:
 
 ```sh
-npm install git+https://github.com/scene-ready/design-system.git#v0.1.0
+npm install git+https://github.com/scene-ready/design-system.git#v0.3.0
 ```
 
 Then import the tokens once at the application root, before any component styles:
