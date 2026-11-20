@@ -44,16 +44,16 @@ The Scene Ready logo is a pair of upward-pointing chevrons (navy over red) repre
 **SVG Icon Mark (inline use)**:
 ```svg
 <svg viewBox="0 0 100 100">
-  <path d="M 50 10 L 85 40 L 85 55 L 50 25 L 15 55 L 15 40 Z" fill="#1B2A4A"/>
-  <path d="M 50 35 L 85 65 L 85 80 L 50 50 L 15 80 L 15 65 Z" fill="#C8102E"/>
+  <path d="M 50 12 L 88 44 L 88 58 L 50 28 L 12 58 L 12 44 Z" fill="#1B2A4A"/>
+  <path d="M 50 38 L 88 70 L 88 84 L 50 54 L 12 84 L 12 70 Z" fill="#C8102E"/>
 </svg>
 ```
 
 **Reversed (on dark backgrounds)**:
 ```svg
 <svg viewBox="0 0 100 100">
-  <path d="M 50 10 L 85 40 L 85 55 L 50 25 L 15 55 L 15 40 Z" fill="#FFFFFF"/>
-  <path d="M 50 35 L 85 65 L 85 80 L 50 50 L 15 80 L 15 65 Z" fill="#C8102E"/>
+  <path d="M 50 12 L 88 44 L 88 58 L 50 28 L 12 58 L 12 44 Z" fill="#FFFFFF"/>
+  <path d="M 50 38 L 88 70 L 88 84 L 50 54 L 12 84 L 12 70 Z" fill="#C8102E"/>
 </svg>
 ```
 
