@@ -9,26 +9,16 @@ This package ships:
 - **`BRANDING.md`** — the full design system specification (color, typography, spacing, components, accessibility).
 - **`./emails`** — themed email wrappers (`wrapSimpleMessage`, `wrapIncidentAlert`, `wrapDigest`) for transactional, incident, and digest emails. See [`emails/README.md`](./emails/README.md).
 
-`tokens.css` and assets are published as static files — no build step. The email wrappers are the only JavaScript code; they need `mjml` and are intended for server-side use only. `mjml` is an **optional peer dependency**, so apps that only use the tokens and assets don't install it — see [Themed emails](#themed-emails).
+`tokens.css` and assets are published as static files — no build step. The `scene-ready-brand-assets` command is a dependency-free Node script. The email wrappers are the only JavaScript code; they need `mjml` and are intended for server-side use only. `mjml` is an **optional peer dependency**, so apps that only use the tokens and assets don't install it — see [Themed emails](#themed-emails).
 
 ## Install
 
-```sh
-npm install git+https://github.com/scene-ready/design-system.git
-```
-
-Pin to a tag for reproducible builds:
-
-```sh
-npm install git+https://github.com/scene-ready/design-system.git#v0.3.0
-```
-
-Equivalent in `package.json`:
+Pin a release tag through GitHub's tarball URL. It needs no git, SSH key or `insteadOf` rule in CI:
 
 ```json
 {
   "dependencies": {
-    "@scene-ready/design-system": "git+https://github.com/scene-ready/design-system.git#v0.3.0"
+    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.4.0"
   }
 }
 ```
@@ -74,15 +64,39 @@ The semantic aliases flip automatically when `data-theme="dark"` is set on any a
 </html>
 ```
 
-### Logo assets
+### Favicons and fixed-URL brand files
 
-Reference the SVGs by their subpath:
+Browsers ask for `/favicon.ico` by itself, and `<link>` tags need stable URLs, so these files must sit in the app's static root. Don't commit copies. Copy them at build time with the package's command:
 
-```html
-<img src="/node_modules/@scene-ready/design-system/assets/scene-ready-brandmark.svg" alt="Scene Ready" />
+```json
+{
+  "scripts": {
+    "predev": "scene-ready-brand-assets public",
+    "prebuild": "scene-ready-brand-assets public"
+  }
+}
 ```
 
-Or, with a bundler that resolves package imports for static assets:
+`scene-ready-brand-assets <dir>` copies all seven files below, flat, into `<dir>`, and exits non-zero if any is missing from the package. Gitignore them in the app:
+
+```gitignore
+public/favicon.ico
+public/scene-ready-*.svg
+```
+
+Every app's `<head>` uses the same block:
+
+```html
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/svg+xml" href="/scene-ready-favicon.svg" />
+<link rel="apple-touch-icon" href="/scene-ready-appicon.svg" />
+```
+
+Product icons (`product-icon.svg`, a product's own `favicon.ico`) stay in their app; the command doesn't touch them, but if an app ships its own `favicon.ico`, don't run the command into that folder.
+
+### Logo assets in UI
+
+To show a mark in a component, import it so the bundler fingerprints it:
 
 ```js
 import brandmark from "@scene-ready/design-system/assets/scene-ready-brandmark.svg";
@@ -90,10 +104,10 @@ import brandmark from "@scene-ready/design-system/assets/scene-ready-brandmark.s
 
 Available files in `assets/`:
 
-- `scene-ready-brandmark.svg` / `-reversed.svg` — full wordmark
-- `scene-ready-icon.svg` / `-reversed.svg` — icon mark
-- `scene-ready-appicon.svg` — square app icon
-- `scene-ready-favicon.svg` / `favicon.ico` — favicon
+- `scene-ready-brandmark.svg` / `-reversed.svg`: full wordmark
+- `scene-ready-icon.svg` / `-reversed.svg`: icon mark
+- `scene-ready-appicon.svg`: square app icon
+- `scene-ready-favicon.svg` / `favicon.ico`: favicon
 
 Use `-reversed` variants on dark backgrounds.
 
@@ -120,7 +134,7 @@ Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrap
 
 ## Versioning
 
-This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, `v0.2.0`, `v0.3.0`, …) on this repo.
+This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.4.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
 
 Always pin to a tag in your `package.json` rather than tracking `main` — token changes can be visually breaking even when they're technically backwards-compatible CSS.
 
