@@ -12,7 +12,7 @@ This is the **`@scene-ready/design-system` package** for Scene Ready (sceneready
 - `package.json` — declares the package as `@scene-ready/design-system` with `exports` for `./tokens.css`, `./assets/*`, and `./BRANDING.md`. Marked `private: true` so it is never published to the public npm registry.
 - `README.md` — consumer-facing install + usage docs.
 
-Consumers install from git (e.g. `npm install git+https://github.com/scene-ready/design-system.git#v0.1.0`). There is no build system, no tests, and no source code to compile — `tokens.css` is the artifact. Common tasks are editing `BRANDING.md`, adding/updating assets, or bumping a token value.
+Consumers install from git (a `codeload.github.com` tarball URL pinned to a tag; see README). There is no build system and no tests. `tokens.css` is the artifact; the only scripts are the email wrappers and `bin/scene-ready-brand-assets.js`, which copies the seven parent-brand files into an app's static root (keep its file list in sync with `assets/`). Common tasks are editing `BRANDING.md`, adding/updating assets, or bumping a token value.
 
 **When you change a token value, you must also bump `version` in `package.json` and tag the commit (`git tag vX.Y.Z`)** so consumers can pin to the new release.
 
