@@ -77,7 +77,7 @@ Browsers ask for `/favicon.ico` by itself, and `<link>` tags need stable URLs, s
 }
 ```
 
-`scene-ready-brand-assets <dir>` copies all seven files below, flat, into `<dir>`, and exits non-zero if any is missing from the package. Gitignore them in the app:
+`scene-ready-brand-assets <dir>` copies all seven files below, flat, into `<dir>` (less any named with `--skip`), and exits non-zero if any is missing from the package. Gitignore them in the app:
 
 ```gitignore
 public/favicon.ico
@@ -92,7 +92,13 @@ Every app's `<head>` uses the same block:
 <link rel="apple-touch-icon" href="/scene-ready-appicon.svg" />
 ```
 
-Product icons (`product-icon.svg`, a product's own `favicon.ico`) stay in their app; the command doesn't touch them, but if an app ships its own `favicon.ico`, don't run the command into that folder.
+Product icons (`product-icon.svg`, a product's own `favicon.ico`) stay in their app and stay committed. An app that ships its own `favicon.ico` in the same folder leaves the parent one out with `--skip`, which can be repeated:
+
+```sh
+scene-ready-brand-assets public --skip favicon.ico
+```
+
+and gitignores only `public/scene-ready-*.svg`.
 
 ### Logo assets in UI
 
