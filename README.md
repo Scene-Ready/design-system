@@ -5,11 +5,12 @@ The Scene Ready design system — canonical CSS tokens, brand assets, and usage 
 This package ships:
 
 - **`tokens.css`** — design tokens as CSS custom properties (primitives + semantic aliases, with built-in dark mode via `[data-theme="dark"]`).
+- **`fonts/`** — Barlow, Barlow Condensed and JetBrains Mono as self-hosted woff2 files with `fonts.css`. No app loads fonts from Google.
 - **`assets/`** — official logo SVGs (standard + reversed for dark backgrounds), app icon, and favicon.
 - **`BRANDING.md`** — the full design system specification (color, typography, spacing, components, accessibility).
 - **`./emails`** — themed email wrappers (`wrapSimpleMessage`, `wrapIncidentAlert`, `wrapDigest`) for transactional, incident, and digest emails. See [`emails/README.md`](./emails/README.md).
 
-`tokens.css` and assets are published as static files — no build step. The `scene-ready-brand-assets` command is a dependency-free Node script. The email wrappers are the only JavaScript code; they need `mjml` and are intended for server-side use only. `mjml` is an **optional peer dependency**, so apps that only use the tokens and assets don't install it — see [Themed emails](#themed-emails).
+`tokens.css`, fonts and assets are published as static files — no build step. The `scene-ready-brand-assets` command is a dependency-free Node script. The email wrappers are the only JavaScript code; they need `mjml` and are intended for server-side use only. `mjml` is an **optional peer dependency**, so apps that only use the tokens and assets don't install it — see [Themed emails](#themed-emails).
 
 ## Install
 
@@ -18,7 +19,7 @@ Pin a release tag through GitHub's tarball URL. It needs no git, SSH key or `ins
 ```json
 {
   "dependencies": {
-    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.4.0"
+    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.5.0"
   }
 }
 ```
@@ -64,7 +65,7 @@ The semantic aliases flip automatically when `data-theme="dark"` is set on any a
 </html>
 ```
 
-### Favicons and fixed-URL brand files
+### Favicons, fonts and other fixed-URL brand files
 
 Browsers ask for `/favicon.ico` by itself, and `<link>` tags need stable URLs, so these files must sit in the app's static root. Don't commit copies. Copy them at build time with the package's command:
 
@@ -77,11 +78,12 @@ Browsers ask for `/favicon.ico` by itself, and `<link>` tags need stable URLs, s
 }
 ```
 
-`scene-ready-brand-assets <dir>` copies all seven files below, flat, into `<dir>` (less any named with `--skip`), and exits non-zero if any is missing from the package. Gitignore them in the app:
+`scene-ready-brand-assets <dir>` copies all seven files below, flat, into `<dir>` (less any named with `--skip`), replaces `<dir>/fonts/` with the package's fonts, and exits non-zero if anything is missing from the package. Gitignore them in the app:
 
 ```gitignore
 public/favicon.ico
 public/scene-ready-*.svg
+public/fonts/
 ```
 
 Every app's `<head>` uses the same block:
@@ -90,6 +92,7 @@ Every app's `<head>` uses the same block:
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/svg+xml" href="/scene-ready-favicon.svg" />
 <link rel="apple-touch-icon" href="/scene-ready-appicon.svg" />
+<link rel="stylesheet" href="/fonts/fonts.css" />
 ```
 
 Product icons (`product-icon.svg`, a product's own `favicon.ico`) stay in their app and stay committed. An app that ships its own `favicon.ico` in the same folder leaves the parent one out with `--skip`, which can be repeated:
@@ -99,6 +102,20 @@ scene-ready-brand-assets public --skip favicon.ico
 ```
 
 and gitignores only `public/scene-ready-*.svg`.
+
+### Fonts
+
+`/fonts/fonts.css` declares Barlow (400–800), Barlow Condensed (400–700) and JetBrains Mono (400, 500), the families `--font-sans`, `--font-condensed` and `--font-mono` name. Each weight has a Latin and a Latin Extended file; the browser downloads only the weights and subsets a page actually renders, so shipping all of them costs nothing at runtime. A bundled app can import the stylesheet instead of linking it; its URLs are relative, so the bundler picks up and fingerprints the files:
+
+```js
+import "@scene-ready/design-system/fonts.css";
+```
+
+Don't load these families from Google Fonts or another CDN: it adds a third-party request and breaks the app offline. With fonts served from the app's own origin, a Content Security Policy needs only `font-src 'self'`. An app that works offline should add `/fonts/*.woff2` to its service worker's precache.
+
+The files come from the pinned Fontsource packages (SIL OFL 1.1; licences in `fonts/*-OFL.txt`). To add a weight, edit `FAMILIES` in `scripts/vendor-fonts.mjs`, run `npm run vendor-fonts`, and commit `fonts/`.
+
+Transactional emails are the exception: email clients fetch fonts over the network anyway, so the email wrappers still name Google Fonts.
 
 ### Logo assets in UI
 
@@ -140,7 +157,7 @@ Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrap
 
 ## Versioning
 
-This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.4.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
+This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.5.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
 
 Always pin to a tag in your `package.json` rather than tracking `main` — token changes can be visually breaking even when they're technically backwards-compatible CSS.
 

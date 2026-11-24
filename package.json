@@ -1,7 +1,7 @@
 {
   "name": "@scene-ready/design-system",
-  "version": "0.4.0",
-  "description": "Scene Ready design system — canonical CSS tokens, brand assets, themed email wrappers, and usage spec for Fire/EMS/SAR software.",
+  "version": "0.5.0",
+  "description": "Scene Ready design system — canonical CSS tokens, self-hosted fonts, brand assets, themed email wrappers, and usage spec for Fire/EMS/SAR software.",
   "private": true,
   "license": "UNLICENSED",
   "repository": {
@@ -17,6 +17,8 @@
     ".": "./emails/index.js",
     "./emails": "./emails/index.js",
     "./tokens.css": "./tokens.css",
+    "./fonts.css": "./fonts/fonts.css",
+    "./fonts/*": "./fonts/*",
     "./assets/*": "./assets/*",
     "./BRANDING.md": "./BRANDING.md",
     "./package.json": "./package.json"
@@ -27,6 +29,7 @@
   "files": [
     "tokens.css",
     "assets",
+    "fonts",
     "bin",
     "BRANDING.md",
     "emails"
@@ -35,7 +38,8 @@
     "*.css"
   ],
   "scripts": {
-    "preview:emails": "node scripts/preview-emails.js"
+    "preview:emails": "node scripts/preview-emails.js",
+    "vendor-fonts": "node scripts/vendor-fonts.mjs"
   },
   "keywords": [
     "design-system",

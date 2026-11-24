@@ -173,10 +173,13 @@ The `--*-bg` tints above are **light-mode primitives** — on a dark surface the
 --font-mono:      'JetBrains Mono', Consolas, Monaco, monospace;
 ```
 
-**Google Fonts import**:
+**Loading the fonts**: self-hosted, never from Google Fonts or another CDN, so apps make no third-party requests and can work offline. The package ships the three families in `fonts/` (Barlow 400–800, Barlow Condensed 400–700, JetBrains Mono 400 and 500; Latin and Latin Extended; woff2). `scene-ready-brand-assets` copies them to `/fonts/` in the app's static root, and every app links the same stylesheet:
+
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/fonts.css">
 ```
+
+A bundled app may import `@scene-ready/design-system/fonts.css` instead. Use only these weights; a weight that isn't shipped is faked by the browser.
 
 **Usage**:
 - `--font-sans` (Barlow): All UI text — headings, body, buttons, inputs, labels
