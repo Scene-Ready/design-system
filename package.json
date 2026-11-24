@@ -1,7 +1,7 @@
 {
   "name": "@scene-ready/design-system",
-  "version": "0.5.0",
-  "description": "Scene Ready design system — canonical CSS tokens, self-hosted fonts, brand assets, themed email wrappers, and usage spec for Fire/EMS/SAR software.",
+  "version": "0.6.0",
+  "description": "Scene Ready design system — canonical CSS tokens, Tailwind theme, self-hosted fonts, brand assets, themed email wrappers, and usage spec for Fire/EMS/SAR software.",
   "private": true,
   "license": "UNLICENSED",
   "repository": {
@@ -17,6 +17,7 @@
     ".": "./emails/index.js",
     "./emails": "./emails/index.js",
     "./tokens.css": "./tokens.css",
+    "./tailwind.css": "./tailwind.css",
     "./fonts.css": "./fonts/fonts.css",
     "./fonts/*": "./fonts/*",
     "./assets/*": "./assets/*",
@@ -28,6 +29,7 @@
   },
   "files": [
     "tokens.css",
+    "tailwind.css",
     "assets",
     "fonts",
     "bin",
@@ -39,12 +41,14 @@
   ],
   "scripts": {
     "preview:emails": "node scripts/preview-emails.js",
-    "vendor-fonts": "node scripts/vendor-fonts.mjs"
+    "vendor-fonts": "node scripts/vendor-fonts.mjs",
+    "check": "node scripts/check-tailwind.mjs"
   },
   "keywords": [
     "design-system",
     "design-tokens",
     "css-variables",
+    "tailwindcss",
     "email-templates",
     "mjml",
     "scene-ready"

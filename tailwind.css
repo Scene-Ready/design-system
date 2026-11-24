@@ -1,0 +1,163 @@
+/* Scene Ready theme for Tailwind CSS v4.
+ *
+ * Maps Tailwind's theme onto tokens.css, so utilities read the tokens at runtime
+ * (bg-navy-700 compiles to background-color: var(--navy-700)) and no app keeps its
+ * own copy of a brand value. Import it after Tailwind and tokens.css:
+ *
+ *   @import "tailwindcss";
+ *   @import "@scene-ready/design-system/tokens.css";
+ *   @import "@scene-ready/design-system/tailwind.css";
+ *
+ * `inline` puts var(--token) straight into each utility. Colours are also
+ * emitted as Tailwind's usual --color-* variables (--color-navy-700:
+ * var(--navy-700)), so var(--color-…) in arbitrary values keeps working. Fonts,
+ * sizes, radii, shadows and easing are `reference`: their Tailwind names are the
+ * token names (--shadow-md, --radius-lg, --font-sans …), and emitting them
+ * would make each refer to itself.
+ *
+ * The red and gray scales replace Tailwind's: only the brand steps exist, so
+ * bg-red-600 or text-gray-450 produces no CSS. Tailwind's other palettes
+ * (blue, green …) stay available; an app that wants them gone too adds
+ * `@theme { --color-*: initial; }` before importing this file, as feedback does.
+ *
+ * Opacity modifiers (bg-navy-700/50) use color-mix() over the token. Browsers
+ * without it (Safari < 16.2, Chrome < 111) show the colour fully opaque.
+ *
+ * Spacing needs no mapping: Tailwind's 0.25rem step matches --space-1 (4px), so
+ * p-4 is --space-4. Durations and layout sizes have no Tailwind namespace; use
+ * them as arbitrary values, e.g. duration-(--duration-fast), w-(--sidebar-width).
+ */
+@theme inline {
+  /* ---------- Primitives ---------- */
+
+  --color-navy-*: initial;
+  --color-navy-950: var(--navy-950);
+  --color-navy-900: var(--navy-900);
+  --color-navy-700: var(--navy-700);
+  --color-navy-500: var(--navy-500);
+  --color-navy-300: var(--navy-300);
+  --color-navy-100: var(--navy-100);
+  --color-navy-50: var(--navy-50);
+
+  --color-red-*: initial;
+  --color-red-900: var(--red-900);
+  --color-red-700: var(--red-700);
+  --color-red-500: var(--red-500);
+  --color-red-300: var(--red-300);
+  --color-red-100: var(--red-100);
+  --color-red-50: var(--red-50);
+
+  /* Brand grays: 400 and 500 are the same colour, and 500 and 600 are lighter
+     than Tailwind's (BRANDING.md, Neutrals). */
+  --color-gray-*: initial;
+  --color-gray-900: var(--gray-900);
+  --color-gray-800: var(--gray-800);
+  --color-gray-700: var(--gray-700);
+  --color-gray-600: var(--gray-600);
+  --color-gray-500: var(--gray-500);
+  --color-gray-400: var(--gray-400);
+  --color-gray-300: var(--gray-300);
+  --color-gray-200: var(--gray-200);
+  --color-gray-100: var(--gray-100);
+  --color-gray-50: var(--gray-50);
+  /* white stays Tailwind's literal #fff (same as --white), so bg-white/50 keeps
+     Tailwind's precomputed fallback for browsers without color-mix(). */
+
+  /* Status primitives: light-mode values. For text and fills that should lift
+     in dark mode, use the -fg and -surface aliases below. */
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-success-light: var(--success-light);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-warning-light: var(--warning-light);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-danger-light: var(--danger-light);
+  --color-danger-dark: var(--danger-dark);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-info-light: var(--info-light);
+
+  /* ---------- Semantic aliases (flip with data-theme="dark") ---------- */
+
+  /* Surfaces: bg-page, bg-card … */
+  --color-page: var(--bg-page);
+  --color-card: var(--bg-card);
+  --color-elevated: var(--bg-elevated);
+  --color-sidebar: var(--bg-sidebar);
+  --color-input: var(--bg-input);
+  --color-hover: var(--bg-hover);
+  --color-disabled: var(--bg-disabled);
+  --color-input-disabled: var(--bg-input-disabled);
+  --color-secondary-fill: var(--bg-secondary);
+  --color-secondary-fill-hover: var(--bg-secondary-hover);
+
+  /* Text: text-primary, text-secondary … */
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-tertiary: var(--text-tertiary);
+  --color-inverse: var(--text-inverse);
+  --color-brand: var(--text-brand);
+  --color-disabled-fg: var(--text-disabled);
+
+  /* Borders: border-border, border-border-input */
+  --color-border: var(--border);
+  --color-border-input: var(--border-input);
+
+  /* Accent and focus */
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-danger-hover: var(--danger-hover);
+  --color-focus-ring: var(--focus-ring);
+
+  /* Status: text-success-fg on bg-success-surface … */
+  --color-success-fg: var(--success-fg);
+  --color-warning-fg: var(--warning-fg);
+  --color-danger-fg: var(--danger-fg);
+  --color-info-fg: var(--info-fg);
+  --color-neutral-fg: var(--neutral-fg);
+  --color-success-surface: var(--success-surface);
+  --color-warning-surface: var(--warning-surface);
+  --color-danger-surface: var(--danger-surface);
+  --color-info-surface: var(--info-surface);
+  --color-neutral-surface: var(--neutral-surface);
+}
+
+@theme inline reference {
+  /* ---------- Type ---------- */
+
+  --font-sans: var(--font-sans);
+  --font-condensed: var(--font-condensed);
+  --font-mono: var(--font-mono);
+
+  /* Sizes keep Tailwind's paired line heights; the sizes themselves are the tokens. */
+  --text-xs: var(--text-xs);
+  --text-sm: var(--text-sm);
+  --text-base: var(--text-base);
+  --text-lg: var(--text-lg);
+  --text-xl: var(--text-xl);
+  --text-2xl: var(--text-2xl);
+  --text-3xl: var(--text-3xl);
+  --text-4xl: var(--text-4xl);
+  --text-5xl: var(--text-5xl);
+
+  /* ---------- Shape, depth, motion ---------- */
+
+  --radius-none: var(--radius-none);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+
+  /* Shadows deepen in dark mode (tokens.css). */
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+}

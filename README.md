@@ -5,7 +5,8 @@ The Scene Ready design system — canonical CSS tokens, brand assets, and usage 
 This package ships:
 
 - **`tokens.css`** — design tokens as CSS custom properties (primitives + semantic aliases, with built-in dark mode via `[data-theme="dark"]`).
-- **`fonts/`** — Barlow, Barlow Condensed and JetBrains Mono as self-hosted woff2 files with `fonts.css`. No app loads fonts from Google.
+- **`tailwind.css`** — a Tailwind CSS v4 theme that maps Tailwind's colours, fonts, sizes, radii, shadows and easing onto the tokens, so an app's utilities read `tokens.css` instead of copied values.
+- **`fonts/` — Barlow, Barlow Condensed and JetBrains Mono as self-hosted woff2 files with `fonts.css`. No app loads fonts from Google.
 - **`assets/`** — official logo SVGs (standard + reversed for dark backgrounds), app icon, and favicon.
 - **`BRANDING.md`** — the full design system specification (color, typography, spacing, components, accessibility).
 - **`./emails`** — themed email wrappers (`wrapSimpleMessage`, `wrapIncidentAlert`, `wrapDigest`) for transactional, incident, and digest emails. See [`emails/README.md`](./emails/README.md).
@@ -19,7 +20,7 @@ Pin a release tag through GitHub's tarball URL. It needs no git, SSH key or `ins
 ```json
 {
   "dependencies": {
-    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.5.0"
+    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.6.0"
   }
 }
 ```
@@ -54,6 +55,36 @@ Then reference the tokens in your component CSS — never hardcode hex codes or 
 ```
 
 **Prefer semantic aliases** (`--bg-card`, `--text-primary`, `--border`, `--accent`, `--success-fg`) over primitives (`--navy-700`, `--gray-50`) whenever a value should change between light and dark mode.
+
+### Tailwind
+
+Apps on Tailwind CSS v4 import the theme after Tailwind and the tokens, and keep no brand values of their own:
+
+```css
+@import "tailwindcss";
+@import "@scene-ready/design-system/tokens.css";
+@import "@scene-ready/design-system/tailwind.css";
+```
+
+Every mapped utility compiles to a `var()` of its token (`bg-navy-700` is `background-color: var(--navy-700)`), so a token change reaches every app on its next build with nothing to edit. Colours are also emitted as Tailwind's usual variables (`--color-navy-700: var(--navy-700)`), so `var(--color-…)` in arbitrary values and inline styles keeps working. Opacity modifiers (`bg-navy-700/50`) work through `color-mix()`; browsers without it (Safari before 16.2, Chrome before 111) show the colour fully opaque. `white` is left as Tailwind's own `#fff`, which equals `--white`, so `bg-white/50` keeps Tailwind's fallback.
+
+| Utilities | Token |
+|---|---|
+| `navy-50`…`navy-950`, `red-50`…`red-900`, `gray-50`…`gray-900` | the primitives of the same name |
+| `success`, `success-bg`, `success-light` (and `warning`, `danger`, `info`; `danger-dark`) | status primitives, light-mode values |
+| `bg-page`, `bg-card`, `bg-elevated`, `bg-sidebar`, `bg-input`, `bg-hover`, `bg-disabled`, `bg-input-disabled`, `bg-secondary-fill`, `bg-secondary-fill-hover` | `--bg-*` |
+| `text-primary`, `text-secondary`, `text-tertiary`, `text-inverse`, `text-brand`, `text-disabled-fg` | `--text-*` |
+| `border-border`, `border-border-input` | `--border`, `--border-input` |
+| `accent`, `accent-hover`, `danger-hover`, `focus-ring` | the same names |
+| `success-fg`, `success-surface` (and `warning`, `danger`, `info`, `neutral`) | mode-aware status |
+| `font-sans`, `font-condensed`, `font-mono`; `text-xs`…`text-5xl` | type tokens (Tailwind's line heights kept) |
+| `rounded-none`…`rounded-full`, `shadow-sm`…`shadow-2xl`, `ease-out`, `ease-in-out` | the same names |
+
+The semantic utilities in the middle rows flip with `data-theme="dark"`, so components that use them need no `dark:` variants. The primitives don't flip.
+
+The red and gray scales replace Tailwind's: only the brand steps compile, so `bg-red-600` produces no CSS. The brand grays differ from Tailwind's at 500 (`#9CA3AF`) and 600 (`#6B7280`). Tailwind's other palettes stay available; to switch them off as well, add `@theme { --color-*: initial; }` before the import.
+
+Spacing needs no mapping: Tailwind's `0.25rem` step equals `--space-1`, so `p-4` is `--space-4`. Durations and layout sizes have no Tailwind namespace; use them as arbitrary values: `duration-(--duration-fast)`, `w-(--sidebar-width)`.
 
 ### Dark mode
 
@@ -157,7 +188,7 @@ Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrap
 
 ## Versioning
 
-This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.5.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
+This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.6.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
 
 Always pin to a tag in your `package.json` rather than tracking `main` — token changes can be visually breaking even when they're technically backwards-compatible CSS.
 
@@ -171,5 +202,6 @@ When changing a token value:
 
 1. Update `tokens.css` (the canonical source).
 2. Update any per-section table in `BRANDING.md` that quotes the value inline (the doc and the file must agree).
-3. If you touch a logo SVG, update the matching file in `assets/` and the inline SVG block in `BRANDING.md` together.
-4. Bump `version` in `package.json` and tag the commit (`git tag vX.Y.Z`) so consumers can pin to it.
+3. When adding, renaming or removing a token, update `tailwind.css` to match, then run `npm run check`, which fails if `tailwind.css` points at a token `tokens.css` doesn't define.
+4. If you touch a logo SVG, update the matching file in `assets/` and the inline SVG block in `BRANDING.md` together.
+5. Bump `version` in `package.json` and tag the commit (`git tag vX.Y.Z`) so consumers can pin to it.
