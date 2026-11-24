@@ -13,7 +13,7 @@ Each function takes a structured input object and returns a complete HTML docume
 ## Install
 
 ```sh
-npm install git+https://github.com/scene-ready/design-system.git#v0.3.0 mjml@^4.18.0
+npm install https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.7.0 mjml@^4.18.0
 ```
 
 `mjml` is an optional peer dependency of the package: apps that only use `tokens.css` and the logo assets don't get it, so services that send email install it themselves.
@@ -32,7 +32,7 @@ const html = wrapSimpleMessage({
   recipientName: "Capt. Reyes",
   headline: "Reset your password",
   body: "We received a request to reset the password for your Scene Ready account.",
-  cta: { label: "Reset password", url: "https://app.sceneready.tech/reset?t=..." },
+  cta: { label: "Reset password", url: "https://auth.sceneready.app/reset?t=..." },
   footnote: "This link expires in 30 minutes. If you didn't request this, ignore this email.",
 });
 ```
@@ -49,8 +49,8 @@ const html = wrapIncidentAlert({
     { label: "Crew On Duty", value: "Reyes, Doan, Park" },
     { label: "Dispatched", value: "14:03 PDT" },
   ],
-  cta: { label: "Acknowledge response", url: "https://app.sceneready.tech/c/8821/ack" },
-  secondaryCta: { label: "Open incident", url: "https://app.sceneready.tech/c/8821" },
+  cta: { label: "Acknowledge response", url: "https://platform.sceneready.app/c/8821/ack" },
+  secondaryCta: { label: "Open incident", url: "https://platform.sceneready.app/c/8821" },
 });
 ```
 
@@ -65,7 +65,7 @@ const html = wrapDigest({
       items: [
         {
           title: "Structure fire — 1421 Birch St",
-          url: "https://app.sceneready.tech/c/8821",
+          url: "https://platform.sceneready.app/c/8821",
           meta: "14:03 PDT — Engine 12",
           description: "Single-family residence. Suppressed in 22 minutes.",
           badge: { label: "Closed", severity: "success" },
@@ -73,7 +73,7 @@ const html = wrapDigest({
       ],
     },
   ],
-  cta: { label: "Open dashboard", url: "https://app.sceneready.tech" },
+  cta: { label: "Open dashboard", url: "https://platform.sceneready.app" },
 });
 ```
 
@@ -151,7 +151,7 @@ Light is the default (inline styles, full backward compatibility). Dark activate
 | Outlook 2016/2019 (Word renderer)     | Stays light. **SVG logos do not render** — pass a hosted PNG via `logoUrl`/`logoDarkUrl` if you need to support these clients. |
 | Older clients                         | Stay light. Acceptable.                                         |
 
-Brand colors lift in dark mode per the design spec — Red 700 → Red 500, status foregrounds → `-light` variants, surfaces flip to Navy 900 / Navy 700. The brandmark logo swaps to its reversed (white-chevron) variant via stacked `<img>` sections.
+Colors follow the dark-mode table in `BRANDING.md` §9.4: links lift to Red 300 while the button stays Red 700, status text switches to its dark-mode tone, and surfaces flip to Navy 900 / Navy 700. The brandmark logo swaps to its reversed (white-chevron) variant via stacked `<img>` sections.
 
 ## Voice
 
