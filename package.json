@@ -1,6 +1,6 @@
 {
   "name": "@scene-ready/design-system",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Scene Ready design system — canonical CSS tokens, Tailwind theme, self-hosted fonts, brand assets, themed email wrappers, and usage spec for Fire/EMS/SAR software.",
   "private": true,
   "license": "UNLICENSED",
@@ -42,7 +42,8 @@
   "scripts": {
     "preview:emails": "node scripts/preview-emails.js",
     "vendor-fonts": "node scripts/vendor-fonts.mjs",
-    "check": "node scripts/check-tailwind.mjs && node scripts/check-contrast.mjs"
+    "sync-dark": "node scripts/sync-dark.mjs",
+    "check": "node scripts/sync-dark.mjs --check && node scripts/check-tailwind.mjs && node scripts/check-contrast.mjs"
   },
   "keywords": [
     "design-system",

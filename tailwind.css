@@ -26,7 +26,22 @@
  * Spacing needs no mapping: Tailwind's 0.25rem step matches --space-1 (4px), so
  * p-4 is --space-4. Durations and layout sizes have no Tailwind namespace; use
  * them as arbitrary values, e.g. duration-(--duration-fast), w-(--sidebar-width).
+ *
+ * dark: follows the same rule as the tokens (BRANDING.md §9.4), so dark:
+ * utilities and the semantic aliases always switch together. An app declares
+ * no dark variant of its own.
  */
+@custom-variant dark {
+  &:where([data-theme='dark'], [data-theme='dark'] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:not([data-theme='light'], [data-theme='light'] *)) {
+      @slot;
+    }
+  }
+}
+
 @theme inline {
   /* ---------- Primitives ---------- */
 
@@ -86,7 +101,7 @@
   --color-info-dark: var(--info-dark);
   --color-info-pale: var(--info-pale);
 
-  /* ---------- Semantic aliases (flip with data-theme="dark") ---------- */
+  /* ---------- Semantic aliases (switch with the theme: OS or data-theme) ---------- */
 
   /* Surfaces: bg-page, bg-card … */
   --color-page: var(--bg-page);

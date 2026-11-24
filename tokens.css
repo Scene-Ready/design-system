@@ -6,9 +6,17 @@
         scale. Stable across themes; reference only when a value should NOT
         change between light and dark mode.
      2. SEMANTIC ALIASES (--bg-page, --text-primary, --border, --success-fg, …)
-        — purpose-named tokens. Defaults are light-mode; [data-theme='dark']
-        on any ancestor flips them. Component styles should prefer these
-        whenever a value differs by mode. */
+        — purpose-named tokens. Component styles should prefer these
+        whenever a value differs by mode.
+
+   Theme selection (BRANDING.md §9.4):
+     - no data-theme      follows the OS (prefers-color-scheme)
+     - data-theme="dark"  forces dark on that element and its descendants
+     - data-theme="light" on <html> forces light; an app with no dark mode
+                          must set it
+   The dark aliases live in [data-theme='dark']. The prefers-color-scheme
+   block below it is generated from that block by `npm run sync-dark`, and
+   `npm run check` fails if the two differ: edit only [data-theme='dark']. */
 
 :root {
   /* ---------- PRIMITIVES ---------- */
@@ -227,3 +235,64 @@
   --shadow-xl:  0 10px 25px rgba(0, 0, 0, 0.45);
   --shadow-2xl: 0 20px 60px rgba(0, 0, 0, 0.50);
 }
+
+/* BEGIN GENERATED: OS dark mode (npm run sync-dark) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    /* Surfaces */
+    --bg-page:     var(--navy-900);
+    --bg-card:     var(--navy-700);
+    --bg-elevated: var(--navy-500);
+    --bg-sidebar:  var(--navy-950);
+    --bg-input:    var(--navy-700);
+
+    /* Text — tertiary matches secondary: #6B7280 fails AA on navy (2.9:1) */
+    --text-primary:   var(--gray-100);
+    --text-secondary: var(--gray-400);
+    --text-tertiary:  var(--gray-400);
+    --text-inverse:   var(--white);
+    --text-brand:     var(--white);
+    --text-accent:    var(--red-300);   /* red text lifts to 300: Red 500 is 3.4:1 on cards */
+
+    /* Borders use opacity for layered depth */
+    --border:       rgba(255, 255, 255, 0.10);
+    --border-input: rgba(255, 255, 255, 0.35);
+
+    /* Accent / focus */
+    --accent:            var(--red-700);   /* fills stay Red 700: white text on Red 500 is 4.2:1 */
+    --focus-ring:        var(--red-300);   /* 3:1 on every dark surface; Red 500 is 2.5:1 on elevated */
+    --focus-ring-shadow: rgba(242, 140, 154, 0.25);
+
+    /* Interaction states */
+    --accent-hover:        var(--red-900);
+    --danger-hover:        var(--danger-dark);
+    --bg-secondary:        var(--navy-500);  /* navy-700 would vanish on cards */
+    --bg-secondary-hover:  var(--navy-300);
+    --bg-hover:            rgba(255, 255, 255, 0.08);
+    --bg-disabled:         rgba(255, 255, 255, 0.08);
+    --bg-input-disabled:   rgba(255, 255, 255, 0.05);
+    --text-disabled:       var(--gray-600);
+
+    /* Lifted semantic status */
+    --success-fg: var(--success-light);
+    --warning-fg: var(--warning-light);
+    --danger-fg:  var(--danger-pale);
+    --info-fg:    var(--info-pale);
+    --neutral-fg: var(--gray-300);
+
+    /* Status surfaces: translucent lifted tints instead of glaring light fills */
+    --success-surface: rgba(52, 211, 153, 0.14);
+    --warning-surface: rgba(251, 191, 36, 0.14);
+    --danger-surface:  rgba(248, 113, 113, 0.14);
+    --info-surface:    rgba(96, 165, 250, 0.14);
+    --neutral-surface: rgba(255, 255, 255, 0.08);
+
+    /* Heavier shadows in dark mode for visible depth */
+    --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.30);
+    --shadow-md:  0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+    --shadow-lg:  0 4px 12px rgba(0, 0, 0, 0.40);
+    --shadow-xl:  0 10px 25px rgba(0, 0, 0, 0.45);
+    --shadow-2xl: 0 20px 60px rgba(0, 0, 0, 0.50);
+  }
+}
+/* END GENERATED: OS dark mode */
