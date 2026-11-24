@@ -20,7 +20,7 @@ Pin a release tag through GitHub's tarball URL. It needs no git, SSH key or `ins
 ```json
 {
   "dependencies": {
-    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.6.0"
+    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.7.0"
   }
 }
 ```
@@ -71,18 +71,19 @@ Every mapped utility compiles to a `var()` of its token (`bg-navy-700` is `backg
 | Utilities | Token |
 |---|---|
 | `navy-50`…`navy-950`, `red-50`…`red-900`, `gray-50`…`gray-900` | the primitives of the same name |
-| `success`, `success-bg`, `success-light` (and `warning`, `danger`, `info`; `danger-dark`) | status primitives, light-mode values |
+| `success`, `success-bg`, `success-light`, `success-dark` (and `warning`, `danger`, `info`; `danger-pale`, `info-pale`) | status primitives. The base tone is for dots, icons and borders; status text uses `-fg` |
 | `bg-page`, `bg-card`, `bg-elevated`, `bg-sidebar`, `bg-input`, `bg-hover`, `bg-disabled`, `bg-input-disabled`, `bg-secondary-fill`, `bg-secondary-fill-hover` | `--bg-*` |
 | `text-primary`, `text-secondary`, `text-tertiary`, `text-inverse`, `text-brand`, `text-disabled-fg` | `--text-*` |
 | `border-border`, `border-border-input` | `--border`, `--border-input` |
-| `accent`, `accent-hover`, `danger-hover`, `focus-ring` | the same names |
+| `accent`, `accent-hover`, `danger-hover`, `focus-ring` | the same names (`accent` is the fill: buttons, active bars) |
+| `accent-fg` | `--text-accent`: red text and links. Use `text-accent-fg`, never `text-accent`, for text |
 | `success-fg`, `success-surface` (and `warning`, `danger`, `info`, `neutral`) | mode-aware status |
 | `font-sans`, `font-condensed`, `font-mono`; `text-xs`…`text-5xl` | type tokens (Tailwind's line heights kept) |
 | `rounded-none`…`rounded-full`, `shadow-sm`…`shadow-2xl`, `ease-out`, `ease-in-out` | the same names |
 
 The semantic utilities in the middle rows flip with `data-theme="dark"`, so components that use them need no `dark:` variants. The primitives don't flip.
 
-The red and gray scales replace Tailwind's: only the brand steps compile, so `bg-red-600` produces no CSS. The brand grays differ from Tailwind's at 500 (`#9CA3AF`) and 600 (`#6B7280`). Tailwind's other palettes stay available; to switch them off as well, add `@theme { --color-*: initial; }` before the import.
+The red and gray scales replace Tailwind's: only the brand steps compile, so `bg-red-600` produces no CSS. The brand grays differ from Tailwind's at 500 (`#8B95A5`, the input-border gray) and 600 (`#6B7280`), and add 650 (`#4B5563`, neutral status text). Tailwind's other palettes stay available; to switch them off as well, add `@theme { --color-*: initial; }` before the import.
 
 Spacing needs no mapping: Tailwind's `0.25rem` step equals `--space-1`, so `p-4` is `--space-4`. Durations and layout sizes have no Tailwind namespace; use them as arbitrary values: `duration-(--duration-fast)`, `w-(--sidebar-width)`.
 
@@ -180,7 +181,7 @@ const html = wrapSimpleMessage({
   subject: "Reset your Scene Ready password",
   headline: "Reset your password",
   body: "We received a request to reset your password.",
-  cta: { label: "Reset password", url: "https://app.sceneready.tech/reset?t=..." },
+  cta: { label: "Reset password", url: "https://auth.sceneready.app/reset?t=..." },
 });
 ```
 
@@ -188,7 +189,7 @@ Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrap
 
 ## Versioning
 
-This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.6.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
+This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.7.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
 
 Always pin to a tag in your `package.json` rather than tracking `main` — token changes can be visually breaking even when they're technically backwards-compatible CSS.
 
@@ -202,6 +203,6 @@ When changing a token value:
 
 1. Update `tokens.css` (the canonical source).
 2. Update any per-section table in `BRANDING.md` that quotes the value inline (the doc and the file must agree).
-3. When adding, renaming or removing a token, update `tailwind.css` to match, then run `npm run check`, which fails if `tailwind.css` points at a token `tokens.css` doesn't define.
+3. When adding, renaming or removing a token, update `tailwind.css` to match, and `emails/tokens.js` (email clients can't read CSS variables), then run `npm run check`. It fails if `tailwind.css` points at a token `tokens.css` doesn't define, if a token pairing falls below its WCAG contrast minimum in either mode, or if a ratio in `BRANDING.md`'s contrast table doesn't match its colors.
 4. If you touch a logo SVG, update the matching file in `assets/` and the inline SVG block in `BRANDING.md` together.
 5. Bump `version` in `package.json` and tag the commit (`git tag vX.Y.Z`) so consumers can pin to it.

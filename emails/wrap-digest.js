@@ -33,7 +33,7 @@ function renderItem(item, isLast) {
     : `<span style="font-weight:600;">${escapeHtml(item.title)}</span>`;
 
   const metaHtml = item.meta
-    ? `<div class="t-text-3" style="color:${TOKENS.light.textTertiary};font-size:${TOKENS.fontSize.xs};margin-top:${TOKENS.space[1]};">${escapeHtml(item.meta)}</div>`
+    ? `<div class="t-text-2" style="color:${TOKENS.light.textSecondary};font-size:${TOKENS.fontSize.xs};margin-top:${TOKENS.space[1]};">${escapeHtml(item.meta)}</div>`
     : "";
 
   const descriptionHtml = item.description
@@ -42,7 +42,7 @@ function renderItem(item, isLast) {
 
   return `
     <tr>
-      <td class="t-divider" style="padding:${TOKENS.space[4]} 0;${dividerStyle}">
+      <td class="t-divider" style="font-family:${TOKENS.font.sans};padding:${TOKENS.space[4]} 0;${dividerStyle}">
         ${renderBadge(item.badge)}
         <div class="t-text" style="color:${TOKENS.light.textPrimary};font-size:${TOKENS.fontSize.base};line-height:1.4;${item.badge ? `margin-top:${TOKENS.space[1]};` : ""}">${titleHtml}</div>
         ${metaHtml}

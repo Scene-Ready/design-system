@@ -93,7 +93,7 @@ const samples = {
           {
             title: "Ladder 4 — out of service",
             description: "Pump pressure fault flagged at end of shift. Service appointment scheduled for May 5, 08:00.",
-            badge: { label: "Out of service", severity: "warning" },
+            badge: { label: "Out of service", severity: "danger" },
           },
         ],
       },

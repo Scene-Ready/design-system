@@ -47,12 +47,13 @@
   --color-red-100: var(--red-100);
   --color-red-50: var(--red-50);
 
-  /* Brand grays: 400 and 500 are the same colour, and 500 and 600 are lighter
-     than Tailwind's (BRANDING.md, Neutrals). */
+  /* Brand grays (BRANDING.md, Neutrals): 500 is the input-border gray and 650
+     the neutral status text tone; 500 and 600 differ from Tailwind's. */
   --color-gray-*: initial;
   --color-gray-900: var(--gray-900);
   --color-gray-800: var(--gray-800);
   --color-gray-700: var(--gray-700);
+  --color-gray-650: var(--gray-650);
   --color-gray-600: var(--gray-600);
   --color-gray-500: var(--gray-500);
   --color-gray-400: var(--gray-400);
@@ -63,21 +64,27 @@
   /* white stays Tailwind's literal #fff (same as --white), so bg-white/50 keeps
      Tailwind's precomputed fallback for browsers without color-mix(). */
 
-  /* Status primitives: light-mode values. For text and fills that should lift
-     in dark mode, use the -fg and -surface aliases below. */
+  /* Status primitives: light-mode values. The base tone (text-success …) is for
+     dots, icons and borders; it fails AA as small text on its tint. For status
+     text use text-success-fg (mode-aware) or text-success-dark. */
   --color-success: var(--success);
   --color-success-bg: var(--success-bg);
   --color-success-light: var(--success-light);
+  --color-success-dark: var(--success-dark);
   --color-warning: var(--warning);
   --color-warning-bg: var(--warning-bg);
   --color-warning-light: var(--warning-light);
+  --color-warning-dark: var(--warning-dark);
   --color-danger: var(--danger);
   --color-danger-bg: var(--danger-bg);
   --color-danger-light: var(--danger-light);
   --color-danger-dark: var(--danger-dark);
+  --color-danger-pale: var(--danger-pale);
   --color-info: var(--info);
   --color-info-bg: var(--info-bg);
   --color-info-light: var(--info-light);
+  --color-info-dark: var(--info-dark);
+  --color-info-pale: var(--info-pale);
 
   /* ---------- Semantic aliases (flip with data-theme="dark") ---------- */
 
@@ -105,8 +112,11 @@
   --color-border: var(--border);
   --color-border-input: var(--border-input);
 
-  /* Accent and focus */
+  /* Accent and focus. accent is the fill (bg-accent: buttons, active bars);
+     accent-fg is red text (links), which lifts to Red 300 in dark mode. Never
+     use text-accent for text: in dark mode it is Red 700 on navy (2.4:1). */
   --color-accent: var(--accent);
+  --color-accent-fg: var(--text-accent);
   --color-accent-hover: var(--accent-hover);
   --color-danger-hover: var(--danger-hover);
   --color-focus-ring: var(--focus-ring);

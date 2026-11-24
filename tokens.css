@@ -33,8 +33,9 @@
   --gray-900: #111827;
   --gray-800: #1F2937;
   --gray-700: #374151;
+  --gray-650: #4B5563;   /* neutral status text on tints (AA) */
   --gray-600: #6B7280;
-  --gray-500: #9CA3AF;
+  --gray-500: #8B95A5;   /* input borders — 3:1 on white (WCAG 1.4.11) */
   --gray-400: #9CA3AF;
   --gray-300: #D1D5DB;
   --gray-200: #E5E7EB;
@@ -42,20 +43,28 @@
   --gray-50:  #F9FAFB;
   --white:    #FFFFFF;
 
-  /* Semantic status palette — base + tinted bg + lifted (dark-mode) variant */
+  /* Semantic status palette — base + tinted bg + lifted (dark-mode) variant
+     + dark text tone. The base tone is for dots, icons, borders and fills; it
+     fails WCAG AA as small text on its tint, so status text uses the -dark
+     tone (through --*-fg below). */
   --success:        #059669;
   --success-bg:     #ECFDF5;
   --success-light:  #34D399;
+  --success-dark:   #047857;   /* status text — 5.2:1 on --success-bg */
   --warning:        #D97706;
   --warning-bg:     #FFFBEB;
   --warning-light:  #FBBF24;
+  --warning-dark:   #B45309;   /* status text — 4.8:1 on --warning-bg */
   --danger:         #DC2626;
   --danger-bg:      #FEF2F2;
   --danger-light:   #F87171;
-  --danger-dark:    #B91C1C;   /* danger button hover */
+  --danger-dark:    #B91C1C;   /* status text — 5.9:1 on --danger-bg; danger button hover */
+  --danger-pale:    #FCA5A5;   /* dark-mode status text — 6.2:1 on --danger-surface */
   --info:           #2563EB;
   --info-bg:        #EFF6FF;
   --info-light:     #60A5FA;
+  --info-dark:      #1D4ED8;   /* status text — 6.2:1 on --info-bg */
+  --info-pale:      #93C5FD;   /* dark-mode status text — 6.2:1 on --info-surface */
 
   /* Typography */
   --font-sans:      'Barlow', system-ui, -apple-system, sans-serif;
@@ -121,14 +130,14 @@
   /* Text — note: distinct from --text-* size tokens above */
   --text-primary:   var(--gray-900);
   --text-secondary: var(--gray-600);
-  --text-tertiary:  var(--gray-500);
+  --text-tertiary:  var(--gray-400);
   --text-inverse:   var(--white);
   --text-brand:     var(--navy-700);
   --text-accent:    var(--red-700);
 
   /* Borders */
   --border:       var(--gray-200);
-  --border-input: var(--gray-300);
+  --border-input: var(--gray-500);   /* 3:1 — inputs must be identifiable */
 
   /* Accent / focus */
   --accent:            var(--red-700);
@@ -145,12 +154,13 @@
   --bg-input-disabled:   var(--gray-100);
   --text-disabled:       var(--gray-400);
 
-  /* Mode-aware semantic status (lifts in dark mode) */
-  --success-fg: var(--success);
-  --warning-fg: var(--warning);
-  --danger-fg:  var(--danger);
-  --info-fg:    var(--info);
-  --neutral-fg: var(--gray-600);
+  /* Mode-aware semantic status text (lifts in dark mode). Light mode uses the
+     dark text tones so status text passes AA on its surface and on white. */
+  --success-fg: var(--success-dark);
+  --warning-fg: var(--warning-dark);
+  --danger-fg:  var(--danger-dark);
+  --info-fg:    var(--info-dark);
+  --neutral-fg: var(--gray-650);
 
   /* Mode-aware tinted status surfaces — badges, banners, inline notices.
      Pair with the matching --*-fg. (The --*-bg primitives are light-only.) */
@@ -169,25 +179,25 @@
   --bg-sidebar:  var(--navy-950);
   --bg-input:    var(--navy-700);
 
-  /* Text */
+  /* Text — tertiary matches secondary: #6B7280 fails AA on navy (2.9:1) */
   --text-primary:   var(--gray-100);
   --text-secondary: var(--gray-400);
-  --text-tertiary:  var(--gray-600);
+  --text-tertiary:  var(--gray-400);
   --text-inverse:   var(--white);
   --text-brand:     var(--white);
-  --text-accent:    var(--red-500);
+  --text-accent:    var(--red-300);   /* red text lifts to 300: Red 500 is 3.4:1 on cards */
 
   /* Borders use opacity for layered depth */
   --border:       rgba(255, 255, 255, 0.10);
-  --border-input: rgba(255, 255, 255, 0.15);
+  --border-input: rgba(255, 255, 255, 0.35);
 
   /* Accent / focus */
-  --accent:            var(--red-500);
-  --focus-ring:        var(--red-500);
-  --focus-ring-shadow: rgba(232, 51, 78, 0.25);
+  --accent:            var(--red-700);   /* fills stay Red 700: white text on Red 500 is 4.2:1 */
+  --focus-ring:        var(--red-300);   /* 3:1 on every dark surface; Red 500 is 2.5:1 on elevated */
+  --focus-ring-shadow: rgba(242, 140, 154, 0.25);
 
   /* Interaction states */
-  --accent-hover:        var(--red-700);
+  --accent-hover:        var(--red-900);
   --danger-hover:        var(--danger-dark);
   --bg-secondary:        var(--navy-500);  /* navy-700 would vanish on cards */
   --bg-secondary-hover:  var(--navy-300);
@@ -199,9 +209,9 @@
   /* Lifted semantic status */
   --success-fg: var(--success-light);
   --warning-fg: var(--warning-light);
-  --danger-fg:  var(--danger-light);
-  --info-fg:    var(--info-light);
-  --neutral-fg: var(--gray-400);
+  --danger-fg:  var(--danger-pale);
+  --info-fg:    var(--info-pale);
+  --neutral-fg: var(--gray-300);
 
   /* Status surfaces: translucent lifted tints instead of glaring light fills */
   --success-surface: rgba(52, 211, 153, 0.14);

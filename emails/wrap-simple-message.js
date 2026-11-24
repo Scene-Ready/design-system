@@ -44,7 +44,7 @@ export function wrapSimpleMessage(input) {
     : "";
 
   const footnoteBlock = footnote
-    ? `<mj-text css-class="t-text-3" color="${TOKENS.light.textTertiary}" font-size="${TOKENS.fontSize.xs}" line-height="1.5" padding="${TOKENS.space[4]} 0 0 0">
+    ? `<mj-text css-class="t-text-2" color="${TOKENS.light.textSecondary}" font-size="${TOKENS.fontSize.xs}" line-height="1.5" padding="${TOKENS.space[4]} 0 0 0">
          ${escapeHtml(footnote)}
        </mj-text>`
     : "";

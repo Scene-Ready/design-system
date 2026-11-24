@@ -10,16 +10,18 @@ export const TOKENS = Object.freeze({
     divider: "#E5E7EB",
     textPrimary: "#111827",
     textSecondary: "#6B7280",
-    textTertiary: "#9CA3AF",
+    textTertiary: "#9CA3AF", // placeholders and decorative text only (2.5:1); content uses textSecondary
     textBrand: "#1B2A4A",
     textInverse: "#FFFFFF",
     accent: "#C8102E",
     accentText: "#FFFFFF",
+    link: "#C8102E",
+    // fg: status text (the -dark tones, AA on bg); base: the bar and other non-text marks.
     severity: Object.freeze({
-      info: { fg: "#2563EB", bg: "#EFF6FF" },
-      success: { fg: "#059669", bg: "#ECFDF5" },
-      warning: { fg: "#D97706", bg: "#FFFBEB" },
-      danger: { fg: "#DC2626", bg: "#FEF2F2" },
+      info: { fg: "#1D4ED8", base: "#2563EB", bg: "#EFF6FF" },
+      success: { fg: "#047857", base: "#059669", bg: "#ECFDF5" },
+      warning: { fg: "#B45309", base: "#D97706", bg: "#FFFBEB" },
+      danger: { fg: "#B91C1C", base: "#DC2626", bg: "#FEF2F2" },
     }),
   }),
   dark: Object.freeze({
@@ -29,16 +31,17 @@ export const TOKENS = Object.freeze({
     divider: "rgba(255,255,255,0.10)",
     textPrimary: "#F3F4F6",
     textSecondary: "#9CA3AF",
-    textTertiary: "#6B7280",
+    textTertiary: "#9CA3AF",
     textBrand: "#FFFFFF",
     textInverse: "#FFFFFF",
-    accent: "#E8334E",
+    accent: "#C8102E", // button fill: white text on Red 500 would be 4.2:1
     accentText: "#FFFFFF",
+    link: "#F28C9A", // Red 300: Red 500 text is 3.4:1 on Navy 700
     severity: Object.freeze({
-      info: { fg: "#60A5FA", bg: "rgba(96,165,250,0.14)" },
-      success: { fg: "#34D399", bg: "rgba(52,211,153,0.14)" },
-      warning: { fg: "#FBBF24", bg: "rgba(251,191,36,0.14)" },
-      danger: { fg: "#F87171", bg: "rgba(248,113,113,0.14)" },
+      info: { fg: "#93C5FD", base: "#60A5FA", bg: "rgba(96,165,250,0.14)" },
+      success: { fg: "#34D399", base: "#34D399", bg: "rgba(52,211,153,0.14)" },
+      warning: { fg: "#FBBF24", base: "#FBBF24", bg: "rgba(251,191,36,0.14)" },
+      danger: { fg: "#FCA5A5", base: "#F87171", bg: "rgba(248,113,113,0.14)" },
     }),
   }),
   space: Object.freeze({

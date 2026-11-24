@@ -11,7 +11,7 @@ function buildSeverityStrip(severity, badgeLabel) {
   const sev = TOKENS.light.severity[severity];
   return `
     <mj-section css-class="t-sev-${severity}" background-color="${sev.bg}" padding="0">
-      <mj-column css-class="t-sev-${severity}-bar" border-left="4px solid ${sev.fg}" padding="${TOKENS.space[3]} ${TOKENS.space[5]}">
+      <mj-column css-class="t-sev-${severity}-bar" border-left="4px solid ${sev.base}" padding="${TOKENS.space[3]} ${TOKENS.space[5]}">
         <mj-text css-class="t-sev-${severity}-fg" color="${sev.fg}" font-family="${TOKENS.font.condensed}" font-size="${TOKENS.fontSize.xs}" font-weight="700" letter-spacing="0.08em" padding="0">
           ${escapeHtml(badgeLabel.toUpperCase())}
         </mj-text>
@@ -26,10 +26,10 @@ function buildFactsTable(facts) {
     .map(
       ({ label, value }) => `
         <tr>
-          <td class="t-text-3 t-border" style="padding: ${TOKENS.space[3]} ${TOKENS.space[4]} ${TOKENS.space[3]} 0; font-size: ${TOKENS.fontSize.sm}; color: ${TOKENS.light.textTertiary}; border-bottom: 1px solid ${TOKENS.light.border}; vertical-align: top; width: 35%;">
+          <td class="t-text-2 t-border" style="font-family: ${TOKENS.font.sans}; padding: ${TOKENS.space[3]} ${TOKENS.space[4]} ${TOKENS.space[3]} 0; font-size: ${TOKENS.fontSize.sm}; color: ${TOKENS.light.textSecondary}; border-bottom: 1px solid ${TOKENS.light.border}; vertical-align: top; width: 35%;">
             ${escapeHtml(label)}
           </td>
-          <td class="t-text t-border" style="padding: ${TOKENS.space[3]} 0; font-size: ${TOKENS.fontSize.sm}; color: ${TOKENS.light.textPrimary}; border-bottom: 1px solid ${TOKENS.light.border}; vertical-align: top;">
+          <td class="t-text t-border" style="font-family: ${TOKENS.font.sans}; padding: ${TOKENS.space[3]} 0; font-size: ${TOKENS.fontSize.sm}; color: ${TOKENS.light.textPrimary}; border-bottom: 1px solid ${TOKENS.light.border}; vertical-align: top;">
             ${escapeHtml(value)}
           </td>
         </tr>`
