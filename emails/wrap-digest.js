@@ -15,8 +15,11 @@ function renderBadge(badge) {
     throw new TypeError(`badge.severity must be one of ${SEVERITIES.join(", ")} — got "${badge.severity}"`);
   }
   requireString(badge.label, "badge.label");
-  const sev = TOKENS.light.severity[badge.severity];
-  return `<span class="t-sev-${badge.severity} t-sev-${badge.severity}-fg" style="display:inline-block;background-color:${sev.bg};color:${sev.fg};font-family:${TOKENS.font.condensed};font-size:${TOKENS.fontSize.xs};font-weight:700;letter-spacing:0.08em;padding:2px ${TOKENS.space[2]};border-radius:${TOKENS.radius.full};text-transform:uppercase;margin-bottom:${TOKENS.space[2]};">${escapeHtml(badge.label)}</span>`;
+  const s = badge.severity;
+  const sev = TOKENS.light.severity[s];
+  // §7 badge anatomy: a pill with a 6px dot in the base tone and an uppercase label.
+  const dot = `<span class="t-sev-${s}-dot" style="display:inline-block;width:6px;height:6px;border-radius:${TOKENS.radius.full};background-color:${sev.base};margin-right:6px;vertical-align:middle;"></span>`;
+  return `<span class="t-sev-${s} t-sev-${s}-fg" style="display:inline-block;background-color:${sev.bg};color:${sev.fg};font-family:${TOKENS.font.condensed};font-size:${TOKENS.fontSize.xs};font-weight:600;letter-spacing:0.03em;padding:3px 10px;border-radius:${TOKENS.radius.full};text-transform:uppercase;margin-bottom:${TOKENS.space[2]};">${dot}${escapeHtml(badge.label)}</span>`;
 }
 
 function renderItem(item, isLast) {
@@ -98,7 +101,7 @@ export function composeDigest(input, pieces) {
     fill(pieces.headline, { text: escapeHtml(headline) }),
     intro ? fill(pieces.intro, { text: escapeHtml(intro) }) : "",
     ...sections.map((section, idx) => renderSection(section, idx === 0, pieces)),
-    safeCta ? fill(pieces.buttonSpaced, safeCta) : "",
+    safeCta ? fill(pieces.buttonSpaced, safeCta) + fill(pieces.fallbackLink, safeCta) : "",
   ].join("");
 
   return composeDocument(pieces, {

@@ -103,3 +103,87 @@ describe("wrapSimpleMessage", () => {
     ).toThrow(/rejected protocol/);
   });
 });
+
+const RENDERED = [
+  ["simple message", () => wrapSimpleMessage(FIXTURES.simple), FIXTURES.simple.cta],
+  ["incident alert", () => wrapIncidentAlert(FIXTURES.incident), FIXTURES.incident.cta],
+  ["digest", () => wrapDigest(FIXTURES.digest), FIXTURES.digest.cta],
+];
+
+const styleOf = (el) => el.attrs.find((a) => a.name === "style")?.value ?? "";
+const px = (css, prop) => Number(css.match(new RegExp(`(?:^|;)\\s*${prop}:\\s*(\\d+)px`))?.[1]);
+
+describe.each(RENDERED)("%s follows BRANDING.md", (_, render, cta) => {
+  const html = render();
+  const els = elements(parse(html));
+
+  it("uses at most two font weights (§5.5)", () => {
+    const weights = new Set([...html.matchAll(/font-weight:\s*(\d+)/g)].map((m) => m[1]));
+    weights.add("400");
+    expect([...weights].sort()).toHaveLength(2);
+  });
+
+  it("makes the button at least 44px tall (§11.2)", () => {
+    const link = els.find((el) => el.tagName === "a" && text(el).trim() === cta.label);
+    const css = styleOf(link);
+    const [top, , bottom = top] = css.match(/padding:([^;]+)/)[1].trim().split(/\s+/).map(parseFloat);
+    expect(top + bottom + px(css, "line-height")).toBeGreaterThanOrEqual(44);
+  });
+
+  it("shows the button's URL as a visible fallback link (§11.2)", () => {
+    const url = new URL(cta.url).href;
+    const fallback = els.find(
+      (el) => el.tagName === "a" && text(el).trim() === url && el.attrs.some((a) => a.name === "href" && a.value === url),
+    );
+    expect(fallback).toBeDefined();
+  });
+
+  it("keeps the dark-mode button rounded", () => {
+    // The outer table of a bulletproof button is square; only the cell carries the radius.
+    expect(html).not.toMatch(/\.t-cta table\s*\{[^}]*background/);
+  });
+
+  it("sets no essential text below 14px (§11.2)", () => {
+    // 12px is allowed for the footer and badges only.
+    const small = els.filter((el) => px(styleOf(el), "font-size") < 14 && text(el).trim() && px(styleOf(el), "font-size") > 0);
+    const allowed = (el) =>
+      /display:none/.test(styleOf(el)) || // the inbox preview text
+      /Barlow Condensed/.test(styleOf(el)) || // badges and the status strip label
+      /t-sev-/.test(el.attrs.find((a) => a.name === "class")?.value ?? "") ||
+      /Scene Ready &middot;|Scene Ready ·|receiving this|Need help/.test(text(el)) ||
+      /Expires|PDT/.test(text(el)); // digest timestamps (§5.3: xs is for timestamps)
+    expect(small.filter((el) => !allowed(el)).map((el) => text(el).trim())).toEqual([]);
+  });
+});
+
+describe("body text", () => {
+  it("sets paragraphs in primary text (§11.1)", () => {
+    const paragraphs = [
+      [wrapSimpleMessage(FIXTURES.simple), FIXTURES.simple.body[0]],
+      [wrapIncidentAlert(FIXTURES.incident), FIXTURES.incident.summary],
+      [wrapDigest(FIXTURES.digest), FIXTURES.digest.intro.slice(0, 20)],
+    ];
+    for (const [html, start] of paragraphs) {
+      const els = elements(parse(html)).filter((el) => text(el).includes(start) && /color:/.test(styleOf(el)));
+      const innermost = els.at(-1);
+      expect(styleOf(innermost)).toMatch(/color:#111827/i);
+    }
+  });
+});
+
+describe("wrapSimpleMessage order", () => {
+  it("leads with the headline, then the greeting", () => {
+    const card = cardText(wrapSimpleMessage(FIXTURES.simple), FIXTURES.simple.headline);
+    expect(card.indexOf(FIXTURES.simple.headline)).toBeLessThan(card.indexOf("Hello,"));
+  });
+});
+
+describe("wrapDigest badges", () => {
+  it("draw a status dot in the base tone (§7)", () => {
+    const html = wrapDigest(FIXTURES.digest);
+    const badge = elements(parse(html)).find((el) => el.tagName === "span" && text(el).trim() === "Out of service");
+    const dot = badge.childNodes.find((c) => c.tagName === "span");
+    expect(styleOf(dot)).toMatch(/background-color:#DC2626/i);
+    expect(px(styleOf(dot), "width")).toBe(6);
+  });
+});

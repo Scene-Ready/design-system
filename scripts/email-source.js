@@ -24,7 +24,6 @@ a { color: ${TOKENS.light.link}; text-decoration: underline; }
   .t-text-brand, .t-text-brand * { color: ${TOKENS.dark.textBrand} !important; }
   .t-border { border-color: ${TOKENS.dark.border} !important; }
   .t-divider { border-color: ${TOKENS.dark.divider} !important; }
-  .t-cta table { background-color: ${TOKENS.dark.accent} !important; }
   .t-cta a { background-color: ${TOKENS.dark.accent} !important; color: ${TOKENS.dark.accentText} !important; }
   .t-link, .t-link a { color: ${TOKENS.dark.link} !important; }
   a { color: ${TOKENS.dark.link} !important; }
@@ -38,7 +37,6 @@ ${SEVERITIES.map((s) => darkSeverityRules(s, "  ")).join("\n")}
 [data-ogsc] .t-text-2, [data-ogsc] .t-text-2 * { color: ${TOKENS.dark.textSecondary} !important; }
 [data-ogsc] .t-text-3, [data-ogsc] .t-text-3 * { color: ${TOKENS.dark.textTertiary} !important; }
 [data-ogsc] .t-text-brand, [data-ogsc] .t-text-brand * { color: ${TOKENS.dark.textBrand} !important; }
-[data-ogsc] .t-cta table { background-color: ${TOKENS.dark.accent} !important; }
 [data-ogsc] .t-cta a { background-color: ${TOKENS.dark.accent} !important; }
 [data-ogsc] .t-link, [data-ogsc] .t-link a { color: ${TOKENS.dark.link} !important; }
 [data-ogsc] .t-logo-light-section { display: none !important; max-height: 0 !important; overflow: hidden !important; }
@@ -56,6 +54,7 @@ function darkSeverityRules(severity, indent, scope = "") {
     `${c}, ${c} > div, ${c} > table { background-color: ${sev.bg} !important; }`,
     `${c}-fg, ${c}-fg * { color: ${sev.fg} !important; }`,
     `${c}-bar > table > tbody > tr > td { border-left-color: ${sev.base} !important; }`,
+    `${c}-dot { background-color: ${sev.base} !important; }`,
   ]
     .map((line) => indent + line)
     .join("\n");
@@ -120,7 +119,7 @@ const severityStrip = (severity) => {
   return `
     <mj-section css-class="t-sev-${severity}" background-color="${sev.bg}" padding="0">
       <mj-column css-class="t-sev-${severity}-bar" border-left="4px solid ${sev.base}" padding="${TOKENS.space[3]} ${TOKENS.space[5]}">
-        <mj-text css-class="t-sev-${severity}-fg" color="${sev.fg}" font-family="${TOKENS.font.condensed}" font-size="${TOKENS.fontSize.xs}" font-weight="700" letter-spacing="0.08em" padding="0">
+        <mj-text css-class="t-sev-${severity}-fg" color="${sev.fg}" font-family="${TOKENS.font.condensed}" font-size="${TOKENS.fontSize.xs}" font-weight="600" letter-spacing="0.08em" padding="0">
           {{label}}
         </mj-text>
       </mj-column>
@@ -128,29 +127,29 @@ const severityStrip = (severity) => {
 };
 
 const headline = (paddingBottom) => `
-        <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize["2xl"]}" line-height="1.25" font-weight="700" padding="0 0 ${paddingBottom} 0">
+        <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize["2xl"]}" line-height="1.25" font-weight="600" padding="0 0 ${paddingBottom} 0">
           {{text}}
         </mj-text>`;
 
-const secondaryText = (paddingBottom) => `
-        <mj-text css-class="t-text-2" color="${TOKENS.light.textSecondary}" font-size="${TOKENS.fontSize.base}" line-height="1.5" padding="0 0 ${paddingBottom} 0">
+const bodyText = (paddingBottom) => `
+        <mj-text css-class="t-text" color="${TOKENS.light.textPrimary}" font-size="${TOKENS.fontSize.base}" line-height="1.5" padding="0 0 ${paddingBottom} 0">
           {{text}}
         </mj-text>`;
 
 const button = (padding) => `
-        <mj-button css-class="t-cta" href="{{url}}" background-color="${TOKENS.light.accent}" color="${TOKENS.light.accentText}" border-radius="${TOKENS.radius.md}" font-weight="600" font-size="${TOKENS.fontSize.base}" inner-padding="${TOKENS.space[3]} ${TOKENS.space[6]}" align="left" padding="${padding}">
+        <mj-button css-class="t-cta" href="{{url}}" background-color="${TOKENS.light.accent}" color="${TOKENS.light.accentText}" border-radius="${TOKENS.radius.md}" font-weight="600" font-size="${TOKENS.fontSize.base}" inner-padding="${TOKENS.space[3]} ${TOKENS.space[6]}" line-height="${TOKENS.space[6]}" align="left" padding="${padding}">
           {{label}}
         </mj-button>`;
 
 // The rows go straight into mj-table, which renders the <table> itself. A second <table>
 // inside it is invalid, and browsers close the card's column early to repair it (#11).
 const table = (padding) => `
-        <mj-table role="presentation" line-height="1.5" padding="${padding}">
+        <mj-table role="presentation" font-size="${TOKENS.fontSize.sm}" line-height="1.5" padding="${padding}">
           {{rows}}
         </mj-table>`;
 
 const sectionHeading = (paddingTop) => `
-        <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize.lg}" font-weight="700" padding="${paddingTop} 0 ${TOKENS.space[2]} 0">
+        <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize.lg}" font-weight="600" padding="${paddingTop} 0 ${TOKENS.space[2]} 0">
           {{text}}
         </mj-text>`;
 
@@ -179,17 +178,25 @@ export const SOURCE = {
   },
   headline: { level: "column", mjml: headline(TOKENS.space[3]) },
   headlineSpaced: { level: "column", mjml: headline(TOKENS.space[4]) },
-  lead: { level: "column", mjml: secondaryText(TOKENS.space[6]) },
-  intro: { level: "column", mjml: secondaryText(TOKENS.space[4]) },
+  lead: { level: "column", mjml: bodyText(TOKENS.space[6]) },
+  intro: { level: "column", mjml: bodyText(TOKENS.space[4]) },
   footnote: {
     level: "column",
     mjml: `
-        <mj-text css-class="t-text-2" color="${TOKENS.light.textSecondary}" font-size="${TOKENS.fontSize.xs}" line-height="1.5" padding="${TOKENS.space[4]} 0 0 0">
+        <mj-text css-class="t-text-2" color="${TOKENS.light.textSecondary}" font-size="${TOKENS.fontSize.sm}" line-height="1.5" padding="${TOKENS.space[4]} 0 0 0">
           {{text}}
         </mj-text>`,
   },
   buttonFlush: { level: "column", mjml: button("0") },
   buttonSpaced: { level: "column", mjml: button(`${TOKENS.space[6]} 0 0 0`) },
+  // §11.2: every button has a visible fallback URL, for clients that block buttons.
+  fallbackLink: {
+    level: "column",
+    mjml: `
+        <mj-text css-class="t-text-2" color="${TOKENS.light.textSecondary}" font-size="${TOKENS.fontSize.sm}" line-height="1.5" padding="${TOKENS.space[2]} 0 0 0">
+          Button not working? Open <a href="{{url}}" class="t-link" style="color:${TOKENS.light.accent};text-decoration:underline;word-break:break-all;">{{url}}</a>
+        </mj-text>`,
+  },
   link: {
     level: "column",
     mjml: `

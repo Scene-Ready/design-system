@@ -674,11 +674,12 @@ Gray 50 page background, 600px column
 ├─ Header — white card section, the brandmark lockup centered (180px wide);
 │     the reversed lockup swaps in for dark-mode clients
 ├─ Body — white card
-│     Headline: Barlow 700, 24px, Navy 700
+│     Headline: Barlow 600, 24px, Navy 700
 │     Paragraphs: 16px, primary text, line-height 1.5
 │     Incident alerts: a status strip (status surface, 4px base-tone left bar,
 │       Barlow Condensed uppercase label in the status text tone) + facts table
-│     CTA button: Red 700, white 16px 600, 12px × 24px padding, 8px radius
+│     CTA button: Red 700, white 16px 600, 12px × 24px padding, 8px radius,
+│       48px tall; its URL shows below it as a fallback link
 └─ Footer — Gray 50, centered 12px secondary text:
       "Scene Ready · sceneready.tech", why-you-got-this line, support address
 ```

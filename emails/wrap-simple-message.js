@@ -40,10 +40,11 @@ export function composeSimpleMessage(input, pieces) {
   const safeCta = requireCta(cta, "cta");
 
   const children = [
-    recipientName ? fill(pieces.greeting, { name: escapeHtml(recipientName) }) : "",
     fill(pieces.headlineSpaced, { text: escapeHtml(headline) }),
+    recipientName ? fill(pieces.greeting, { name: escapeHtml(recipientName) }) : "",
     fill(pieces.lead, { text: paragraphsHtml(body) }),
     fill(pieces.buttonFlush, safeCta),
+    fill(pieces.fallbackLink, safeCta),
     footnote ? fill(pieces.footnote, { text: escapeHtml(footnote) }) : "",
   ].join("");
 

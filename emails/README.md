@@ -99,9 +99,9 @@ The default logo URLs point at this repo's git tag — convenient for developmen
 | `subject`       | yes      | `string`              | `<title>` + previewText fallback.    |
 | `headline`      | yes      | `string`              | h1 above the body.                   |
 | `body`          | yes      | `string \| string[]`  | Each entry becomes a `<p>`.          |
-| `cta`           | yes      | `{ label, url }`      | Red 700 button.                      |
-| `recipientName` | no       | `string`              | "Hello, {name}." line if provided.   |
-| `footnote`      | no       | `string`              | Small print under the CTA.           |
+| `cta`           | yes      | `{ label, url }`      | Red 700 button, with the URL shown below it as a fallback link. |
+| `recipientName` | no       | `string`              | "Hello, {name}." line under the headline, if provided. |
+| `footnote`      | no       | `string`              | Secondary 14px text under the CTA.   |
 
 ### `wrapIncidentAlert(input)`
 

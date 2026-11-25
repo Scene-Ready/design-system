@@ -66,7 +66,7 @@ export function composeIncidentAlert(input, pieces) {
     fill(pieces.headline, { text: escapeHtml(headline) }),
     fill(pieces.lead, { text: escapeHtml(summary) }),
     safeFacts.length > 0 ? fill(pieces.factsTable, { rows: factsRows(safeFacts) }) : "",
-    safeCta ? fill(pieces.buttonFlush, safeCta) : "",
+    safeCta ? fill(pieces.buttonFlush, safeCta) + fill(pieces.fallbackLink, safeCta) : "",
     safeSecondary ? fill(pieces.link, safeSecondary) : "",
   ].join("");
 
