@@ -356,7 +356,7 @@ These operational states are shared across every product and every medium. A pri
 └───────────┘
 ```
 
-`font-size: 12px; font-weight: 600; font-family: var(--font-condensed); text-transform: uppercase; letter-spacing: 0.03em; padding: 3px 10px; border-radius: 9999px;` The label uses the status text token (`--*-fg`), the background the surface token (`--*-surface`), and the dot the base tone.
+`font-size: 12px; font-weight: 600; font-family: var(--font-condensed); text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 10px; border-radius: 9999px;` The label uses the status text token (`--*-fg`), the background the surface token (`--*-surface`), and the dot the base tone.
 
 | Status | Background | Label | Dot |
 |---|---|---|---|

@@ -19,7 +19,7 @@ function renderBadge(badge) {
   const sev = TOKENS.light.severity[s];
   // §7 badge anatomy: a pill with a 6px dot in the base tone and an uppercase label.
   const dot = `<span class="t-sev-${s}-dot" style="display:inline-block;width:6px;height:6px;border-radius:${TOKENS.radius.full};background-color:${sev.base};margin-right:6px;vertical-align:middle;"></span>`;
-  return `<span class="t-sev-${s} t-sev-${s}-fg" style="display:inline-block;background-color:${sev.bg};color:${sev.fg};font-family:${TOKENS.font.condensed};font-size:${TOKENS.fontSize.xs};font-weight:600;letter-spacing:0.03em;padding:3px 10px;border-radius:${TOKENS.radius.full};text-transform:uppercase;margin-bottom:${TOKENS.space[2]};">${dot}${escapeHtml(badge.label)}</span>`;
+  return `<span class="t-sev-${s} t-sev-${s}-fg" style="display:inline-block;background-color:${sev.bg};color:${sev.fg};font-family:${TOKENS.font.condensed};font-size:${TOKENS.fontSize.xs};font-weight:600;letter-spacing:0.05em;padding:3px 10px;border-radius:${TOKENS.radius.full};text-transform:uppercase;margin-bottom:${TOKENS.space[2]};">${dot}${escapeHtml(badge.label)}</span>`;
 }
 
 function renderItem(item, isLast) {
