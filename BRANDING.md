@@ -380,9 +380,20 @@ These operational states are shared across every product and every medium. A pri
 | Equipment / Apparatus | In Service | IN SERVICE | success |
 | | Maintenance Due | MAINT DUE | warning |
 | | Out of Service | OOS | danger |
+| Apparatus on an incident | Dispatched | DISPATCHED | info |
+| | En Route | EN ROUTE | warning |
+| | Staging | STAGING | info |
+| | On Scene | ON SCENE | brand |
+| | At Patient | AT PATIENT | brand |
+| | Transporting | TRANSPORTING | warning |
+| | At Hospital | AT HOSPITAL | info |
+| | Cleared | CLEARED | neutral |
+| | Canceled | CANCELED | neutral |
 | Incidents | Active / Closed / Archived | ACTIVE / CLOSED / ARCHIVED | warning / success / neutral |
 | Preplans | Current / Review Needed / Expired | CURRENT / REVIEW / EXPIRED | success / warning / danger |
 | Certifications | Current / Expiring Soon / Expired | CURRENT / EXPIRING / EXPIRED | success / warning / danger |
+
+An apparatus on an incident takes its tone from what it's doing: **warning** while moving, **brand** while working on scene, **info** while committed but stationary off the scene, **neutral** once done. A new state goes wherever that rule puts it; don't add a hue. Several states share info, so the label tells them apart.
 
 **In print or grayscale**, the label carries the meaning on its own. Optionally add a shape: ● success, ▲ warning, ■ danger, ◆ info, ○ neutral, ▼ brand.
 
