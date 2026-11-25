@@ -138,6 +138,41 @@ describe.each(RENDERED)("%s follows BRANDING.md", (_, render, cta) => {
     expect(fallback).toBeDefined();
   });
 
+  it("falls back to Arial in its font stacks, and links no Roboto (§5.2)", () => {
+    const stacks = new Set([...html.matchAll(/font-family:\s*([^;"]+)/g)].map((m) => m[1].trim()));
+    for (const stack of stacks) if (/Barlow/.test(stack)) expect(stack).toMatch(/Arial/);
+    expect(html).not.toMatch(/family=Roboto/);
+  });
+
+  it("sets text on the §5.3 scale: 16px at 1.6, 24px at 1.3", () => {
+    const lineHeights = (size) =>
+      new Set(
+        els
+          .map(styleOf)
+          .filter((css) => px(css, "font-size") === size && /line-height:/.test(css))
+          .map((css) => css.match(/line-height:\s*([^;]+)/)[1].trim()),
+      );
+    expect([...lineHeights(16)].filter((lh) => !lh.endsWith("px"))).toEqual(["1.6"]);
+    expect([...lineHeights(24)]).toEqual(["1.3"]);
+  });
+
+  it("tracks every uppercase label at 0.05em (§5.5, §7)", () => {
+    const tracking = new Set(
+      els
+        .map(styleOf)
+        .filter((css) => /Barlow Condensed/.test(css) && /letter-spacing/.test(css))
+        .map((css) => css.match(/letter-spacing:\s*([^;]+)/)[1].trim()),
+    );
+    if (tracking.size > 0) expect([...tracking]).toEqual(["0.05em"]);
+  });
+
+  it("shows the logo lockup at least 160px wide (§3)", () => {
+    // The lockup files include clear space: the artwork is about 70% of the image width.
+    const logo = els.find((el) => el.tagName === "img" && el.attrs.some((a) => a.name === "alt" && a.value === "Scene Ready"));
+    const width = Number(logo.attrs.find((a) => a.name === "width").value);
+    expect(width * 0.7).toBeGreaterThanOrEqual(160);
+  });
+
   it("keeps the dark-mode button rounded", () => {
     // The outer table of a bulletproof button is square; only the cell carries the radius.
     expect(html).not.toMatch(/\.t-cta table\s*\{[^}]*background/);
@@ -181,7 +216,7 @@ describe("wrapSimpleMessage order", () => {
 describe("wrapDigest badges", () => {
   it("draw a status dot in the base tone (§7)", () => {
     const html = wrapDigest(FIXTURES.digest);
-    const badge = elements(parse(html)).find((el) => el.tagName === "span" && text(el).trim() === "Out of service");
+    const badge = elements(parse(html)).find((el) => el.tagName === "span" && text(el).trim() === "OOS");
     const dot = badge.childNodes.find((c) => c.tagName === "span");
     expect(styleOf(dot)).toMatch(/background-color:#DC2626/i);
     expect(px(styleOf(dot), "width")).toBe(6);

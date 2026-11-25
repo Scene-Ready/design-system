@@ -58,12 +58,9 @@ export const WEB_FONTS = Object.freeze({
     "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap",
 });
 
-// The families mjml would link, in its order: its default Roboto (named in our fallback
-// stack), then ours. A family is linked only when the email uses it.
-const LINKED_FONTS = Object.freeze({
-  Roboto: "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700",
-  ...WEB_FONTS,
-});
+// mjml links a family only when the email uses it. Its own defaults (Roboto, Lato…) never
+// match, because the email stacks don't name them.
+const LINKED_FONTS = WEB_FONTS;
 
 // Puts values into a piece's {{name}} and [[name]] slots. One pass over the template, so a
 // value that contains slot syntax is left as it is.

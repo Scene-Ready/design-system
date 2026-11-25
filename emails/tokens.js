@@ -58,8 +58,9 @@ export const TOKENS = Object.freeze({
     full: "999px",
   }),
   font: Object.freeze({
-    sans: "Barlow, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-    condensed: "'Barlow Condensed', Barlow, system-ui, sans-serif",
+    // BRANDING §5.2's email stacks: clients don't know system-ui, and Outlook needs Arial named.
+    sans: "Barlow, Arial, Helvetica, sans-serif",
+    condensed: "'Barlow Condensed', 'Arial Narrow', Arial, sans-serif",
   }),
   fontSize: Object.freeze({
     xs: "12px",

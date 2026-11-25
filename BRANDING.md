@@ -283,7 +283,7 @@ A bundled app may import `@scene-ready/design-system/fonts.css` instead. Use onl
 | `--text-xs` | 12px / 0.75rem | 1.5 | 400 | Captions, timestamps, badges |
 | `--text-sm` | 14px / 0.875rem | 1.5 | 400–500 | Labels, helper text, table cells |
 | `--text-base` | 16px / 1rem | 1.6 | 400 | Body, inputs |
-| `--text-lg` | 18px / 1.125rem | 1.5 | 500 | Lead paragraphs, card titles |
+| `--text-lg` | 18px / 1.125rem | 1.5 | 500–600 | Lead paragraphs, card titles (stay within the page's two weights, §5.5) |
 | `--text-xl` | 20px / 1.25rem | 1.4 | 600 | Card headings, section labels, modal titles |
 | `--text-2xl` | 24px / 1.5rem | 1.3 | 600–700 | Page section headings (H3) |
 | `--text-3xl` | 30px / 1.875rem | 1.25 | 700 | Page headings (H2) |
@@ -378,6 +378,7 @@ These operational states are shared across every product and every medium. A pri
 | Equipment / Apparatus | In Service | IN SERVICE | success |
 | | Maintenance Due | MAINT DUE | warning |
 | | Out of Service | OOS | danger |
+| Incidents | Active / Closed / Archived | ACTIVE / CLOSED / ARCHIVED | warning / success / neutral |
 | Preplans | Current / Review Needed / Expired | CURRENT / REVIEW / EXPIRED | success / warning / danger |
 | Certifications | Current / Expiring Soon / Expired | CURRENT / EXPIRING / EXPIRED | success / warning / danger |
 
@@ -671,11 +672,12 @@ Transactional email uses the wrappers in [`emails/`](./emails/README.md): `wrapS
 
 ```
 Gray 50 page background, 600px column
-├─ Header — white card section, the brandmark lockup centered (180px wide);
+├─ Header — white card section, the brandmark lockup centered (240px image, so the
+│     artwork clears the 160px minimum);
 │     the reversed lockup swaps in for dark-mode clients
 ├─ Body — white card
-│     Headline: Barlow 600, 24px, Navy 700
-│     Paragraphs: 16px, primary text, line-height 1.5
+│     Headline: Barlow 600, 24px / 1.3, Navy 700
+│     Paragraphs: 16px, primary text, line-height 1.6 (§5.3)
 │     Incident alerts: a status strip (status surface, 4px base-tone left bar,
 │       Barlow Condensed uppercase label in the status text tone) + facts table
 │     CTA button: Red 700, white 16px 600, 12px × 24px padding, 8px radius,

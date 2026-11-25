@@ -34,7 +34,7 @@ const html = wrapSimpleMessage({
   recipientName: "Capt. Reyes",
   headline: "Reset your password",
   body: "We received a request to reset the password for your Scene Ready account.",
-  cta: { label: "Reset password", url: "https://auth.sceneready.app/reset?t=..." },
+  cta: { label: "Reset Password", url: "https://auth.sceneready.app/reset?t=..." },
   footnote: "This link expires in 30 minutes. If you didn't request this, ignore this email.",
 });
 ```
@@ -51,7 +51,7 @@ const html = wrapIncidentAlert({
     { label: "Crew On Duty", value: "Reyes, Doan, Park" },
     { label: "Dispatched", value: "14:03 PDT" },
   ],
-  cta: { label: "Acknowledge response", url: "https://platform.sceneready.app/c/8821/ack" },
+  cta: { label: "Acknowledge Response", url: "https://platform.sceneready.app/c/8821/ack" },
   secondaryCta: { label: "Open incident", url: "https://platform.sceneready.app/c/8821" },
 });
 ```
@@ -75,7 +75,7 @@ const html = wrapDigest({
       ],
     },
   ],
-  cta: { label: "Open dashboard", url: "https://platform.sceneready.app" },
+  cta: { label: "Open Dashboard", url: "https://platform.sceneready.app" },
 });
 ```
 

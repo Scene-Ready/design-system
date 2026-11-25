@@ -76,7 +76,7 @@ ${Object.entries(WEB_FONTS)
   .join("\n")}
     <mj-attributes>
       <mj-all font-family="${TOKENS.font.sans}" />
-      <mj-text font-size="${TOKENS.fontSize.base}" line-height="1.5" color="${TOKENS.light.textPrimary}" padding="0" />
+      <mj-text font-size="${TOKENS.fontSize.base}" line-height="1.6" color="${TOKENS.light.textPrimary}" padding="0" />
       <mj-button background-color="${TOKENS.light.accent}" color="${TOKENS.light.accentText}" font-weight="600" border-radius="${TOKENS.radius.md}" font-size="${TOKENS.fontSize.base}" inner-padding="${TOKENS.space[3]} ${TOKENS.space[6]}" />
       <mj-section padding="0" />
     </mj-attributes>
@@ -86,12 +86,12 @@ ${Object.entries(WEB_FONTS)
     <mj-section css-class="t-bg-page" background-color="${TOKENS.light.bgPage}" padding="${TOKENS.space[6]} 0 0 0"></mj-section>
     <mj-section css-class="t-logo-light-section t-bg-card" background-color="${TOKENS.light.bgCard}" padding="${LOGO_SECTION_PADDING}">
       <mj-column>
-        <mj-image src="{{logoUrl}}" alt="Scene Ready" width="180px" align="center" padding="0" />
+        <mj-image src="{{logoUrl}}" alt="Scene Ready" width="240px" align="center" padding="0" />
       </mj-column>
     </mj-section>
     <mj-section css-class="t-logo-dark-section" background-color="${TOKENS.dark.bgCard}" padding="${LOGO_SECTION_PADDING}">
       <mj-column>
-        <mj-image src="{{logoDarkUrl}}" alt="Scene Ready" width="180px" align="center" padding="0" />
+        <mj-image src="{{logoDarkUrl}}" alt="Scene Ready" width="240px" align="center" padding="0" />
       </mj-column>
     </mj-section>
     [[body]]
@@ -119,7 +119,7 @@ const severityStrip = (severity) => {
   return `
     <mj-section css-class="t-sev-${severity}" background-color="${sev.bg}" padding="0">
       <mj-column css-class="t-sev-${severity}-bar" border-left="4px solid ${sev.base}" padding="${TOKENS.space[3]} ${TOKENS.space[5]}">
-        <mj-text css-class="t-sev-${severity}-fg" color="${sev.fg}" font-family="${TOKENS.font.condensed}" font-size="${TOKENS.fontSize.xs}" font-weight="600" letter-spacing="0.08em" padding="0">
+        <mj-text css-class="t-sev-${severity}-fg" color="${sev.fg}" font-family="${TOKENS.font.condensed}" font-size="${TOKENS.fontSize.xs}" font-weight="600" letter-spacing="0.05em" padding="0">
           {{label}}
         </mj-text>
       </mj-column>
@@ -127,12 +127,12 @@ const severityStrip = (severity) => {
 };
 
 const headline = (paddingBottom) => `
-        <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize["2xl"]}" line-height="1.25" font-weight="600" padding="0 0 ${paddingBottom} 0">
+        <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize["2xl"]}" line-height="1.3" font-weight="600" padding="0 0 ${paddingBottom} 0">
           {{text}}
         </mj-text>`;
 
 const bodyText = (paddingBottom) => `
-        <mj-text css-class="t-text" color="${TOKENS.light.textPrimary}" font-size="${TOKENS.fontSize.base}" line-height="1.5" padding="0 0 ${paddingBottom} 0">
+        <mj-text css-class="t-text" color="${TOKENS.light.textPrimary}" font-size="${TOKENS.fontSize.base}" line-height="1.6" padding="0 0 ${paddingBottom} 0">
           {{text}}
         </mj-text>`;
 
@@ -149,7 +149,7 @@ const table = (padding) => `
         </mj-table>`;
 
 const sectionHeading = (paddingTop) => `
-        <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize.lg}" font-weight="600" padding="${paddingTop} 0 ${TOKENS.space[2]} 0">
+        <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize.lg}" line-height="1.5" font-weight="600" padding="${paddingTop} 0 ${TOKENS.space[2]} 0">
           {{text}}
         </mj-text>`;
 
@@ -200,7 +200,7 @@ export const SOURCE = {
   link: {
     level: "column",
     mjml: `
-        <mj-text css-class="t-link" font-size="${TOKENS.fontSize.sm}" padding="${TOKENS.space[3]} 0 0 0">
+        <mj-text css-class="t-link" font-size="${TOKENS.fontSize.sm}" line-height="1.5" padding="${TOKENS.space[3]} 0 0 0">
           <a href="{{url}}" style="color:${TOKENS.light.accent};text-decoration:underline;">{{label}}</a>
         </mj-text>`,
   },

@@ -20,7 +20,7 @@ Pin a release tag through GitHub's tarball URL. It needs no git, SSH key or `ins
 ```json
 {
   "dependencies": {
-    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.8.0"
+    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.9.0"
   }
 }
 ```
@@ -191,7 +191,7 @@ const html = wrapSimpleMessage({
   subject: "Reset your Scene Ready password",
   headline: "Reset your password",
   body: "We received a request to reset your password.",
-  cta: { label: "Reset password", url: "https://auth.sceneready.app/reset?t=..." },
+  cta: { label: "Reset Password", url: "https://auth.sceneready.app/reset?t=..." },
 });
 ```
 
@@ -199,7 +199,7 @@ Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrap
 
 ## Versioning
 
-This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.8.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
+This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.9.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
 
 Always pin to a tag in your `package.json` rather than tracking `main` — token changes can be visually breaking even when they're technically backwards-compatible CSS.
 

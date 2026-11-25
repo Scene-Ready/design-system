@@ -49,7 +49,7 @@ function renderItem(item, isLast) {
     <tr>
       <td class="t-divider" style="font-family:${TOKENS.font.sans};padding:${TOKENS.space[4]} 0;${dividerStyle}">
         ${renderBadge(item.badge)}
-        <div class="t-text" style="color:${TOKENS.light.textPrimary};font-size:${TOKENS.fontSize.base};line-height:1.4;${item.badge ? `margin-top:${TOKENS.space[1]};` : ""}">${titleHtml}</div>
+        <div class="t-text" style="color:${TOKENS.light.textPrimary};font-size:${TOKENS.fontSize.base};line-height:1.6;${item.badge ? `margin-top:${TOKENS.space[1]};` : ""}">${titleHtml}</div>
         ${metaHtml}
         ${descriptionHtml}
       </td>
