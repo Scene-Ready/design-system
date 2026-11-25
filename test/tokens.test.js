@@ -47,6 +47,10 @@ describe("emails/tokens.js", () => {
     }
   });
 
+  it("matches tokens.css radii", () => {
+    expect(TOKENS.radius).toEqual({ lg: resolve(light, "--radius-lg"), full: resolve(light, "--radius-full") });
+  });
+
   it("matches tokens.css letter-spacing", () => {
     expect(TOKENS.tracking).toEqual({
       caps: resolve(light, "--tracking-caps"),

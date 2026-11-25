@@ -79,7 +79,7 @@ ${Object.entries(WEB_FONTS)
     <mj-attributes>
       <mj-all font-family="${TOKENS.font.sans}" />
       <mj-text font-size="${TOKENS.fontSize.base}" line-height="1.6" color="${TOKENS.light.textPrimary}" padding="0" />
-      <mj-button background-color="${TOKENS.light.accent}" color="${TOKENS.light.accentText}" font-weight="600" border-radius="${TOKENS.radius.md}" font-size="${TOKENS.fontSize.base}" inner-padding="${TOKENS.space[3]} ${TOKENS.space[6]}" />
+      <mj-button background-color="${TOKENS.light.accent}" color="${TOKENS.light.accentText}" font-weight="600" border-radius="${TOKENS.radius.lg}" font-size="${TOKENS.fontSize.base}" inner-padding="${TOKENS.space[3]} ${TOKENS.space[6]}" />
       <mj-section padding="0" />
     </mj-attributes>
     <mj-style>${STYLE_BLOCK}</mj-style>
@@ -139,7 +139,7 @@ const bodyText = (paddingBottom) => `
         </mj-text>`;
 
 const button = (padding) => `
-        <mj-button css-class="t-cta" href="{{url}}" background-color="${TOKENS.light.accent}" color="${TOKENS.light.accentText}" border-radius="${TOKENS.radius.md}" font-weight="600" font-size="${TOKENS.fontSize.base}" inner-padding="${TOKENS.space[3]} ${TOKENS.space[6]}" line-height="${TOKENS.space[6]}" align="left" padding="${padding}">
+        <mj-button css-class="t-cta" href="{{url}}" background-color="${TOKENS.light.accent}" color="${TOKENS.light.accentText}" border-radius="${TOKENS.radius.lg}" font-weight="600" font-size="${TOKENS.fontSize.base}" inner-padding="${TOKENS.space[3]} ${TOKENS.space[6]}" line-height="${TOKENS.space[6]}" align="left" padding="${padding}">
           {{label}}
         </mj-button>`;
 

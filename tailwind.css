@@ -103,7 +103,9 @@
 
   /* ---------- Semantic aliases (switch with the theme: OS or data-theme) ---------- */
 
-  /* Surfaces: bg-page, bg-card … */
+  /* Surfaces: bg-page, bg-card … These names are for bg- only: border-input is
+     the input's white fill, not --border-input (use border-border-input), and
+     the secondary button's navy fill is bg-secondary-fill, not bg-secondary. */
   --color-page: var(--bg-page);
   --color-card: var(--bg-card);
   --color-elevated: var(--bg-elevated);
@@ -115,7 +117,8 @@
   --color-secondary-fill: var(--bg-secondary);
   --color-secondary-fill-hover: var(--bg-secondary-hover);
 
-  /* Text: text-primary, text-secondary … */
+  /* Text: text-primary, text-secondary … Disabled text is text-disabled-fg;
+     text-disabled is the disabled background colour. */
   --color-primary: var(--text-primary);
   --color-secondary: var(--text-secondary);
   --color-tertiary: var(--text-tertiary);

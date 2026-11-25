@@ -56,8 +56,8 @@ export const TOKENS = Object.freeze({
     8: "32px",
   }),
   radius: Object.freeze({
-    md: "8px",
-    full: "999px",
+    lg: "8px",
+    full: "9999px",
   }),
   font: Object.freeze({
     // BRANDING §5.2's email stacks: clients don't know system-ui, and Outlook needs Arial named.
