@@ -212,7 +212,7 @@ Status colors carry meaning; they are not decoration. Each status has four tones
 | Info | `#2563EB` | `#1D4ED8` | `#EFF6FF` | `#60A5FA` | `#93C5FD` (`--info-pale`) | New assignment, update, in training |
 | Neutral | `#6B7280` | `#4B5563` | `#F3F4F6` | `#9CA3AF` | `#D1D5DB` | Off duty, inactive, archived |
 
-**For status text, use the mode-aware aliases** `--success-fg` … `--neutral-fg` on `--success-surface` … `--neutral-surface`. They resolve to the text tones above in each mode, so badge and banner text passes WCAG AA in both. **The base tone fails AA as small text on its tint** (success 3.6:1, warning 3.1:1); use it for dots, icons, borders and fills only. The `-bg` primitives are light-only and glare on dark surfaces; the `-surface` aliases switch to translucent tints in dark mode.
+**For status text, use the mode-aware aliases** `--success-fg` … `--neutral-fg` on `--success-surface` … `--neutral-surface`. They resolve to the text tones above in each mode, so badge and banner text passes WCAG AA in both. **The base tone fails AA as small text on its tint** (success 3.6:1, warning 3.1:1); use it for fills that stay the same in both modes (the danger button). **For dots, bars, icons and borders, use the mode-aware `--success-mark` … `--neutral-mark`**: the base tone in light mode, the lifted tone in dark mode, where the base tones fall under 3:1 on Navy 700 (info 2.8:1, danger 2.9:1). The `-bg` primitives are light-only and glare on dark surfaces; the `-surface` aliases switch to translucent tints in dark mode.
 
 | Status | Surface token | Text token |
 |---|---|---|
@@ -283,7 +283,7 @@ A bundled app may import `@scene-ready/design-system/fonts.css` instead. Use onl
 | `--text-xs` | 12px / 0.75rem | 1.5 | 400 | Captions, timestamps, badges |
 | `--text-sm` | 14px / 0.875rem | 1.5 | 400–500 | Labels, helper text, table cells |
 | `--text-base` | 16px / 1rem | 1.6 | 400 | Body, inputs |
-| `--text-lg` | 18px / 1.125rem | 1.5 | 500 | Lead paragraphs, card titles |
+| `--text-lg` | 18px / 1.125rem | 1.5 | 500–600 | Lead paragraphs, card titles (stay within the page's two weights, §5.5) |
 | `--text-xl` | 20px / 1.25rem | 1.4 | 600 | Card headings, section labels, modal titles |
 | `--text-2xl` | 24px / 1.5rem | 1.3 | 600–700 | Page section headings (H3) |
 | `--text-3xl` | 30px / 1.875rem | 1.25 | 700 | Page headings (H2) |
@@ -312,7 +312,7 @@ On dark-mode **elevated surfaces** (menus, popovers, dropdowns on Navy 500), use
 - Headings are Navy 700 (or white on dark), never gray and never red.
 - Red text is for links and highlighted terms only. Never set body paragraphs in red.
 - The minimum size for essential text is **14px** on screen and **9pt** in print. Anything smaller is a caption, badge or timestamp.
-- All-caps text always gets **letter-spacing 0.05–0.1em**. Set it in Barlow Condensed at 14px and below.
+- All-caps text always gets letter-spacing: **`--tracking-caps` (0.05em)** for badges, table headers and small labels, **`--tracking-eyebrow` (0.1em)** for eyebrow labels. Nothing outside 0.05–0.1em. Set it in Barlow Condensed at 14px and below.
 - Set numbers compared in columns in JetBrains Mono (or Barlow with `font-variant-numeric: tabular-nums`).
 
 ---
@@ -356,15 +356,15 @@ These operational states are shared across every product and every medium. A pri
 └───────────┘
 ```
 
-`font-size: 12px; font-weight: 600; font-family: var(--font-condensed); text-transform: uppercase; letter-spacing: 0.03em; padding: 3px 10px; border-radius: 9999px;` The label uses the status text token (`--*-fg`), the background the surface token (`--*-surface`), and the dot the base tone.
+`font-size: 12px; font-weight: 600; font-family: var(--font-condensed); text-transform: uppercase; letter-spacing: var(--tracking-caps); padding: 3px 10px; border-radius: 9999px;` The label uses the status text token (`--*-fg`), the background the surface token (`--*-surface`), and the dot the mark token (`--*-mark`).
 
 | Status | Background | Label | Dot |
 |---|---|---|---|
-| Success | `--success-surface` | `--success-fg` | `--success` |
-| Warning | `--warning-surface` | `--warning-fg` | `--warning` |
-| Danger | `--danger-surface` | `--danger-fg` | `--danger` |
-| Info | `--info-surface` | `--info-fg` | `--info` |
-| Neutral | `--neutral-surface` | `--neutral-fg` | `--gray-600` |
+| Success | `--success-surface` | `--success-fg` | `--success-mark` |
+| Warning | `--warning-surface` | `--warning-fg` | `--warning-mark` |
+| Danger | `--danger-surface` | `--danger-fg` | `--danger-mark` |
+| Info | `--info-surface` | `--info-fg` | `--info-mark` |
+| Neutral | `--neutral-surface` | `--neutral-fg` | `--neutral-mark` |
 | Brand | Navy 700 at 8% | `--text-brand` | Red 700 |
 
 | Domain | State | Label | Status |
@@ -378,6 +378,7 @@ These operational states are shared across every product and every medium. A pri
 | Equipment / Apparatus | In Service | IN SERVICE | success |
 | | Maintenance Due | MAINT DUE | warning |
 | | Out of Service | OOS | danger |
+| Incidents | Active / Closed / Archived | ACTIVE / CLOSED / ARCHIVED | warning / success / neutral |
 | Preplans | Current / Review Needed / Expired | CURRENT / REVIEW / EXPIRED | success / warning / danger |
 | Certifications | Current / Expiring Soon / Expired | CURRENT / EXPIRING / EXPIRED | success / warning / danger |
 
@@ -521,7 +522,7 @@ All buttons use `--font-sans` at weight 600. Icon + text buttons have an 8px gap
 #### Tables
 | Property | Value |
 |---|---|
-| Header | `--bg-page` background; 12px Barlow Condensed 600, uppercase, `--text-secondary`, letter-spacing 0.05em |
+| Header | `--bg-page` background; 12px Barlow Condensed 600, uppercase, `--text-secondary`, letter-spacing `--tracking-caps` |
 | Rows | Bottom 1px `--border`; hover `--bg-hover` |
 | Cells | 12px 16px padding; 14px Barlow 400, `--text-primary`; numbers in JetBrains Mono 500 |
 | Selected row | Navy 700 at 5% background + 3px Navy 700 left border |
@@ -543,7 +544,7 @@ All buttons use `--font-sans` at weight 600. Icon + text buttons have an 8px gap
 |---|---|
 | Position | Fixed, top right, 16px from the edges |
 | Size | 360px max width, 8px radius, `--shadow-lg` |
-| Style | `--bg-elevated` with a 4px left border in the status base tone |
+| Style | `--bg-elevated` with a 4px left border in the status mark (`--*-mark`) |
 | Content | 20px status icon + 14px bold title + 13px `--text-secondary` description; X to dismiss |
 | Dismiss | Success and info after 5s; warning and danger persist |
 | Enter | Slide in from the right, 300ms `--ease-out` |
@@ -593,6 +594,7 @@ Set it before first paint (an inline script in `<head>` or server-rendered) so t
 | Focus ring | `--focus-ring` | `#2A3F6A` Navy 500 | `#F28C9A` Red 300 |
 | Status text | `--success-fg` … `--neutral-fg` | Text tones (§4.3) | Lifted / pale tones (§4.3) |
 | Status surfaces | `--success-surface` … | `-bg` tints | Lifted color at 14% opacity |
+| Status marks | `--success-mark` … | Base tones | Lifted (`-light`) tones; neutral Gray 400 |
 | Neutral surface | `--neutral-surface` | `#F3F4F6` | `rgba(255,255,255,0.08)` |
 | Hover overlay | `--bg-hover` | `#F3F4F6` | `rgba(255,255,255,0.08)` |
 | Disabled button / input | `--bg-disabled` / `--bg-input-disabled` | `#E5E7EB` / `#F3F4F6` | white at 8% / 5% |
@@ -653,7 +655,7 @@ Marketing pages use the same tokens as the apps with more room to breathe and mo
 | Header | White (or Navy 700 over a hero), 64–72px tall, parent lockup left (≥ 160px wide), nav in Barlow 500 16px, one **Red 700 primary CTA** at right ("Request a Demo") |
 | Hero | Navy 900, or a photo with a 60–80% navy overlay. H1 Barlow 700 48–64px white, `letter-spacing: -0.01em`; subhead 18–20px Gray 100 or 300; primary red CTA + white outline secondary |
 | Section rhythm | 80–96px vertical padding on desktop, 48–64px on mobile. Alternate white and Gray 50 sections, with one Navy 700 band per page at most (e.g. testimonial or final CTA) |
-| Eyebrow labels | Barlow Condensed 600, 14px, uppercase, 0.1em tracking, **Red 700** on light backgrounds or Red 300 on dark, above section H2s |
+| Eyebrow labels | Barlow Condensed 600, 14px, uppercase, `--tracking-eyebrow`, **Red 700** on light backgrounds or Red 300 on dark, above section H2s |
 | Content width | 1280px max grid; long-form text 65–75 characters per line (≈ 680px) |
 | Feature cards | App card spec; Lucide icon 24–32px in a Navy 50 rounded square (12px radius) |
 | Accent rule | A 48px × 3px Red 700 bar under key headings echoes the lockup's rule. Use it sparingly |
@@ -671,14 +673,16 @@ Transactional email uses the wrappers in [`emails/`](./emails/README.md): `wrapS
 
 ```
 Gray 50 page background, 600px column
-├─ Header — white card section, the brandmark lockup centered (180px wide);
+├─ Header — white card section, the brandmark lockup centered (240px image, so the
+│     artwork clears the 160px minimum);
 │     the reversed lockup swaps in for dark-mode clients
 ├─ Body — white card
-│     Headline: Barlow 700, 24px, Navy 700
-│     Paragraphs: 16px, primary text, line-height 1.5
+│     Headline: Barlow 600, 24px / 1.3, Navy 700
+│     Paragraphs: 16px, primary text, line-height 1.6 (§5.3)
 │     Incident alerts: a status strip (status surface, 4px base-tone left bar,
 │       Barlow Condensed uppercase label in the status text tone) + facts table
-│     CTA button: Red 700, white 16px 600, 12px × 24px padding, 8px radius
+│     CTA button: Red 700, white 16px 600, 12px × 24px padding, 8px radius,
+│       48px tall; its URL shows below it as a fallback link
 └─ Footer — Gray 50, centered 12px secondary text:
       "Scene Ready · sceneready.tech", why-you-got-this line, support address
 ```
@@ -690,7 +694,7 @@ Light is the default (inline styles). Dark activates in clients that honor `pref
 - **Logos are hosted PNGs in production.** Pass `logoUrl` / `logoDarkUrl`. The default SVGs on GitHub are for development only: Outlook's Word renderer and several webmail clients don't render SVG. Host at 2× size and keep `alt="Scene Ready"`.
 - Fonts: Barlow first, falling back to Arial (§5.2). Web fonts load only in Apple Mail and iOS, and that's fine.
 - Always send a plain-text part alongside the HTML, and give every CTA a visible fallback URL.
-- Minimum text is 14px for body copy (12px only for the footer and badges), and CTA tap targets are at least 44px tall.
+- Minimum text is 14px for body copy. 12px is only for the footer, status labels (badges, the status strip) and metadata lines such as timestamps (§5.3). CTA tap targets are at least 44px tall.
 - Test dark-mode rendering in real clients before a release.
 
 ### 11.3 Subject lines and copy
@@ -844,7 +848,7 @@ Product icons (`product-icon.svg`, a product's own `favicon.ico`) live in their 
 
 ### Color
 - ✓ Let navy dominate, with red as the accent. Keep semantic colors for status only
-- ✓ Use the `-fg` / `-surface` tokens for status text and backgrounds; base tones for dots and icons
+- ✓ Use the `-fg` / `-surface` tokens for status text and backgrounds; `--*-mark` for dots, bars and icons
 - ✓ Check contrast for every new pairing (`npm run check` covers the tokens)
 - ✗ Don't fill large backgrounds with Red 700
 - ✗ Don't use brand colors as status indicators, or more than one semantic color in a component

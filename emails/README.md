@@ -13,14 +13,16 @@ Each function takes a structured input object and returns a complete HTML docume
 ## Install
 
 ```sh
-npm install https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.7.0 mjml@^4.18.0
+npm install https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.9.0
 ```
 
-`mjml` is an optional peer dependency of the package: apps that only use `tokens.css` and the logo assets don't get it, so services that send email install it themselves.
+The wrappers have no runtime dependencies. They run in a Cloudflare Worker, in Node, or anywhere else with plain JavaScript.
 
-## Server-side only
+## How they're built
 
-These wrappers depend on `mjml`, which is a sizable Node-only package. **Do not bundle this module for the browser.** Call it from your transactional-mail worker / SES webhook / SendGrid handler.
+The templates are MJML (`scripts/email-source.js`), compiled when the package is built, not when an email is sent. `npm run build:emails` compiles each piece (the document shell, the card, the severity strip, a button, a heading…) to HTML in `emails/compiled.js`, which is committed. At send time the wrappers escape the input and put it into those pieces' slots.
+
+After changing a template or `emails/tokens.js`, run `npm run build:emails` and commit `emails/compiled.js`. `npm run check` fails if it's out of date, and its tests check that each wrapper's output matches what `mjml` makes of the whole document.
 
 ## Usage
 
@@ -32,7 +34,7 @@ const html = wrapSimpleMessage({
   recipientName: "Capt. Reyes",
   headline: "Reset your password",
   body: "We received a request to reset the password for your Scene Ready account.",
-  cta: { label: "Reset password", url: "https://auth.sceneready.app/reset?t=..." },
+  cta: { label: "Reset Password", url: "https://auth.sceneready.app/reset?t=..." },
   footnote: "This link expires in 30 minutes. If you didn't request this, ignore this email.",
 });
 ```
@@ -40,7 +42,7 @@ const html = wrapSimpleMessage({
 ```js
 const html = wrapIncidentAlert({
   subject: "Callout dispatched — Engine 12",
-  severity: "danger",                    // "info" | "success" | "warning" | "danger"
+  severity: "danger",                    // "info" | "success" | "warning" | "danger" | "neutral"
   badgeLabel: "Callout dispatched",
   headline: "Structure fire — 1421 Birch St",
   summary: "Engine 12 dispatched at 14:03. Acknowledge to confirm response.",
@@ -49,7 +51,7 @@ const html = wrapIncidentAlert({
     { label: "Crew On Duty", value: "Reyes, Doan, Park" },
     { label: "Dispatched", value: "14:03 PDT" },
   ],
-  cta: { label: "Acknowledge response", url: "https://platform.sceneready.app/c/8821/ack" },
+  cta: { label: "Acknowledge Response", url: "https://platform.sceneready.app/c/8821/ack" },
   secondaryCta: { label: "Open incident", url: "https://platform.sceneready.app/c/8821" },
 });
 ```
@@ -73,7 +75,7 @@ const html = wrapDigest({
       ],
     },
   ],
-  cta: { label: "Open dashboard", url: "https://platform.sceneready.app" },
+  cta: { label: "Open Dashboard", url: "https://platform.sceneready.app" },
 });
 ```
 
@@ -97,16 +99,16 @@ The default logo URLs point at this repo's git tag — convenient for developmen
 | `subject`       | yes      | `string`              | `<title>` + previewText fallback.    |
 | `headline`      | yes      | `string`              | h1 above the body.                   |
 | `body`          | yes      | `string \| string[]`  | Each entry becomes a `<p>`.          |
-| `cta`           | yes      | `{ label, url }`      | Red 700 button.                      |
-| `recipientName` | no       | `string`              | "Hello, {name}." line if provided.   |
-| `footnote`      | no       | `string`              | Small print under the CTA.           |
+| `cta`           | yes      | `{ label, url }`      | Red 700 button, with the URL shown below it as a fallback link. |
+| `recipientName` | no       | `string`              | "Hello, {name}." line under the headline, if provided. |
+| `footnote`      | no       | `string`              | Secondary 14px text under the CTA.   |
 
 ### `wrapIncidentAlert(input)`
 
 | Field          | Required | Type                                | Notes                                                                |
 | -------------- | -------- | ----------------------------------- | -------------------------------------------------------------------- |
 | `subject`      | yes      | `string`                            |                                                                      |
-| `severity`     | yes      | `"info" \| "success" \| "warning" \| "danger"` | Drives strip + badge color.                                |
+| `severity`     | yes      | `"info" \| "success" \| "warning" \| "danger" \| "neutral"` | Drives strip + badge color.                                |
 | `badgeLabel`   | yes      | `string`                            | Rendered uppercase in Barlow Condensed.                              |
 | `headline`     | yes      | `string`                            |                                                                      |
 | `summary`      | yes      | `string`                            | Lead paragraph.                                                      |
@@ -132,7 +134,7 @@ type Section = {
     description?: string;
     url?: string;                              // makes title a link
     meta?: string;                             // small grey line under title
-    badge?: { label: string; severity: "info" | "success" | "warning" | "danger" };
+    badge?: { label: string; severity: "info" | "success" | "warning" | "danger" | "neutral" };
   }>;
 };
 ```
