@@ -69,6 +69,13 @@ describe("wrapSimpleMessage", () => {
     expect(card).toContain(input.footnote);
   });
 
+  it("lines the button up with the text", () => {
+    const cells = elements(parse(wrapSimpleMessage(FIXTURES.simple))).filter((el) => el.tagName === "td");
+    const style = (cls) => cells.find((el) => hasClass(el, cls)).attrs.find((a) => a.name === "style").value;
+    const paddingLeft = (css) => css.match(/padding:([^;]+)/)[1].trim().split(/\s+/).at(-1);
+    expect(paddingLeft(style("t-cta"))).toBe(paddingLeft(style("t-text-brand")));
+  });
+
   it("escapes HTML in user content", () => {
     const html = wrapSimpleMessage({
       ...FIXTURES.simple,

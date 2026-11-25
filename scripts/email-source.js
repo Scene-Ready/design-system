@@ -137,7 +137,7 @@ const secondaryText = (paddingBottom) => `
         </mj-text>`;
 
 const button = (padding) => `
-        <mj-button css-class="t-cta" href="{{url}}" background-color="${TOKENS.light.accent}" color="${TOKENS.light.accentText}" border-radius="${TOKENS.radius.md}" font-weight="600" font-size="${TOKENS.fontSize.base}" inner-padding="${TOKENS.space[3]} ${TOKENS.space[6]}" align="left"${padding ? ` padding="${padding}"` : ""}>
+        <mj-button css-class="t-cta" href="{{url}}" background-color="${TOKENS.light.accent}" color="${TOKENS.light.accentText}" border-radius="${TOKENS.radius.md}" font-weight="600" font-size="${TOKENS.fontSize.base}" inner-padding="${TOKENS.space[3]} ${TOKENS.space[6]}" align="left" padding="${padding}">
           {{label}}
         </mj-button>`;
 
@@ -187,7 +187,6 @@ export const SOURCE = {
           {{text}}
         </mj-text>`,
   },
-  button: { level: "column", mjml: button(null) },
   buttonFlush: { level: "column", mjml: button("0") },
   buttonSpaced: { level: "column", mjml: button(`${TOKENS.space[6]} 0 0 0`) },
   link: {

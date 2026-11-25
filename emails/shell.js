@@ -1,5 +1,6 @@
-const PINNED_TAG = "v0.2.0";
-const ASSET_BASE = `https://raw.githubusercontent.com/scene-ready/design-system/${PINNED_TAG}/assets`;
+// A released tag that has these files: the email links them, so they must stay reachable.
+const PINNED_TAG = "v0.8.0";
+const ASSET_BASE = `https://raw.githubusercontent.com/Scene-Ready/design-system/${PINNED_TAG}/assets`;
 
 export const DEFAULT_LOGO_LIGHT_URL = `${ASSET_BASE}/scene-ready-brandmark.svg`;
 export const DEFAULT_LOGO_DARK_URL = `${ASSET_BASE}/scene-ready-brandmark-reversed.svg`;

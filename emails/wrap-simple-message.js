@@ -43,7 +43,7 @@ export function composeSimpleMessage(input, pieces) {
     recipientName ? fill(pieces.greeting, { name: escapeHtml(recipientName) }) : "",
     fill(pieces.headlineSpaced, { text: escapeHtml(headline) }),
     fill(pieces.lead, { text: paragraphsHtml(body) }),
-    fill(pieces.button, safeCta),
+    fill(pieces.buttonFlush, safeCta),
     footnote ? fill(pieces.footnote, { text: escapeHtml(footnote) }) : "",
   ].join("");
 
