@@ -141,7 +141,7 @@ This is the same artwork as `assets/scene-ready-icon.svg`; if one changes, chang
 - Tagline: Barlow **400**, all caps, letter-spacing ≈ 0.27em (3px at 11px), Gray 400 (or white at 50% when reversed).
 - The icon sits to the left of the wordmark; its height roughly spans the wordmark cap height plus the tagline.
 - The text in the brandmark files is outlined (paths, not `<text>`), so the lockup renders the same in email clients, Office, print RIPs and design tools with no font installed.
-- **Typeset wordmark** (where images are blocked or a lockup won't fit): Barlow Condensed 700, 18–20px, letter-spacing 0.08em, uppercase, navy or white.
+- **Typeset wordmark** (where images are blocked or a lockup won't fit): Barlow Condensed 700, 18–20px, letter-spacing `--tracking-eyebrow` (0.1em), uppercase, navy or white. The lockup's wider spacing (0.14em, 0.27em) is drawn into the artwork; text never copies it.
 
 ### Clear space and minimum size
 | | Rule |
@@ -721,7 +721,7 @@ Covers reports, letterhead, training handouts, exercise documents (HSEEP situati
 |---|---|---|
 | Margins | 0.75in (19mm) all sides; 1in outer for bound docs | 20mm |
 | Grid | 12 columns, 0.25in (6mm) gutter | same |
-| Header | Icon (6–8mm) + typeset "SCENE READY" in Barlow Condensed 700 8–9pt Navy, left; document title in 8–9pt Gray 600, right; 0.5pt Gray 300 rule below |
+| Header | Icon (6–8mm) + typeset "SCENE READY" in Barlow Condensed 700 8–9pt Navy, +0.1em, left; document title in 8–9pt Gray 600, right; 0.5pt Gray 300 rule below |
 | Footer | "Page 3 of 12" right; classification or "Prepared to Perform." left; 8pt Gray 600 |
 
 ### 12.2 Print type scale
@@ -730,7 +730,7 @@ Covers reports, letterhead, training handouts, exercise documents (HSEEP situati
 | Cover title | 32–40pt / 1.1 | Barlow 700 | Navy 700 |
 | H1 | 20pt / 24pt | Barlow 700 | Navy 700 |
 | H2 | 14pt / 18pt | Barlow 700 | Navy 700 |
-| H3 / eyebrow | 10pt / 12pt, uppercase, +0.08em | Barlow Condensed 600 | Red 700 or Navy 700 |
+| H3 / eyebrow | 10pt / 12pt, uppercase, +0.1em | Barlow Condensed 600 | Red 700 or Navy 700 |
 | Body | **10–11pt / 14–15pt** | Barlow 400 | Gray 900 |
 | Table text | 9pt / 12pt | Barlow 400; numbers in JetBrains Mono | Gray 900 |
 | Table header | 8–9pt uppercase, +0.05em | Barlow Condensed 600 | White on Navy 700, or Gray 700 on Navy 50 |

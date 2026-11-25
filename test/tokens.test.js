@@ -54,3 +54,18 @@ describe("emails/tokens.js", () => {
     });
   });
 });
+
+describe("BRANDING.md", () => {
+  // Uppercase text uses --tracking-caps or --tracking-eyebrow (§5.5); the guide's own values must too.
+  // The lockup's spacing (marked ≈) is drawn into the artwork, not set as text.
+  it("quotes only the tracking tokens' letter-spacing", () => {
+    const guide = readFileSync(new URL("../BRANDING.md", import.meta.url), "utf8");
+    const allowed = new Set([resolve(light, "--tracking-caps"), resolve(light, "--tracking-eyebrow")]);
+    const quoted = guide
+      .split("\n")
+      .filter((line) => !line.includes("≈"))
+      .flatMap((line) => [...line.matchAll(/(?:letter-spacing[^\n;|]*?|\+)(?<![-\d.])(\d*\.\d+em)/g)].map((m) => m[1]));
+    expect(quoted.length).toBeGreaterThan(0);
+    expect(quoted.filter((v) => !allowed.has(v))).toEqual([]);
+  });
+});
