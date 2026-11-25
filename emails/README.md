@@ -42,7 +42,7 @@ const html = wrapSimpleMessage({
 ```js
 const html = wrapIncidentAlert({
   subject: "Callout dispatched — Engine 12",
-  severity: "danger",                    // "info" | "success" | "warning" | "danger"
+  severity: "danger",                    // "info" | "success" | "warning" | "danger" | "neutral"
   badgeLabel: "Callout dispatched",
   headline: "Structure fire — 1421 Birch St",
   summary: "Engine 12 dispatched at 14:03. Acknowledge to confirm response.",
@@ -108,7 +108,7 @@ The default logo URLs point at this repo's git tag — convenient for developmen
 | Field          | Required | Type                                | Notes                                                                |
 | -------------- | -------- | ----------------------------------- | -------------------------------------------------------------------- |
 | `subject`      | yes      | `string`                            |                                                                      |
-| `severity`     | yes      | `"info" \| "success" \| "warning" \| "danger"` | Drives strip + badge color.                                |
+| `severity`     | yes      | `"info" \| "success" \| "warning" \| "danger" \| "neutral"` | Drives strip + badge color.                                |
 | `badgeLabel`   | yes      | `string`                            | Rendered uppercase in Barlow Condensed.                              |
 | `headline`     | yes      | `string`                            |                                                                      |
 | `summary`      | yes      | `string`                            | Lead paragraph.                                                      |
@@ -134,7 +134,7 @@ type Section = {
     description?: string;
     url?: string;                              // makes title a link
     meta?: string;                             // small grey line under title
-    badge?: { label: string; severity: "info" | "success" | "warning" | "danger" };
+    badge?: { label: string; severity: "info" | "success" | "warning" | "danger" | "neutral" };
   }>;
 };
 ```

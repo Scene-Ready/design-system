@@ -694,7 +694,7 @@ Light is the default (inline styles). Dark activates in clients that honor `pref
 - **Logos are hosted PNGs in production.** Pass `logoUrl` / `logoDarkUrl`. The default SVGs on GitHub are for development only: Outlook's Word renderer and several webmail clients don't render SVG. Host at 2× size and keep `alt="Scene Ready"`.
 - Fonts: Barlow first, falling back to Arial (§5.2). Web fonts load only in Apple Mail and iOS, and that's fine.
 - Always send a plain-text part alongside the HTML, and give every CTA a visible fallback URL.
-- Minimum text is 14px for body copy (12px only for the footer and badges), and CTA tap targets are at least 44px tall.
+- Minimum text is 14px for body copy. 12px is only for the footer, status labels (badges, the status strip) and metadata lines such as timestamps (§5.3). CTA tap targets are at least 44px tall.
 - Test dark-mode rendering in real clients before a release.
 
 ### 11.3 Subject lines and copy

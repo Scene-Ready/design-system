@@ -2,13 +2,51 @@
 // HTML in emails/compiled.js, so the wrappers never run mjml.
 //
 // Slots: {{name}} takes escaped text or a URL; [[name]] takes child pieces (more MJML here,
-// compiled HTML at runtime). Compose pieces with `fill` from emails/shell.js.
+// compiled HTML at runtime). Compose pieces with `fill` from emails/compose.js.
 //
 // Each piece is compiled on its own. Column pieces are compiled inside a card, so they
 // assume the card's width; every card has the same side padding.
 
 import { TOKENS, SEVERITIES } from "../emails/tokens.js";
-import { WEB_FONTS } from "../emails/shell.js";
+import { WEB_FONTS } from "../emails/compose.js";
+
+const D = TOKENS.dark;
+const important = (decls) => decls.map((d) => `${d} !important;`).join(" ");
+const HIDE = ["display: none", "max-height: 0", "overflow: hidden"];
+const SHOW = ["display: block", "max-height: none", "overflow: visible"];
+
+// Dark mode, as [selectors, declarations]. Applied twice: under prefers-color-scheme, and
+// under Outlook's [data-ogsc] (which ignores the media query).
+const DARK_RULES = [
+  [["body", ".t-bg-page", ".t-bg-page > div", ".t-bg-page > table"], [`background-color: ${D.bgPage}`]],
+  [[".t-bg-card", ".t-bg-card > div", ".t-bg-card > table"], [`background-color: ${D.bgCard}`]],
+  [[".t-text", ".t-text *"], [`color: ${D.textPrimary}`]],
+  [[".t-text-2", ".t-text-2 *"], [`color: ${D.textSecondary}`]],
+  [[".t-text-3", ".t-text-3 *"], [`color: ${D.textTertiary}`]],
+  [[".t-text-brand", ".t-text-brand *"], [`color: ${D.textBrand}`]],
+  [[".t-border"], [`border-color: ${D.border}`]],
+  [[".t-divider"], [`border-color: ${D.divider}`]],
+  [[".t-cta a"], [`background-color: ${D.accent}`, `color: ${D.accentText}`]],
+  [["a", ".t-link", ".t-link a"], [`color: ${D.link}`]],
+  [[".t-logo-light-section"], HIDE],
+  [[".t-logo-dark-section"], SHOW],
+  ...SEVERITIES.flatMap((severity) => {
+    const sev = D.severity[severity];
+    const c = `.t-sev-${severity}`;
+    return [
+      [[c, `${c} > div`, `${c} > table`], [`background-color: ${sev.bg}`]],
+      [[`${c}-fg`, `${c}-fg *`], [`color: ${sev.fg}`]],
+      [[`${c}-bar > table > tbody > tr > td`], [`border-left-color: ${sev.base}`]],
+      [[`${c}-dot`], [`background-color: ${sev.base}`]],
+    ];
+  }),
+];
+
+const darkRules = (scope, indent) =>
+  DARK_RULES.map(([selectors, decls]) => {
+    const scoped = selectors.filter((sel) => !(scope && sel === "body")).map((sel) => scope + sel);
+    return `${indent}${scoped.join(", ")} { ${important(decls)} }`;
+  }).join("\n");
 
 const STYLE_BLOCK = `
 :root { color-scheme: light dark; supported-color-schemes: light dark; }
@@ -16,49 +54,13 @@ body, html { margin: 0; padding: 0; }
 a { color: ${TOKENS.light.link}; text-decoration: underline; }
 .t-logo-dark-section { display: none !important; mso-hide: all; max-height: 0; overflow: hidden; }
 @media (prefers-color-scheme: dark) {
-  body, .t-bg-page, .t-bg-page > div, .t-bg-page > table { background-color: ${TOKENS.dark.bgPage} !important; }
-  .t-bg-card, .t-bg-card > div, .t-bg-card > table { background-color: ${TOKENS.dark.bgCard} !important; }
-  .t-text, .t-text * { color: ${TOKENS.dark.textPrimary} !important; }
-  .t-text-2, .t-text-2 * { color: ${TOKENS.dark.textSecondary} !important; }
-  .t-text-3, .t-text-3 * { color: ${TOKENS.dark.textTertiary} !important; }
-  .t-text-brand, .t-text-brand * { color: ${TOKENS.dark.textBrand} !important; }
-  .t-border { border-color: ${TOKENS.dark.border} !important; }
-  .t-divider { border-color: ${TOKENS.dark.divider} !important; }
-  .t-cta a { background-color: ${TOKENS.dark.accent} !important; color: ${TOKENS.dark.accentText} !important; }
-  .t-link, .t-link a { color: ${TOKENS.dark.link} !important; }
-  a { color: ${TOKENS.dark.link} !important; }
-  .t-logo-light-section { display: none !important; max-height: 0 !important; overflow: hidden !important; }
-  .t-logo-dark-section { display: block !important; max-height: none !important; overflow: visible !important; }
-${SEVERITIES.map((s) => darkSeverityRules(s, "  ")).join("\n")}
+${darkRules("", "  ")}
 }
-[data-ogsc] .t-bg-page, [data-ogsc] .t-bg-page > div, [data-ogsc] .t-bg-page > table { background-color: ${TOKENS.dark.bgPage} !important; }
-[data-ogsc] .t-bg-card, [data-ogsc] .t-bg-card > div, [data-ogsc] .t-bg-card > table { background-color: ${TOKENS.dark.bgCard} !important; }
-[data-ogsc] .t-text, [data-ogsc] .t-text * { color: ${TOKENS.dark.textPrimary} !important; }
-[data-ogsc] .t-text-2, [data-ogsc] .t-text-2 * { color: ${TOKENS.dark.textSecondary} !important; }
-[data-ogsc] .t-text-3, [data-ogsc] .t-text-3 * { color: ${TOKENS.dark.textTertiary} !important; }
-[data-ogsc] .t-text-brand, [data-ogsc] .t-text-brand * { color: ${TOKENS.dark.textBrand} !important; }
-[data-ogsc] .t-cta a { background-color: ${TOKENS.dark.accent} !important; }
-[data-ogsc] .t-link, [data-ogsc] .t-link a { color: ${TOKENS.dark.link} !important; }
-[data-ogsc] .t-logo-light-section { display: none !important; max-height: 0 !important; overflow: hidden !important; }
-[data-ogsc] .t-logo-dark-section { display: block !important; max-height: none !important; overflow: visible !important; }
-${SEVERITIES.map((s) => darkSeverityRules(s, "", "[data-ogsc] ")).join("\n")}
+${darkRules("[data-ogsc] ", "")}
 @media only screen and (max-width: 599px) {
   .t-mobile-stack { width: 100% !important; max-width: 100% !important; display: block !important; }
 }
 `.trim();
-
-function darkSeverityRules(severity, indent, scope = "") {
-  const sev = TOKENS.dark.severity[severity];
-  const c = `${scope}.t-sev-${severity}`;
-  return [
-    `${c}, ${c} > div, ${c} > table { background-color: ${sev.bg} !important; }`,
-    `${c}-fg, ${c}-fg * { color: ${sev.fg} !important; }`,
-    `${c}-bar > table > tbody > tr > td { border-left-color: ${sev.base} !important; }`,
-    `${c}-dot { background-color: ${sev.base} !important; }`,
-  ]
-    .map((line) => indent + line)
-    .join("\n");
-}
 
 const LOGO_SECTION_PADDING = `${TOKENS.space[6]} ${TOKENS.space[6]} ${TOKENS.space[4]} ${TOKENS.space[6]}`;
 const CARD_SIDES = `${TOKENS.space[6]} ${TOKENS.space[8]} ${TOKENS.space[6]}`;
@@ -126,8 +128,8 @@ const severityStrip = (severity) => {
     </mj-section>`;
 };
 
-const headline = (paddingBottom) => `
-        <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize["2xl"]}" line-height="1.3" font-weight="600" padding="0 0 ${paddingBottom} 0">
+const headline = `
+        <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize["2xl"]}" line-height="1.3" font-weight="600" padding="0 0 ${TOKENS.space[3]} 0">
           {{text}}
         </mj-text>`;
 
@@ -154,14 +156,13 @@ const sectionHeading = (paddingTop) => `
         </mj-text>`;
 
 // level: "document" is the whole email; "section" pieces go in [[body]]; "column" pieces go
-// in a card's [[children]] or the footer's [[support]].
+// in a card's [[children]] or the footer's [[support]]. A plain object groups variants.
 export const SOURCE = {
   document: { level: "document", mjml: DOCUMENT },
-  card: { level: "section", mjml: card(TOKENS.space[4]) },
-  alertCard: { level: "section", mjml: card(TOKENS.space[6]) },
-  ...Object.fromEntries(
-    SEVERITIES.map((s) => [`severityStrip_${s}`, { level: "section", mjml: severityStrip(s) }]),
-  ),
+  // Cards differ only in top padding: 16px under the logo, 24px under the status strip.
+  cardUnderLogo: { level: "section", mjml: card(TOKENS.space[4]) },
+  cardUnderStrip: { level: "section", mjml: card(TOKENS.space[6]) },
+  severityStrip: Object.fromEntries(SEVERITIES.map((s) => [s, { level: "section", mjml: severityStrip(s) }])),
   supportLine: {
     level: "column",
     mjml: `
@@ -169,6 +170,7 @@ export const SOURCE = {
           Need help? <a href="mailto:{{email}}" class="t-link" style="color:${TOKENS.light.accent};text-decoration:underline;">{{email}}</a>
         </mj-text>`,
   },
+  headline: { level: "column", mjml: headline },
   greeting: {
     level: "column",
     mjml: `
@@ -176,10 +178,10 @@ export const SOURCE = {
           Hello, {{name}}.
         </mj-text>`,
   },
-  headline: { level: "column", mjml: headline(TOKENS.space[3]) },
-  headlineSpaced: { level: "column", mjml: headline(TOKENS.space[4]) },
-  lead: { level: "column", mjml: bodyText(TOKENS.space[6]) },
-  intro: { level: "column", mjml: bodyText(TOKENS.space[4]) },
+  // Paragraphs before a button or table (24px below); the digest intro sits closer to its
+  // first section heading (16px).
+  bodyText: { level: "column", mjml: bodyText(TOKENS.space[6]) },
+  digestIntro: { level: "column", mjml: bodyText(TOKENS.space[4]) },
   footnote: {
     level: "column",
     mjml: `
@@ -187,8 +189,9 @@ export const SOURCE = {
           {{text}}
         </mj-text>`,
   },
-  buttonFlush: { level: "column", mjml: button("0") },
-  buttonSpaced: { level: "column", mjml: button(`${TOKENS.space[6]} 0 0 0`) },
+  // The digest's button follows a table, so it carries its own 24px above.
+  button: { level: "column", mjml: button("0") },
+  digestButton: { level: "column", mjml: button(`${TOKENS.space[6]} 0 0 0`) },
   // §11.2: every button has a visible fallback URL, for clients that block buttons.
   fallbackLink: {
     level: "column",
@@ -206,11 +209,11 @@ export const SOURCE = {
   },
   factsTable: { level: "column", mjml: table(`0 0 ${TOKENS.space[6]} 0`) },
   digestTable: { level: "column", mjml: table("0") },
-  sectionHeading: { level: "column", mjml: sectionHeading("0") },
-  sectionHeadingSpaced: { level: "column", mjml: sectionHeading(TOKENS.space[6]) },
+  firstSectionHeading: { level: "column", mjml: sectionHeading("0") },
+  sectionHeading: { level: "column", mjml: sectionHeading(TOKENS.space[6]) },
 };
 
 // The same pieces as MJML strings, for composing a whole MJML document to compare against.
-export const SOURCE_PIECES = Object.fromEntries(
-  Object.entries(SOURCE).map(([name, { mjml }]) => [name, mjml]),
-);
+const mjmlOf = (entry) =>
+  entry.level ? entry.mjml : Object.fromEntries(Object.entries(entry).map(([k, v]) => [k, mjmlOf(v)]));
+export const SOURCE_PIECES = mjmlOf(SOURCE);

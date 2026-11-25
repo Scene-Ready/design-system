@@ -23,7 +23,7 @@ const marked = (mjml) => `<mj-raw>${BEGIN}</mj-raw>${rawSlots(mjml)}<mj-raw>${EN
 const DOCUMENT = rawSlots(SOURCE.document.mjml);
 const inBody = (mjml) =>
   DOCUMENT.replace("<mj-raw>{{body}}</mj-raw>", mjml).replace("<mj-raw>{{support}}</mj-raw>", "");
-const inCard = (mjml) => inBody(rawSlots(SOURCE.card.mjml).replace("<mj-raw>{{children}}</mj-raw>", mjml));
+const inCard = (mjml) => inBody(rawSlots(SOURCE.cardUnderLogo.mjml).replace("<mj-raw>{{children}}</mj-raw>", mjml));
 
 function compile(mjml) {
   const { html, errors } = mjml2html(mjml, { validationLevel: "strict", minify: false });
@@ -49,7 +49,10 @@ function compileDocument() {
   return html.replace(FONT_LINKS, "{{fonts}}");
 }
 
-function compilePiece({ level, mjml }) {
+// A piece has a level; a plain object groups variants (severityStrip.info …).
+function compilePiece(entry) {
+  const { level, mjml } = entry;
+  if (!level) return Object.fromEntries(Object.entries(entry).map(([k, v]) => [k, compilePiece(v)]));
   if (level === "document") return compileDocument();
   if (level === "section") return cut(compile(inBody(marked(mjml))));
   if (level === "column") return cut(compile(inCard(marked(mjml))));
@@ -69,7 +72,9 @@ if (process.argv.includes("--check")) {
   let current = "";
   try {
     current = readFileSync(OUT, "utf8");
-  } catch {}
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
   if (current !== output) {
     console.error("emails/compiled.js is out of date: run `npm run build:emails`.");
     process.exit(1);

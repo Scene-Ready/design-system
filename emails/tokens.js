@@ -22,6 +22,7 @@ export const TOKENS = Object.freeze({
       success: { fg: "#047857", base: "#059669", bg: "#ECFDF5" },
       warning: { fg: "#B45309", base: "#D97706", bg: "#FFFBEB" },
       danger: { fg: "#B91C1C", base: "#DC2626", bg: "#FEF2F2" },
+      neutral: { fg: "#4B5563", base: "#6B7280", bg: "#F3F4F6" },
     }),
   }),
   dark: Object.freeze({
@@ -42,6 +43,7 @@ export const TOKENS = Object.freeze({
       success: { fg: "#34D399", base: "#34D399", bg: "rgba(52,211,153,0.14)" },
       warning: { fg: "#FBBF24", base: "#FBBF24", bg: "rgba(251,191,36,0.14)" },
       danger: { fg: "#FCA5A5", base: "#F87171", bg: "rgba(248,113,113,0.14)" },
+      neutral: { fg: "#D1D5DB", base: "#9CA3AF", bg: "rgba(255,255,255,0.08)" },
     }),
   }),
   space: Object.freeze({
@@ -81,4 +83,4 @@ export const TOKENS = Object.freeze({
   }),
 });
 
-export const SEVERITIES = Object.freeze(["info", "success", "warning", "danger"]);
+export const SEVERITIES = Object.freeze(["info", "success", "warning", "danger", "neutral"]);

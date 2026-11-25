@@ -4,6 +4,7 @@ import { parse } from "parse5";
 
 import { wrapDigest, wrapIncidentAlert, wrapSimpleMessage } from "../emails/index.js";
 import { FIXTURES } from "../scripts/email-fixtures.js";
+import { TOKENS } from "../emails/tokens.js";
 
 // Parse the way a browser or mail client does, so markup a browser would repair shows up.
 function elements(node, out = []) {
@@ -110,7 +111,15 @@ const RENDERED = [
   ["digest", () => wrapDigest(FIXTURES.digest), FIXTURES.digest.cta],
 ];
 
-const styleOf = (el) => el.attrs.find((a) => a.name === "style")?.value ?? "";
+const styleOf = (el) => el.attrs?.find((a) => a.name === "style")?.value ?? "";
+const classOf = (el) => el.attrs?.find((a) => a.name === "class")?.value ?? "";
+function ancestors(el) {
+  const out = [];
+  for (let node = el.parentNode; node; node = node.parentNode) out.push(node);
+  return out;
+}
+// The footer is the last section: a page-coloured 600px div, after the card.
+const isFooter = (node) => node.tagName === "div" && /(^|\s)t-bg-page(\s|$)/.test(classOf(node)) && /margin:0px auto/.test(styleOf(node)) && /sceneready\.tech/.test(text(node));
 const px = (css, prop) => Number(css.match(new RegExp(`(?:^|;)\\s*${prop}:\\s*(\\d+)px`))?.[1]);
 
 describe.each(RENDERED)("%s follows BRANDING.md", (_, render, cta) => {
@@ -156,16 +165,6 @@ describe.each(RENDERED)("%s follows BRANDING.md", (_, render, cta) => {
     expect([...lineHeights(24)]).toEqual(["1.3"]);
   });
 
-  it("tracks every uppercase label at 0.05em (§5.5, §7)", () => {
-    const tracking = new Set(
-      els
-        .map(styleOf)
-        .filter((css) => /Barlow Condensed/.test(css) && /letter-spacing/.test(css))
-        .map((css) => css.match(/letter-spacing:\s*([^;]+)/)[1].trim()),
-    );
-    if (tracking.size > 0) expect([...tracking]).toEqual(["0.05em"]);
-  });
-
   it("shows the logo lockup at least 160px wide (§3)", () => {
     // The lockup files include clear space: the artwork is about 70% of the image width.
     const logo = els.find((el) => el.tagName === "img" && el.attrs.some((a) => a.name === "alt" && a.value === "Scene Ready"));
@@ -179,15 +178,23 @@ describe.each(RENDERED)("%s follows BRANDING.md", (_, render, cta) => {
   });
 
   it("sets no essential text below 14px (§11.2)", () => {
-    // 12px is allowed for the footer and badges only.
-    const small = els.filter((el) => px(styleOf(el), "font-size") < 14 && text(el).trim() && px(styleOf(el), "font-size") > 0);
-    const allowed = (el) =>
-      /display:none/.test(styleOf(el)) || // the inbox preview text
-      /Barlow Condensed/.test(styleOf(el)) || // badges and the status strip label
-      /t-sev-/.test(el.attrs.find((a) => a.name === "class")?.value ?? "") ||
-      /Scene Ready &middot;|Scene Ready ·|receiving this|Need help/.test(text(el)) ||
-      /Expires|PDT/.test(text(el)); // digest timestamps (§5.3: xs is for timestamps)
-    expect(small.filter((el) => !allowed(el)).map((el) => text(el).trim())).toEqual([]);
+    // 12px is allowed only for the footer, status labels and metadata lines, by role.
+    const smallRoles = (el) =>
+      [el, ...ancestors(el)].some(
+        (node) =>
+          isFooter(node) ||
+          /display:none/.test(styleOf(node)) || // the inbox preview text
+          /(^|\s)(t-sev-\w+|t-meta)(\s|$)/.test(classOf(node)),
+      );
+    const small = els.filter((el) => px(styleOf(el), "font-size") > 0 && px(styleOf(el), "font-size") < 14 && text(el).trim());
+    expect(small.filter((el) => !smallRoles(el)).map((el) => text(el).trim())).toEqual([]);
+  });
+
+  it("requests only the font weights it uses", () => {
+    const used = new Set([...html.matchAll(/font-weight:\s*(\d+)/g)].map((m) => m[1]).concat("400"));
+    const requested = [...html.matchAll(/family=[^"&]*wght@([\d;]+)/g)].flatMap((m) => m[1].split(";"));
+    expect(requested.length).toBeGreaterThan(0);
+    for (const w of requested) expect(used).toContain(w);
   });
 });
 
@@ -201,7 +208,7 @@ describe("body text", () => {
     for (const [html, start] of paragraphs) {
       const els = elements(parse(html)).filter((el) => text(el).includes(start) && /color:/.test(styleOf(el)));
       const innermost = els.at(-1);
-      expect(styleOf(innermost)).toMatch(/color:#111827/i);
+      expect(styleOf(innermost).toLowerCase()).toContain(`color:${TOKENS.light.textPrimary.toLowerCase()}`);
     }
   });
 });
@@ -213,12 +220,36 @@ describe("wrapSimpleMessage order", () => {
   });
 });
 
+const badgeIn = (html, label) => elements(parse(html)).find((el) => el.tagName === "span" && text(el).trim() === label);
+
 describe("wrapDigest badges", () => {
-  it("draw a status dot in the base tone (§7)", () => {
-    const html = wrapDigest(FIXTURES.digest);
-    const badge = elements(parse(html)).find((el) => el.tagName === "span" && text(el).trim() === "OOS");
+  it("draw a 6px status dot in the mark colour (§7)", () => {
+    const badge = badgeIn(wrapDigest(FIXTURES.digest), "OOS");
     const dot = badge.childNodes.find((c) => c.tagName === "span");
-    expect(styleOf(dot)).toMatch(/background-color:#DC2626/i);
+    expect(styleOf(dot).toLowerCase()).toContain(`background-color:${TOKENS.light.severity.danger.base.toLowerCase()}`);
     expect(px(styleOf(dot), "width")).toBe(6);
+  });
+
+  it("render a neutral badge, for states such as ARCHIVED (§7)", () => {
+    const html = wrapDigest({
+      ...FIXTURES.digest,
+      sections: [{ title: "Incidents", items: [{ title: "Brush fire — Ridge Rd", badge: { label: "Archived", severity: "neutral" } }] }],
+    });
+    const badge = badgeIn(html, "Archived");
+    expect(styleOf(badge).toLowerCase()).toContain(`color:${TOKENS.light.severity.neutral.fg.toLowerCase()}`);
+  });
+});
+
+describe("uppercase labels", () => {
+  it.each([
+    ["incident strip", () => wrapIncidentAlert(FIXTURES.incident)],
+    ["digest badges", () => wrapDigest(FIXTURES.digest)],
+  ])("%s track at --tracking-caps (§5.5, §7)", (_, render) => {
+    const tracking = elements(parse(render()))
+      .map(styleOf)
+      .filter((css) => /Barlow Condensed/.test(css) && /letter-spacing/.test(css))
+      .map((css) => css.match(/letter-spacing:\s*([^;]+)/)[1].trim());
+    expect(tracking.length).toBeGreaterThan(0);
+    expect(new Set(tracking)).toEqual(new Set([TOKENS.tracking.caps]));
   });
 });

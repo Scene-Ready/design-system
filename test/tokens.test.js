@@ -39,7 +39,7 @@ describe("emails/tokens.js", () => {
     for (const [key, token] of Object.entries(ALIASES)) {
       expect(norm(TOKENS[mode][key]), `${mode}.${key}`).toBe(norm(resolve(theme, token)));
     }
-    for (const s of ["info", "success", "warning", "danger"]) {
+    for (const s of ["info", "success", "warning", "danger", "neutral"]) {
       const sev = TOKENS[mode].severity[s];
       expect(norm(sev.fg), `${mode} ${s} fg`).toBe(norm(resolve(theme, `--${s}-fg`)));
       expect(norm(sev.bg), `${mode} ${s} bg`).toBe(norm(resolve(theme, `--${s}-surface`)));

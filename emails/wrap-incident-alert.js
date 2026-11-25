@@ -1,12 +1,6 @@
 import { TOKENS, SEVERITIES } from "./tokens.js";
-import { PIECES } from "./compiled.js";
-import {
-  composeDocument,
-  escapeHtml,
-  fill,
-  requireCta,
-  requireString,
-} from "./shell.js";
+import { composeDocument, fill } from "./compose.js";
+import { escapeHtml, requireCta, requireString } from "./input.js";
 
 function factsRows(facts) {
   return facts
@@ -28,22 +22,7 @@ export function composeIncidentAlert(input, pieces) {
   if (!input || typeof input !== "object") {
     throw new TypeError("wrapIncidentAlert: input object is required");
   }
-  const {
-    subject,
-    severity,
-    badgeLabel,
-    headline,
-    summary,
-    facts,
-    cta,
-    secondaryCta,
-    previewText,
-    logoUrl,
-    logoDarkUrl,
-    supportEmail,
-  } = input;
-
-  requireString(subject, "subject");
+  const { severity, badgeLabel, headline, summary, facts, cta, secondaryCta } = input;
   requireString(badgeLabel, "badgeLabel");
   requireString(headline, "headline");
   requireString(summary, "summary");
@@ -53,7 +32,6 @@ export function composeIncidentAlert(input, pieces) {
   if (facts != null && !Array.isArray(facts)) {
     throw new TypeError("facts must be an array of { label, value } when provided");
   }
-
   const safeCta = cta ? requireCta(cta, "cta") : null;
   const safeSecondary = secondaryCta ? requireCta(secondaryCta, "secondaryCta") : null;
   const safeFacts = (facts ?? []).map((f) => {
@@ -64,26 +42,14 @@ export function composeIncidentAlert(input, pieces) {
 
   const children = [
     fill(pieces.headline, { text: escapeHtml(headline) }),
-    fill(pieces.lead, { text: escapeHtml(summary) }),
+    fill(pieces.bodyText, { text: escapeHtml(summary) }),
     safeFacts.length > 0 ? fill(pieces.factsTable, { rows: factsRows(safeFacts) }) : "",
-    safeCta ? fill(pieces.buttonFlush, safeCta) + fill(pieces.fallbackLink, safeCta) : "",
+    safeCta ? fill(pieces.button, safeCta) + fill(pieces.fallbackLink, safeCta) : "",
     safeSecondary ? fill(pieces.link, safeSecondary) : "",
   ].join("");
 
   const body =
-    fill(pieces[`severityStrip_${severity}`], { label: escapeHtml(badgeLabel.toUpperCase()) }) +
-    fill(pieces.alertCard, { children });
-
-  return composeDocument(pieces, {
-    title: subject,
-    previewText,
-    body,
-    logoUrl,
-    logoDarkUrl,
-    supportEmail,
-  });
-}
-
-export function wrapIncidentAlert(input) {
-  return composeIncidentAlert(input, PIECES);
+    fill(pieces.severityStrip[severity], { label: escapeHtml(badgeLabel.toUpperCase()) }) +
+    fill(pieces.cardUnderStrip, { children });
+  return composeDocument(pieces, input, body);
 }

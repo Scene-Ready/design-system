@@ -1,12 +1,6 @@
 import { TOKENS } from "./tokens.js";
-import { PIECES } from "./compiled.js";
-import {
-  composeDocument,
-  escapeHtml,
-  fill,
-  requireCta,
-  requireString,
-} from "./shell.js";
+import { composeDocument, fill } from "./compose.js";
+import { escapeHtml, requireCta, requireString } from "./input.js";
 
 function paragraphsHtml(body) {
   const arr = Array.isArray(body) ? body : [body];
@@ -19,20 +13,7 @@ export function composeSimpleMessage(input, pieces) {
   if (!input || typeof input !== "object") {
     throw new TypeError("wrapSimpleMessage: input object is required");
   }
-  const {
-    subject,
-    headline,
-    body,
-    cta,
-    recipientName,
-    footnote,
-    previewText,
-    logoUrl,
-    logoDarkUrl,
-    supportEmail,
-  } = input;
-
-  requireString(subject, "subject");
+  const { headline, body, cta, recipientName, footnote } = input;
   requireString(headline, "headline");
   if (body == null || (typeof body !== "string" && !Array.isArray(body))) {
     throw new TypeError("body is required and must be a string or string[]");
@@ -40,24 +21,13 @@ export function composeSimpleMessage(input, pieces) {
   const safeCta = requireCta(cta, "cta");
 
   const children = [
-    fill(pieces.headlineSpaced, { text: escapeHtml(headline) }),
+    fill(pieces.headline, { text: escapeHtml(headline) }),
     recipientName ? fill(pieces.greeting, { name: escapeHtml(recipientName) }) : "",
-    fill(pieces.lead, { text: paragraphsHtml(body) }),
-    fill(pieces.buttonFlush, safeCta),
+    fill(pieces.bodyText, { text: paragraphsHtml(body) }),
+    fill(pieces.button, safeCta),
     fill(pieces.fallbackLink, safeCta),
     footnote ? fill(pieces.footnote, { text: escapeHtml(footnote) }) : "",
   ].join("");
 
-  return composeDocument(pieces, {
-    title: subject,
-    previewText,
-    body: fill(pieces.card, { children }),
-    logoUrl,
-    logoDarkUrl,
-    supportEmail,
-  });
-}
-
-export function wrapSimpleMessage(input) {
-  return composeSimpleMessage(input, PIECES);
+  return composeDocument(pieces, input, fill(pieces.cardUnderLogo, { children }));
 }
