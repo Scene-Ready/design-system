@@ -126,10 +126,10 @@ describe.each(RENDERED)("%s follows BRANDING.md", (_, render, cta) => {
   const html = render();
   const els = elements(parse(html));
 
-  it("uses at most two font weights (§5.5)", () => {
+  it("sets text in 400 with 600 for bold (§5.5, §11.1)", () => {
     const weights = new Set([...html.matchAll(/font-weight:\s*(\d+)/g)].map((m) => m[1]));
     weights.add("400");
-    expect([...weights].sort()).toHaveLength(2);
+    expect([...weights].sort()).toEqual(["400", "600"]);
   });
 
   it("makes the button at least 44px tall (§11.2)", () => {

@@ -78,6 +78,7 @@ Every mapped utility compiles to a `var()` of its token (`bg-navy-700` is `backg
 | `accent`, `accent-hover`, `danger-hover`, `focus-ring` | the same names (`accent` is the fill: buttons, active bars) |
 | `accent-fg` | `--text-accent`: red text and links. Use `text-accent-fg`, never `text-accent`, for text |
 | `success-fg`, `success-surface`, `success-mark` (and `warning`, `danger`, `info`, `neutral`) | mode-aware status: text, tint, and dots/bars/icons |
+| `brand-surface`, `brand-mark` | the Brand status (ON SCENE): `bg-brand-surface text-brand`, dot `bg-brand-mark` |
 | `font-sans`, `font-condensed`, `font-mono`; `text-xs`…`text-5xl` | type tokens (Tailwind's line heights kept) |
 | `tracking-caps`, `tracking-eyebrow` | `--tracking-*`: letter-spacing for uppercase text (Tailwind's `tracking-wide` … stay available; don't use them for caps) |
 | `rounded-none`…`rounded-full`, `shadow-sm`…`shadow-2xl`, `ease-out`, `ease-in-out` | the same names |
