@@ -1,6 +1,3 @@
-import mjml2html from "mjml";
-import { TOKENS } from "./tokens.js";
-
 const PINNED_TAG = "v0.2.0";
 const ASSET_BASE = `https://raw.githubusercontent.com/scene-ready/design-system/${PINNED_TAG}/assets`;
 
@@ -53,145 +50,76 @@ export function requireCta(cta, name) {
   return { label: escapeHtml(cta.label), url: safeUrl(cta.url) };
 }
 
-const STYLE_BLOCK = `
-:root { color-scheme: light dark; supported-color-schemes: light dark; }
-body, html { margin: 0; padding: 0; }
-a { color: ${TOKENS.light.link}; text-decoration: underline; }
-.t-logo-dark-section { display: none !important; mso-hide: all; max-height: 0; overflow: hidden; }
-@media (prefers-color-scheme: dark) {
-  body, .t-bg-page, .t-bg-page > div, .t-bg-page > table { background-color: ${TOKENS.dark.bgPage} !important; }
-  .t-bg-card, .t-bg-card > div, .t-bg-card > table { background-color: ${TOKENS.dark.bgCard} !important; }
-  .t-text, .t-text * { color: ${TOKENS.dark.textPrimary} !important; }
-  .t-text-2, .t-text-2 * { color: ${TOKENS.dark.textSecondary} !important; }
-  .t-text-3, .t-text-3 * { color: ${TOKENS.dark.textTertiary} !important; }
-  .t-text-brand, .t-text-brand * { color: ${TOKENS.dark.textBrand} !important; }
-  .t-border { border-color: ${TOKENS.dark.border} !important; }
-  .t-divider { border-color: ${TOKENS.dark.divider} !important; }
-  .t-cta table { background-color: ${TOKENS.dark.accent} !important; }
-  .t-cta a { background-color: ${TOKENS.dark.accent} !important; color: ${TOKENS.dark.accentText} !important; }
-  .t-link, .t-link a { color: ${TOKENS.dark.link} !important; }
-  a { color: ${TOKENS.dark.link} !important; }
-  .t-logo-light-section { display: none !important; max-height: 0 !important; overflow: hidden !important; }
-  .t-logo-dark-section { display: block !important; max-height: none !important; overflow: visible !important; }
-  .t-sev-info, .t-sev-info > div, .t-sev-info > table { background-color: ${TOKENS.dark.severity.info.bg} !important; }
-  .t-sev-info-fg, .t-sev-info-fg * { color: ${TOKENS.dark.severity.info.fg} !important; }
-  .t-sev-info-bar > table > tbody > tr > td { border-left-color: ${TOKENS.dark.severity.info.base} !important; }
-  .t-sev-success, .t-sev-success > div, .t-sev-success > table { background-color: ${TOKENS.dark.severity.success.bg} !important; }
-  .t-sev-success-fg, .t-sev-success-fg * { color: ${TOKENS.dark.severity.success.fg} !important; }
-  .t-sev-success-bar > table > tbody > tr > td { border-left-color: ${TOKENS.dark.severity.success.base} !important; }
-  .t-sev-warning, .t-sev-warning > div, .t-sev-warning > table { background-color: ${TOKENS.dark.severity.warning.bg} !important; }
-  .t-sev-warning-fg, .t-sev-warning-fg * { color: ${TOKENS.dark.severity.warning.fg} !important; }
-  .t-sev-warning-bar > table > tbody > tr > td { border-left-color: ${TOKENS.dark.severity.warning.base} !important; }
-  .t-sev-danger, .t-sev-danger > div, .t-sev-danger > table { background-color: ${TOKENS.dark.severity.danger.bg} !important; }
-  .t-sev-danger-fg, .t-sev-danger-fg * { color: ${TOKENS.dark.severity.danger.fg} !important; }
-  .t-sev-danger-bar > table > tbody > tr > td { border-left-color: ${TOKENS.dark.severity.danger.base} !important; }
-}
-[data-ogsc] .t-bg-page, [data-ogsc] .t-bg-page > div, [data-ogsc] .t-bg-page > table { background-color: ${TOKENS.dark.bgPage} !important; }
-[data-ogsc] .t-bg-card, [data-ogsc] .t-bg-card > div, [data-ogsc] .t-bg-card > table { background-color: ${TOKENS.dark.bgCard} !important; }
-[data-ogsc] .t-text, [data-ogsc] .t-text * { color: ${TOKENS.dark.textPrimary} !important; }
-[data-ogsc] .t-text-2, [data-ogsc] .t-text-2 * { color: ${TOKENS.dark.textSecondary} !important; }
-[data-ogsc] .t-text-3, [data-ogsc] .t-text-3 * { color: ${TOKENS.dark.textTertiary} !important; }
-[data-ogsc] .t-text-brand, [data-ogsc] .t-text-brand * { color: ${TOKENS.dark.textBrand} !important; }
-[data-ogsc] .t-cta table { background-color: ${TOKENS.dark.accent} !important; }
-[data-ogsc] .t-cta a { background-color: ${TOKENS.dark.accent} !important; }
-[data-ogsc] .t-link, [data-ogsc] .t-link a { color: ${TOKENS.dark.link} !important; }
-[data-ogsc] .t-logo-light-section { display: none !important; max-height: 0 !important; overflow: hidden !important; }
-[data-ogsc] .t-logo-dark-section { display: block !important; max-height: none !important; overflow: visible !important; }
-[data-ogsc] .t-sev-info, [data-ogsc] .t-sev-info > div, [data-ogsc] .t-sev-info > table { background-color: ${TOKENS.dark.severity.info.bg} !important; }
-[data-ogsc] .t-sev-info-fg, [data-ogsc] .t-sev-info-fg * { color: ${TOKENS.dark.severity.info.fg} !important; }
-[data-ogsc] .t-sev-info-bar > table > tbody > tr > td { border-left-color: ${TOKENS.dark.severity.info.base} !important; }
-[data-ogsc] .t-sev-success, [data-ogsc] .t-sev-success > div, [data-ogsc] .t-sev-success > table { background-color: ${TOKENS.dark.severity.success.bg} !important; }
-[data-ogsc] .t-sev-success-fg, [data-ogsc] .t-sev-success-fg * { color: ${TOKENS.dark.severity.success.fg} !important; }
-[data-ogsc] .t-sev-success-bar > table > tbody > tr > td { border-left-color: ${TOKENS.dark.severity.success.base} !important; }
-[data-ogsc] .t-sev-warning, [data-ogsc] .t-sev-warning > div, [data-ogsc] .t-sev-warning > table { background-color: ${TOKENS.dark.severity.warning.bg} !important; }
-[data-ogsc] .t-sev-warning-fg, [data-ogsc] .t-sev-warning-fg * { color: ${TOKENS.dark.severity.warning.fg} !important; }
-[data-ogsc] .t-sev-warning-bar > table > tbody > tr > td { border-left-color: ${TOKENS.dark.severity.warning.base} !important; }
-[data-ogsc] .t-sev-danger, [data-ogsc] .t-sev-danger > div, [data-ogsc] .t-sev-danger > table { background-color: ${TOKENS.dark.severity.danger.bg} !important; }
-[data-ogsc] .t-sev-danger-fg, [data-ogsc] .t-sev-danger-fg * { color: ${TOKENS.dark.severity.danger.fg} !important; }
-[data-ogsc] .t-sev-danger-bar > table > tbody > tr > td { border-left-color: ${TOKENS.dark.severity.danger.base} !important; }
-@media only screen and (max-width: 599px) {
-  .t-mobile-stack { width: 100% !important; max-width: 100% !important; display: block !important; }
-}
-`.trim();
+// Web fonts the email loads, by family name.
+export const WEB_FONTS = Object.freeze({
+  Barlow: "https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap",
+  "Barlow Condensed":
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap",
+});
 
-function buildHeader(logoUrl, logoDarkUrl) {
-  return `
-    <mj-section css-class="t-logo-light-section t-bg-card" background-color="${TOKENS.light.bgCard}" padding="${TOKENS.space[6]} ${TOKENS.space[6]} ${TOKENS.space[4]} ${TOKENS.space[6]}">
-      <mj-column>
-        <mj-image src="${logoUrl}" alt="Scene Ready" width="180px" align="center" padding="0" />
-      </mj-column>
-    </mj-section>
-    <mj-section css-class="t-logo-dark-section" background-color="${TOKENS.dark.bgCard}" padding="${TOKENS.space[6]} ${TOKENS.space[6]} ${TOKENS.space[4]} ${TOKENS.space[6]}">
-      <mj-column>
-        <mj-image src="${logoDarkUrl}" alt="Scene Ready" width="180px" align="center" padding="0" />
-      </mj-column>
-    </mj-section>
-  `;
+// The families mjml would link, in its order: its default Roboto (named in our fallback
+// stack), then ours. A family is linked only when the email uses it.
+const LINKED_FONTS = Object.freeze({
+  Roboto: "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700",
+  ...WEB_FONTS,
+});
+
+// Puts values into a piece's {{name}} and [[name]] slots. One pass over the template, so a
+// value that contains slot syntax is left as it is.
+export function fill(template, slots) {
+  return template.replace(/\{\{(\w+)\}\}|\[\[(\w+)\]\]/g, (_, text, children) => {
+    const name = text ?? children;
+    if (!(name in slots)) throw new Error(`fill: no value for slot "${name}"`);
+    return slots[name];
+  });
 }
 
-function buildFooter(supportEmail) {
-  const supportLine = supportEmail
-    ? `<mj-text css-class="t-text-2" align="center" color="${TOKENS.light.textSecondary}" font-size="${TOKENS.fontSize.xs}" line-height="1.5" padding="${TOKENS.space[1]} 0 0 0">
-         Need help? <a href="mailto:${escapeHtml(supportEmail)}" class="t-link" style="color:${TOKENS.light.accent};text-decoration:underline;">${escapeHtml(supportEmail)}</a>
-       </mj-text>`
-    : "";
-  return `
-    <mj-section css-class="t-bg-page" background-color="${TOKENS.light.bgPage}" padding="${TOKENS.space[6]} ${TOKENS.space[6]}">
-      <mj-column>
-        <mj-text css-class="t-text-2" align="center" color="${TOKENS.light.textSecondary}" font-size="${TOKENS.fontSize.xs}" line-height="1.5" padding="0">
-          Scene Ready &middot; sceneready.tech<br/>
-          You're receiving this because you have a Scene Ready account.
-        </mj-text>
-        ${supportLine}
-      </mj-column>
-    </mj-section>
-  `;
+// mjml's font detection (mjml-core buildFontsTags): link a family when an attribute's
+// font-family names it.
+function fontTags(content) {
+  const hrefs = Object.entries(LINKED_FONTS)
+    .filter(([name]) => new RegExp(`"[^"]*font-family:[^"]*${name}[^"]*"`, "i").test(content))
+    .map(([, href]) => href);
+  if (hrefs.length === 0) return "";
+  return `<!--[if !mso]><!-->
+${hrefs.map((href) => `<link href="${href}" rel="stylesheet" type="text/css">`).join("\n")}
+<style type="text/css">
+${hrefs.map((href) => `@import url(${href});`).join("\n")}
+</style>
+<!--<![endif]-->`;
 }
 
-export function buildShell({
-  title,
-  previewText,
-  bodyMjml,
-  logoUrl = DEFAULT_LOGO_LIGHT_URL,
-  logoDarkUrl = DEFAULT_LOGO_DARK_URL,
-  supportEmail = DEFAULT_SUPPORT_EMAIL,
-}) {
+// mjml joins the Outlook-only wrappers of adjacent sections (mjml-core
+// mergeOutlookConditionnals); pieces compiled apart need the same join once composed.
+function mergeOutlookConditionals(html) {
+  return html.replace(/(<!\[endif]-->\s*?<!--\[if mso \| IE]>)/gm, "");
+}
+
+// The whole email: logo header, the body sections, footer. `pieces` is emails/compiled.js at
+// runtime; the tests pass the MJML source to check the two render alike.
+export function composeDocument(
+  pieces,
+  {
+    title,
+    previewText,
+    body,
+    logoUrl = DEFAULT_LOGO_LIGHT_URL,
+    logoDarkUrl = DEFAULT_LOGO_DARK_URL,
+    supportEmail = DEFAULT_SUPPORT_EMAIL,
+  },
+) {
   requireString(title, "title");
-  requireString(bodyMjml, "bodyMjml");
-  safeUrl(logoUrl);
-  safeUrl(logoDarkUrl);
-
-  const preview = previewText ?? title;
-
-  const mjmlSrc = `<mjml>
-  <mj-head>
-    <mj-title>${escapeHtml(title)}</mj-title>
-    <mj-preview>${escapeHtml(preview)}</mj-preview>
-    <mj-raw>
-      <meta name="color-scheme" content="light dark" />
-      <meta name="supported-color-schemes" content="light dark" />
-    </mj-raw>
-    <mj-font name="Barlow" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" />
-    <mj-font name="Barlow Condensed" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap" />
-    <mj-attributes>
-      <mj-all font-family="${TOKENS.font.sans}" />
-      <mj-text font-size="${TOKENS.fontSize.base}" line-height="1.5" color="${TOKENS.light.textPrimary}" padding="0" />
-      <mj-button background-color="${TOKENS.light.accent}" color="${TOKENS.light.accentText}" font-weight="600" border-radius="${TOKENS.radius.md}" font-size="${TOKENS.fontSize.base}" inner-padding="${TOKENS.space[3]} ${TOKENS.space[6]}" />
-      <mj-section padding="0" />
-    </mj-attributes>
-    <mj-style>${STYLE_BLOCK}</mj-style>
-  </mj-head>
-  <mj-body css-class="t-bg-page" background-color="${TOKENS.light.bgPage}" width="${TOKENS.layout.contentWidth}">
-    ${buildHeader(logoUrl, logoDarkUrl)}
-    ${bodyMjml}
-    ${buildFooter(supportEmail)}
-  </mj-body>
-</mjml>`;
-
-  const result = mjml2html(mjmlSrc, { validationLevel: "strict", minify: false });
-  if (result.errors && result.errors.length > 0) {
-    const messages = result.errors.map((e) => e.formattedMessage || e.message).join("\n");
-    throw new Error(`MJML compile failed:\n${messages}`);
-  }
-  return result.html;
+  const support = supportEmail
+    ? fill(pieces.supportLine, { email: escapeHtml(supportEmail) })
+    : "";
+  const html = fill(pieces.document, {
+    title: escapeHtml(title),
+    preview: escapeHtml(previewText ?? title),
+    logoUrl: safeUrl(logoUrl),
+    logoDarkUrl: safeUrl(logoDarkUrl),
+    body,
+    support,
+    fonts: fontTags(pieces.document + body + support),
+  });
+  return mergeOutlookConditionals(html);
 }

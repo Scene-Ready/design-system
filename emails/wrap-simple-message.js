@@ -1,7 +1,9 @@
 import { TOKENS } from "./tokens.js";
+import { PIECES } from "./compiled.js";
 import {
-  buildShell,
+  composeDocument,
   escapeHtml,
+  fill,
   requireCta,
   requireString,
 } from "./shell.js";
@@ -13,7 +15,7 @@ function paragraphsHtml(body) {
     .join("");
 }
 
-export function wrapSimpleMessage(input) {
+export function composeSimpleMessage(input, pieces) {
   if (!input || typeof input !== "object") {
     throw new TypeError("wrapSimpleMessage: input object is required");
   }
@@ -37,42 +39,24 @@ export function wrapSimpleMessage(input) {
   }
   const safeCta = requireCta(cta, "cta");
 
-  const greeting = recipientName
-    ? `<mj-text css-class="t-text" color="${TOKENS.light.textPrimary}" font-size="${TOKENS.fontSize.base}" padding="0 0 ${TOKENS.space[3]} 0">
-         Hello, ${escapeHtml(recipientName)}.
-       </mj-text>`
-    : "";
+  const children = [
+    recipientName ? fill(pieces.greeting, { name: escapeHtml(recipientName) }) : "",
+    fill(pieces.headlineSpaced, { text: escapeHtml(headline) }),
+    fill(pieces.lead, { text: paragraphsHtml(body) }),
+    fill(pieces.button, safeCta),
+    footnote ? fill(pieces.footnote, { text: escapeHtml(footnote) }) : "",
+  ].join("");
 
-  const footnoteBlock = footnote
-    ? `<mj-text css-class="t-text-2" color="${TOKENS.light.textSecondary}" font-size="${TOKENS.fontSize.xs}" line-height="1.5" padding="${TOKENS.space[4]} 0 0 0">
-         ${escapeHtml(footnote)}
-       </mj-text>`
-    : "";
-
-  const bodyMjml = `
-    <mj-section css-class="t-bg-card" background-color="${TOKENS.light.bgCard}" padding="${TOKENS.space[4]} ${TOKENS.space[6]} ${TOKENS.space[8]} ${TOKENS.space[6]}">
-      <mj-column>
-        ${greeting}
-        <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize["2xl"]}" line-height="1.25" font-weight="700" padding="0 0 ${TOKENS.space[4]} 0">
-          ${escapeHtml(headline)}
-        </mj-text>
-        <mj-text css-class="t-text-2" color="${TOKENS.light.textSecondary}" font-size="${TOKENS.fontSize.base}" line-height="1.5" padding="0 0 ${TOKENS.space[6]} 0">
-          ${paragraphsHtml(body)}
-        </mj-text>
-        <mj-button css-class="t-cta" href="${safeCta.url}" background-color="${TOKENS.light.accent}" color="${TOKENS.light.accentText}" border-radius="${TOKENS.radius.md}" font-weight="600" font-size="${TOKENS.fontSize.base}" inner-padding="${TOKENS.space[3]} ${TOKENS.space[6]}" align="left">
-          ${safeCta.label}
-        </mj-button>
-        ${footnoteBlock}
-      </mj-column>
-    </mj-section>
-  `;
-
-  return buildShell({
+  return composeDocument(pieces, {
     title: subject,
     previewText,
-    bodyMjml,
+    body: fill(pieces.card, { children }),
     logoUrl,
     logoDarkUrl,
     supportEmail,
   });
+}
+
+export function wrapSimpleMessage(input) {
+  return composeSimpleMessage(input, PIECES);
 }

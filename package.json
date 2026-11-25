@@ -1,6 +1,6 @@
 {
   "name": "@scene-ready/design-system",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Scene Ready design system — canonical CSS tokens, Tailwind theme, self-hosted fonts, brand assets, themed email wrappers, and usage spec for Fire/EMS/SAR software.",
   "private": true,
   "license": "UNLICENSED",
@@ -40,10 +40,12 @@
     "*.css"
   ],
   "scripts": {
+    "build:emails": "node scripts/build-emails.mjs",
     "preview:emails": "node scripts/preview-emails.js",
     "vendor-fonts": "node scripts/vendor-fonts.mjs",
     "sync-dark": "node scripts/sync-dark.mjs",
-    "check": "node scripts/sync-dark.mjs --check && node scripts/check-tailwind.mjs && node scripts/check-contrast.mjs"
+    "test": "vitest run",
+    "check": "node scripts/sync-dark.mjs --check && node scripts/check-tailwind.mjs && node scripts/check-contrast.mjs && node scripts/build-emails.mjs --check && vitest run"
   },
   "keywords": [
     "design-system",
@@ -57,15 +59,10 @@
   "engines": {
     "node": ">=18"
   },
-  "peerDependencies": {
-    "mjml": "^4.18.0"
-  },
-  "peerDependenciesMeta": {
-    "mjml": {
-      "optional": true
-    }
-  },
   "devDependencies": {
-    "mjml": "^4.18.0"
+    "@cloudflare/vitest-pool-workers": "^0.14.9",
+    "mjml": "^4.18.0",
+    "parse5": "^8.1.1",
+    "vitest": "^4.1.12"
   }
 }

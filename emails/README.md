@@ -13,14 +13,16 @@ Each function takes a structured input object and returns a complete HTML docume
 ## Install
 
 ```sh
-npm install https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.7.0 mjml@^4.18.0
+npm install https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.9.0
 ```
 
-`mjml` is an optional peer dependency of the package: apps that only use `tokens.css` and the logo assets don't get it, so services that send email install it themselves.
+The wrappers have no runtime dependencies. They run in a Cloudflare Worker, in Node, or anywhere else with plain JavaScript.
 
-## Server-side only
+## How they're built
 
-These wrappers depend on `mjml`, which is a sizable Node-only package. **Do not bundle this module for the browser.** Call it from your transactional-mail worker / SES webhook / SendGrid handler.
+The templates are MJML (`scripts/email-source.js`), compiled when the package is built, not when an email is sent. `npm run build:emails` compiles each piece (the document shell, the card, the severity strip, a button, a heading…) to HTML in `emails/compiled.js`, which is committed. At send time the wrappers escape the input and put it into those pieces' slots.
+
+After changing a template or `emails/tokens.js`, run `npm run build:emails` and commit `emails/compiled.js`. `npm run check` fails if it's out of date, and its tests check that each wrapper's output matches what `mjml` makes of the whole document.
 
 ## Usage
 

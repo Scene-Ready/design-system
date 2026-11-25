@@ -1,7 +1,9 @@
 import { TOKENS, SEVERITIES } from "./tokens.js";
+import { PIECES } from "./compiled.js";
 import {
-  buildShell,
+  composeDocument,
   escapeHtml,
+  fill,
   requireCta,
   requireString,
   safeUrl,
@@ -52,33 +54,23 @@ function renderItem(item, isLast) {
   `;
 }
 
-function renderSection(section, isFirst) {
+function renderSection(section, isFirst, pieces) {
   requireString(section?.title, "section.title");
   if (!Array.isArray(section.items) || section.items.length === 0) {
     throw new TypeError("section.items is required and must be a non-empty array");
   }
 
-  const itemRows = section.items
+  const rows = section.items
     .map((item, idx) => renderItem(item, idx === section.items.length - 1))
     .join("");
 
-  const headingPadding = isFirst
-    ? `0 0 ${TOKENS.space[2]} 0`
-    : `${TOKENS.space[6]} 0 ${TOKENS.space[2]} 0`;
-
-  return `
-    <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize.lg}" font-weight="700" padding="${headingPadding}">
-      ${escapeHtml(section.title)}
-    </mj-text>
-    <mj-table padding="0">
-      <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:100%;border-collapse:collapse;">
-        ${itemRows}
-      </table>
-    </mj-table>
-  `;
+  const heading = isFirst ? pieces.sectionHeading : pieces.sectionHeadingSpaced;
+  return (
+    fill(heading, { text: escapeHtml(section.title) }) + fill(pieces.digestTable, { rows })
+  );
 }
 
-export function wrapDigest(input) {
+export function composeDigest(input, pieces) {
   if (!input || typeof input !== "object") {
     throw new TypeError("wrapDigest: input object is required");
   }
@@ -102,41 +94,23 @@ export function wrapDigest(input) {
 
   const safeCta = cta ? requireCta(cta, "cta") : null;
 
-  const introBlock = intro
-    ? `<mj-text css-class="t-text-2" color="${TOKENS.light.textSecondary}" font-size="${TOKENS.fontSize.base}" line-height="1.5" padding="0 0 ${TOKENS.space[4]} 0">
-         ${escapeHtml(intro)}
-       </mj-text>`
-    : "";
+  const children = [
+    fill(pieces.headline, { text: escapeHtml(headline) }),
+    intro ? fill(pieces.intro, { text: escapeHtml(intro) }) : "",
+    ...sections.map((section, idx) => renderSection(section, idx === 0, pieces)),
+    safeCta ? fill(pieces.buttonSpaced, safeCta) : "",
+  ].join("");
 
-  const sectionsMjml = sections
-    .map((section, idx) => renderSection(section, idx === 0))
-    .join("");
-
-  const ctaBlock = safeCta
-    ? `<mj-button css-class="t-cta" href="${safeCta.url}" background-color="${TOKENS.light.accent}" color="${TOKENS.light.accentText}" border-radius="${TOKENS.radius.md}" font-weight="600" font-size="${TOKENS.fontSize.base}" inner-padding="${TOKENS.space[3]} ${TOKENS.space[6]}" align="left" padding="${TOKENS.space[6]} 0 0 0">
-         ${safeCta.label}
-       </mj-button>`
-    : "";
-
-  const bodyMjml = `
-    <mj-section css-class="t-bg-card" background-color="${TOKENS.light.bgCard}" padding="${TOKENS.space[4]} ${TOKENS.space[6]} ${TOKENS.space[8]} ${TOKENS.space[6]}">
-      <mj-column>
-        <mj-text css-class="t-text-brand" color="${TOKENS.light.textBrand}" font-size="${TOKENS.fontSize["2xl"]}" line-height="1.25" font-weight="700" padding="0 0 ${TOKENS.space[3]} 0">
-          ${escapeHtml(headline)}
-        </mj-text>
-        ${introBlock}
-        ${sectionsMjml}
-        ${ctaBlock}
-      </mj-column>
-    </mj-section>
-  `;
-
-  return buildShell({
+  return composeDocument(pieces, {
     title: subject,
     previewText,
-    bodyMjml,
+    body: fill(pieces.card, { children }),
     logoUrl,
     logoDarkUrl,
     supportEmail,
   });
+}
+
+export function wrapDigest(input) {
+  return composeDigest(input, PIECES);
 }

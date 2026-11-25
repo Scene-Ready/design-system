@@ -11,7 +11,7 @@ This package ships:
 - **`BRANDING.md`** — the full design system specification (color, typography, spacing, components, accessibility).
 - **`./emails`** — themed email wrappers (`wrapSimpleMessage`, `wrapIncidentAlert`, `wrapDigest`) for transactional, incident, and digest emails. See [`emails/README.md`](./emails/README.md).
 
-`tokens.css`, fonts and assets are published as static files — no build step. The `scene-ready-brand-assets` command is a dependency-free Node script. The email wrappers are the only JavaScript code; they need `mjml` and are intended for server-side use only. `mjml` is an **optional peer dependency**, so apps that only use the tokens and assets don't install it — see [Themed emails](#themed-emails).
+`tokens.css`, fonts and assets are published as static files — no build step. The `scene-ready-brand-assets` command is a dependency-free Node script. The email wrappers are the only JavaScript code. Their MJML is compiled when the package is built, so they have no runtime dependencies and run in a Cloudflare Worker — see [Themed emails](#themed-emails).
 
 ## Install
 
@@ -182,11 +182,7 @@ Use `-reversed` variants on dark backgrounds.
 
 ### Themed emails
 
-The email wrappers need `mjml`, which this package lists as an optional peer dependency. Install it alongside the design system in any service that sends email:
-
-```sh
-npm install mjml@^4.18.0
-```
+The email wrappers need nothing besides this package, and run in a Cloudflare Worker or in Node:
 
 ```js
 import { wrapSimpleMessage } from "@scene-ready/design-system";
@@ -199,7 +195,7 @@ const html = wrapSimpleMessage({
 });
 ```
 
-Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrapDigest` — each returning a complete HTML document string. Light + dark themes activate automatically via `prefers-color-scheme`. **Server-side only** (needs `mjml`). See [`emails/README.md`](./emails/README.md) for full API and dark-mode client matrix.
+Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrapDigest` — each returning a complete HTML document string. Light + dark themes activate automatically via `prefers-color-scheme`. Pass plain text: the wrappers escape it and validate URLs. See [`emails/README.md`](./emails/README.md) for full API and dark-mode client matrix.
 
 ## Versioning
 
@@ -217,6 +213,6 @@ When changing a token value:
 
 1. Update `tokens.css` (the canonical source).
 2. Update any per-section table in `BRANDING.md` that quotes the value inline (the doc and the file must agree).
-3. When adding, renaming or removing a token, update `tailwind.css` to match, and `emails/tokens.js` (email clients can't read CSS variables), then run `npm run check`. It fails if `tailwind.css` points at a token `tokens.css` doesn't define, if a token pairing falls below its WCAG contrast minimum in either mode, or if a ratio in `BRANDING.md`'s contrast table doesn't match its colors.
+3. When adding, renaming or removing a token, update `tailwind.css` to match, and `emails/tokens.js` (email clients can't read CSS variables). After changing `emails/tokens.js`, run `npm run build:emails` to recompile the email pieces. Then run `npm run check`. It fails if `tailwind.css` points at a token `tokens.css` doesn't define, if a token pairing falls below its WCAG contrast minimum in either mode, or if a ratio in `BRANDING.md`'s contrast table doesn't match its colors, or if `emails/compiled.js` is out of date.
 4. If you touch a logo SVG, update the matching file in `assets/` and the inline SVG block in `BRANDING.md` together.
 5. Bump `version` in `package.json` and tag the commit (`git tag vX.Y.Z`) so consumers can pin to it.
