@@ -80,8 +80,8 @@
      Tailwind's precomputed fallback for browsers without color-mix(). */
 
   /* Status primitives: light-mode values. The base tone (text-success …) is for
-     dots, icons and borders; it fails AA as small text on its tint. For status
-     text use text-success-fg (mode-aware) or text-success-dark. */
+     the danger button and other light-only fills. For dots, bars, icons and borders
+     use *-success-mark (mode-aware); for status text, text-success-fg. */
   --color-success: var(--success);
   --color-success-bg: var(--success-bg);
   --color-success-light: var(--success-light);
@@ -147,6 +147,12 @@
   --color-danger-surface: var(--danger-surface);
   --color-info-surface: var(--info-surface);
   --color-neutral-surface: var(--neutral-surface);
+  /* Dots, bars and icons: bg-success-mark, border-danger-mark … (lift in dark mode) */
+  --color-success-mark: var(--success-mark);
+  --color-warning-mark: var(--warning-mark);
+  --color-danger-mark: var(--danger-mark);
+  --color-info-mark: var(--info-mark);
+  --color-neutral-mark: var(--neutral-mark);
 }
 
 @theme inline reference {
@@ -166,6 +172,10 @@
   --text-3xl: var(--text-3xl);
   --text-4xl: var(--text-4xl);
   --text-5xl: var(--text-5xl);
+
+  /* Letter-spacing for uppercase text: tracking-caps, tracking-eyebrow */
+  --tracking-caps: var(--tracking-caps);
+  --tracking-eyebrow: var(--tracking-eyebrow);
 
   /* ---------- Shape, depth, motion ---------- */
 

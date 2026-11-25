@@ -20,7 +20,7 @@ Pin a release tag through GitHub's tarball URL. It needs no git, SSH key or `ins
 ```json
 {
   "dependencies": {
-    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.9.0"
+    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.10.0"
   }
 }
 ```
@@ -71,14 +71,15 @@ Every mapped utility compiles to a `var()` of its token (`bg-navy-700` is `backg
 | Utilities | Token |
 |---|---|
 | `navy-50`…`navy-950`, `red-50`…`red-900`, `gray-50`…`gray-900` | the primitives of the same name |
-| `success`, `success-bg`, `success-light`, `success-dark` (and `warning`, `danger`, `info`; `danger-pale`, `info-pale`) | status primitives. The base tone is for dots, icons and borders; status text uses `-fg` |
+| `success`, `success-bg`, `success-light`, `success-dark` (and `warning`, `danger`, `info`; `danger-pale`, `info-pale`) | status primitives, light-mode values. For dots and icons use `-mark`; for status text, `-fg` |
 | `bg-page`, `bg-card`, `bg-elevated`, `bg-sidebar`, `bg-input`, `bg-hover`, `bg-disabled`, `bg-input-disabled`, `bg-secondary-fill`, `bg-secondary-fill-hover` | `--bg-*` |
 | `text-primary`, `text-secondary`, `text-tertiary`, `text-inverse`, `text-brand`, `text-disabled-fg` | `--text-*` |
 | `border-border`, `border-border-input` | `--border`, `--border-input` |
 | `accent`, `accent-hover`, `danger-hover`, `focus-ring` | the same names (`accent` is the fill: buttons, active bars) |
 | `accent-fg` | `--text-accent`: red text and links. Use `text-accent-fg`, never `text-accent`, for text |
-| `success-fg`, `success-surface` (and `warning`, `danger`, `info`, `neutral`) | mode-aware status |
+| `success-fg`, `success-surface`, `success-mark` (and `warning`, `danger`, `info`, `neutral`) | mode-aware status: text, tint, and dots/bars/icons |
 | `font-sans`, `font-condensed`, `font-mono`; `text-xs`…`text-5xl` | type tokens (Tailwind's line heights kept) |
+| `tracking-caps`, `tracking-eyebrow` | `--tracking-*`: letter-spacing for uppercase text (Tailwind's `tracking-wide` … stay available; don't use them for caps) |
 | `rounded-none`…`rounded-full`, `shadow-sm`…`shadow-2xl`, `ease-out`, `ease-in-out` | the same names |
 
 The semantic utilities in the middle rows switch with the theme (see [Dark mode](#dark-mode)), so components that use them need no `dark:` variants. The primitives don't switch. The theme declares the `dark:` variant with the same rule as the tokens; don't declare your own `@custom-variant dark`.
@@ -199,7 +200,7 @@ Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrap
 
 ## Versioning
 
-This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.9.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
+This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.10.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
 
 Always pin to a tag in your `package.json` rather than tracking `main` — token changes can be visually breaking even when they're technically backwards-compatible CSS.
 

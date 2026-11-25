@@ -13,7 +13,7 @@ Each function takes a structured input object and returns a complete HTML docume
 ## Install
 
 ```sh
-npm install https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.9.0
+npm install https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.10.0
 ```
 
 The wrappers have no runtime dependencies. They run in a Cloudflare Worker, in Node, or anywhere else with plain JavaScript.

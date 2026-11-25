@@ -16,7 +16,7 @@ export const TOKENS = Object.freeze({
     accent: "#C8102E",
     accentText: "#FFFFFF",
     link: "#C8102E",
-    // fg: status text (the -dark tones, AA on bg); base: the bar and other non-text marks.
+    // fg: status text (the -dark tones, AA on bg); base: dots, bars and other non-text marks (mirrors --*-mark).
     severity: Object.freeze({
       info: { fg: "#1D4ED8", base: "#2563EB", bg: "#EFF6FF" },
       success: { fg: "#047857", base: "#059669", bg: "#ECFDF5" },
@@ -70,6 +70,11 @@ export const TOKENS = Object.freeze({
     xl: "20px",
     "2xl": "24px",
     "3xl": "30px",
+  }),
+  // BRANDING §5.5: uppercase text. Mirrors --tracking-caps / --tracking-eyebrow.
+  tracking: Object.freeze({
+    caps: "0.05em",
+    eyebrow: "0.1em",
   }),
   layout: Object.freeze({
     contentWidth: "600px",

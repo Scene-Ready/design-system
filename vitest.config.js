@@ -18,7 +18,7 @@ export default defineConfig({
       },
       {
         // Compares the precompiled pieces with mjml, which only loads in Node.
-        test: { name: "node", environment: "node", include: ["test/parity.test.js"] },
+        test: { name: "node", environment: "node", include: ["test/parity.test.js", "test/tokens.test.js"] },
       },
     ],
   },

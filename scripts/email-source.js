@@ -119,7 +119,7 @@ const severityStrip = (severity) => {
   return `
     <mj-section css-class="t-sev-${severity}" background-color="${sev.bg}" padding="0">
       <mj-column css-class="t-sev-${severity}-bar" border-left="4px solid ${sev.base}" padding="${TOKENS.space[3]} ${TOKENS.space[5]}">
-        <mj-text css-class="t-sev-${severity}-fg" color="${sev.fg}" font-family="${TOKENS.font.condensed}" font-size="${TOKENS.fontSize.xs}" font-weight="600" letter-spacing="0.05em" padding="0">
+        <mj-text css-class="t-sev-${severity}-fg" color="${sev.fg}" font-family="${TOKENS.font.condensed}" font-size="${TOKENS.fontSize.xs}" font-weight="600" letter-spacing="${TOKENS.tracking.caps}" padding="0">
           {{label}}
         </mj-text>
       </mj-column>
