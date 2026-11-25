@@ -4,7 +4,7 @@ The Scene Ready design system — canonical CSS tokens, brand assets, and usage 
 
 This package ships:
 
-- **`tokens.css`** — design tokens as CSS custom properties (primitives + semantic aliases, with built-in dark mode via `[data-theme="dark"]`).
+- **`tokens.css`** — design tokens as CSS custom properties (primitives + semantic aliases, with built-in dark mode that follows the OS, or `data-theme` when set).
 - **`tailwind.css`** — a Tailwind CSS v4 theme that maps Tailwind's colours, fonts, sizes, radii, shadows and easing onto the tokens, so an app's utilities read `tokens.css` instead of copied values.
 - **`fonts/` — Barlow, Barlow Condensed and JetBrains Mono as self-hosted woff2 files with `fonts.css`. No app loads fonts from Google.
 - **`assets/`** — official logo SVGs (standard + reversed for dark backgrounds), app icon, and favicon.
@@ -20,7 +20,7 @@ Pin a release tag through GitHub's tarball URL. It needs no git, SSH key or `ins
 ```json
 {
   "dependencies": {
-    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.7.0"
+    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.8.0"
   }
 }
 ```
@@ -81,7 +81,7 @@ Every mapped utility compiles to a `var()` of its token (`bg-navy-700` is `backg
 | `font-sans`, `font-condensed`, `font-mono`; `text-xs`…`text-5xl` | type tokens (Tailwind's line heights kept) |
 | `rounded-none`…`rounded-full`, `shadow-sm`…`shadow-2xl`, `ease-out`, `ease-in-out` | the same names |
 
-The semantic utilities in the middle rows flip with `data-theme="dark"`, so components that use them need no `dark:` variants. The primitives don't flip.
+The semantic utilities in the middle rows switch with the theme (see [Dark mode](#dark-mode)), so components that use them need no `dark:` variants. The primitives don't switch. The theme declares the `dark:` variant with the same rule as the tokens; don't declare your own `@custom-variant dark`.
 
 The red and gray scales replace Tailwind's: only the brand steps compile, so `bg-red-600` produces no CSS. The brand grays differ from Tailwind's at 500 (`#8B95A5`, the input-border gray) and 600 (`#6B7280`), and add 650 (`#4B5563`, neutral status text). Tailwind's other palettes stay available; to switch them off as well, add `@theme { --color-*: initial; }` before the import.
 
@@ -89,13 +89,27 @@ Spacing needs no mapping: Tailwind's `0.25rem` step equals `--space-1`, so `p-4`
 
 ### Dark mode
 
-The semantic aliases flip automatically when `data-theme="dark"` is set on any ancestor:
+The semantic aliases, and Tailwind's `dark:` utilities, follow the OS color scheme unless `data-theme` says otherwise:
 
-```html
-<html data-theme="dark">
-  <!-- everything inside renders in dark mode -->
-</html>
-```
+| `<html>` | Result |
+|---|---|
+| no `data-theme` | follows the OS (`prefers-color-scheme`) |
+| `data-theme="dark"` | dark (also works on any element, for a dark region) |
+| `data-theme="light"` | light |
+
+- **An app with a theme setting** sets `data-theme` to the resolved `light` or `dark`, and nothing for System. Set it before first paint.
+- **An app that follows the OS** sets nothing.
+- **An app with no dark mode must pin `<html data-theme="light">`**, or it turns dark on dark-mode machines.
+
+See [BRANDING.md §9.4](./BRANDING.md#94-dark-mode) and [ADR 0001](./docs/adr/0001-follow-the-os-theme.md).
+
+#### Upgrading to 0.8.0
+
+Before 0.8.0 the tokens stayed light unless `data-theme="dark"` was set. They now follow the OS. On upgrade:
+
+- **No dark mode?** Add `data-theme="light"` to `<html>`, or the app goes dark on dark-mode machines.
+- **Declared your own `@custom-variant dark`?** Remove it; `tailwind.css` declares it now.
+- **Using a `.dark` class or `light-dark()`?** Switch to `data-theme`, or nothing to follow the OS.
 
 ### Favicons, fonts and other fixed-URL brand files
 
@@ -189,7 +203,7 @@ Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrap
 
 ## Versioning
 
-This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.7.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
+This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.8.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
 
 Always pin to a tag in your `package.json` rather than tracking `main` — token changes can be visually breaking even when they're technically backwards-compatible CSS.
 

@@ -565,7 +565,15 @@ All buttons use `--font-sans` at weight 600. Icon + text buttons have an 8px gap
 ### 9.4 Dark mode
 Dark mode is a first-class requirement, not an option: it's what crews use in apparatus cabs, command posts and at night.
 
-**Wiring**: set `data-theme="dark"` on `<html>`. The semantic aliases in `tokens.css` flip automatically, so components that use `--bg-page`, `--text-primary`, `--border`, `--success-fg` … need no per-component dark CSS. With Tailwind v4, declare `@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));`. Default to the OS `prefers-color-scheme` until the user picks a theme. Don't use a `.dark` class.
+**Wiring**: `tokens.css` follows the OS. With no `data-theme`, the semantic aliases switch with `prefers-color-scheme`; `data-theme="dark"` forces dark on that element and its descendants; `data-theme="light"` on `<html>` forces light. Components that use `--bg-page`, `--text-primary`, `--border`, `--success-fg` … need no per-component dark CSS. `tailwind.css` declares the `dark:` variant with the same rule, so `dark:` utilities switch together with the tokens; don't declare one in the app. Don't use a `.dark` class or `light-dark()`.
+
+| App | Sets on `<html>` |
+|---|---|
+| Has a theme setting (Light / Dark / System) | `data-theme` to the resolved `light` or `dark`; nothing when the user picks System |
+| Follows the OS, no setting | nothing |
+| **Has no dark mode** | **`data-theme="light"`** — without it the app turns dark on dark-mode machines |
+
+Set it before first paint (an inline script in `<head>` or server-rendered) so the page doesn't flash the wrong theme. `data-theme="light"` is honored on `<html>` only; `data-theme="dark"` works on any element. The decision is recorded in [ADR 0001](./docs/adr/0001-follow-the-os-theme.md).
 
 | Element | Token | Light | Dark |
 |---|---|---|---|
@@ -776,7 +784,7 @@ Heading 1: 20pt bold Navy `#1B2A4A`, 18pt space before. Heading 2: 14pt bold Nav
 ## 15. Design Tokens
 
 ### 15.1 CSS custom properties
-The canonical definitions live in [`tokens.css`](./tokens.css): primitives (`--navy-700`, `--gray-50`, `--space-4` …) and semantic aliases (`--bg-page`, `--text-primary`, `--border`, `--accent`, `--focus-ring`, `--success-fg` …) that flip with `data-theme="dark"`. Prefer the aliases whenever a value should change between modes; use primitives only when it shouldn't.
+The canonical definitions live in [`tokens.css`](./tokens.css): primitives (`--navy-700`, `--gray-50`, `--space-4` …) and semantic aliases (`--bg-page`, `--text-primary`, `--border`, `--accent`, `--focus-ring`, `--success-fg` …) that follow the OS color scheme unless `data-theme` sets one (§9.4). Prefer the aliases whenever a value should change between modes; use primitives only when it shouldn't.
 
 Install the package from a pinned tag and import the tokens once at the application root, before any component styles:
 
@@ -795,13 +803,12 @@ Apps on Tailwind import the shared theme after the tokens and keep no brand valu
 @import "tailwindcss";
 @import "@scene-ready/design-system/tokens.css";
 @import "@scene-ready/design-system/tailwind.css";
-@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 ```
 
-The theme maps Tailwind's colors (`navy-*`, `red-*`, `gray-*`, status tones and the semantic aliases as `bg-page`, `text-primary`, `text-success-fg`, `bg-danger-surface`, `text-accent-fg` …), fonts, sizes, radii, shadows and easing onto the token variables. The red and gray scales replace Tailwind's. For red text use `text-accent-fg`, not `text-accent` (the fill, Red 700 in both modes). See the [README](./README.md#tailwind) for the full mapping.
+The theme maps Tailwind's colors (`navy-*`, `red-*`, `gray-*`, status tones and the semantic aliases as `bg-page`, `text-primary`, `text-success-fg`, `bg-danger-surface`, `text-accent-fg` …), fonts, sizes, radii, shadows and easing onto the token variables. The theme also declares the `dark:` variant (§9.4), so apps declare none. The red and gray scales replace Tailwind's. For red text use `text-accent-fg`, not `text-accent` (the fill, Red 700 in both modes). See the [README](./README.md#tailwind) for the full mapping.
 
 ### 15.3 Changing a token
-Update `tokens.css`, any table here that quotes the value, `tailwind.css` (if a token is added, renamed or removed) and `emails/tokens.js` (email clients can't read CSS variables). Then run `npm run check`, which fails on a theme reference to a missing token, on a token pairing below its contrast minimum in either mode, or on a ratio in §8 that doesn't match its colors. Bump `version` in `package.json` and tag the release; apps bump their pin by hand.
+Update `tokens.css` (dark values in `[data-theme='dark']` only, then `npm run sync-dark` to regenerate the OS-following copy), any table here that quotes the value, `tailwind.css` (if a token is added, renamed or removed) and `emails/tokens.js` (email clients can't read CSS variables). Then run `npm run check`, which fails if the two dark copies differ, on a theme reference to a missing token, on a token pairing below its contrast minimum in either mode, or on a ratio in §8 that doesn't match its colors. Bump `version` in `package.json` and tag the release; apps bump their pin by hand.
 
 ---
 
