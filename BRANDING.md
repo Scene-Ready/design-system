@@ -705,7 +705,7 @@ Light is the default (inline styles). Dark activates in clients that honor `pref
 
 ### 11.2 Technical rules
 - The wrappers handle table layout, inline styles and bulletproof buttons (MJML). Hand-built email follows the same rules.
-- **Logos are hosted PNGs in production.** Pass `logoUrl` / `logoDarkUrl`. The default SVGs on GitHub are for development only: Outlook's Word renderer and several webmail clients don't render SVG. Host at 2× size and keep `alt="Scene Ready"`.
+- **Logos are hosted PNGs in production.** Pass `logoUrl` / `logoDarkUrl` pointing at `scene-ready-brandmark.png` and `-reversed.png` (480×240, 2× the header), served by an app that runs `scene-ready-brand-assets`. The default SVGs on GitHub are for development only: Outlook's Word renderer and several webmail clients don't render SVG. Keep `alt="Scene Ready"`.
 - Fonts: Barlow first, falling back to Arial (§5.2). Web fonts load only in Apple Mail and iOS, and that's fine.
 - Always send a plain-text part alongside the HTML, and give every CTA a visible fallback URL.
 - Minimum text is 14px for body copy. 12px is only for the footer, status labels (badges, the status strip) and metadata lines such as timestamps (§5.3). CTA tap targets are at least 44px tall.
@@ -838,6 +838,8 @@ All brand files ship in this package under `assets/`. Apps never commit copies: 
 |---|---|---|
 | `scene-ready-brandmark.svg` | 400×200 | Parent lockup, navy; text outlined |
 | `scene-ready-brandmark-reversed.svg` | 400×200 | Parent lockup, reversed; text outlined |
+| `scene-ready-brandmark.png` | 480×240 | Parent lockup for email, 2× the 240px header (§11.2); exported from the SVG |
+| `scene-ready-brandmark-reversed.png` | 480×240 | Reversed lockup for email; exported from the SVG |
 | `scene-ready-icon.svg` | 100×100 | Icon mark, navy |
 | `scene-ready-icon-reversed.svg` | 100×100 | Icon mark, reversed |
 | `scene-ready-appicon.svg` | 512×512 | Navy rounded square, rx 96 |
@@ -847,7 +849,7 @@ All brand files ship in this package under `assets/`. Apps never commit copies: 
 
 Product icons (`product-icon.svg`, a product's own `favicon.ico`) live in their product's repo.
 
-**To be produced**: PNG exports for email (36/72px icon, 240/480px lockup to match the email header at 2×, light and reversed), monochrome marks (1-color navy, white and black) for embroidery, stamps and fax, the Technology and Training marks, and an OG / social image template.
+**To be produced**: PNG exports of the icon for email (36/72px), monochrome marks (1-color navy, white and black) for embroidery, stamps and fax, the Technology and Training marks, and an OG / social image template.
 
 ---
 
