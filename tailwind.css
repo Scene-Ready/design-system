@@ -168,16 +168,25 @@
   --font-condensed: var(--font-condensed);
   --font-mono: var(--font-mono);
 
-  /* Sizes keep Tailwind's paired line heights; the sizes themselves are the tokens. */
+  /* Sizes and their paired line heights (BRANDING §5.3): text-base is 16px on 1.6. */
   --text-xs: var(--text-xs);
+  --text-xs--line-height: var(--leading-xs);
   --text-sm: var(--text-sm);
+  --text-sm--line-height: var(--leading-sm);
   --text-base: var(--text-base);
+  --text-base--line-height: var(--leading-base);
   --text-lg: var(--text-lg);
+  --text-lg--line-height: var(--leading-lg);
   --text-xl: var(--text-xl);
+  --text-xl--line-height: var(--leading-xl);
   --text-2xl: var(--text-2xl);
+  --text-2xl--line-height: var(--leading-2xl);
   --text-3xl: var(--text-3xl);
+  --text-3xl--line-height: var(--leading-3xl);
   --text-4xl: var(--text-4xl);
+  --text-4xl--line-height: var(--leading-4xl);
   --text-5xl: var(--text-5xl);
+  --text-5xl--line-height: var(--leading-5xl);
 
   /* Letter-spacing for uppercase text: tracking-caps, tracking-eyebrow */
   --tracking-caps: var(--tracking-caps);

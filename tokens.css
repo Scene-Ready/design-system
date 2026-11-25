@@ -89,6 +89,17 @@
   --text-4xl:  2.25rem;
   --text-5xl:  3rem;
 
+  /* Line height paired with each size (BRANDING §5.3) */
+  --leading-xs:   1.5;
+  --leading-sm:   1.5;
+  --leading-base: 1.6;
+  --leading-lg:   1.5;
+  --leading-xl:   1.4;
+  --leading-2xl:  1.3;
+  --leading-3xl:  1.25;
+  --leading-4xl:  1.2;
+  --leading-5xl:  1.1;
+
   /* Letter-spacing for uppercase text (BRANDING §5.5): caps for badges, table
      headers and small labels; eyebrow for the marketing labels above H2s. */
   --tracking-caps:    0.05em;
