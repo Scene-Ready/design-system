@@ -20,7 +20,7 @@ Pin a release tag through GitHub's tarball URL. It needs no git, SSH key or `ins
 ```json
 {
   "dependencies": {
-    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.9.0"
+    "@scene-ready/design-system": "https://codeload.github.com/Scene-Ready/design-system/tar.gz/refs/tags/v0.10.0"
   }
 }
 ```
@@ -79,7 +79,7 @@ Every mapped utility compiles to a `var()` of its token (`bg-navy-700` is `backg
 | `accent-fg` | `--text-accent`: red text and links. Use `text-accent-fg`, never `text-accent`, for text |
 | `success-fg`, `success-surface`, `success-mark` (and `warning`, `danger`, `info`, `neutral`) | mode-aware status: text, tint, and dots/bars/icons |
 | `brand-surface`, `brand-mark` | the Brand status (ON SCENE): `bg-brand-surface text-brand`, dot `bg-brand-mark` |
-| `font-sans`, `font-condensed`, `font-mono`; `text-xs`…`text-5xl` | type tokens (Tailwind's line heights kept) |
+| `font-sans`, `font-condensed`, `font-mono`; `text-xs`…`text-5xl` | type tokens; each size sets its §5.3 line height (`--leading-*`) |
 | `tracking-caps`, `tracking-eyebrow` | `--tracking-*`: letter-spacing for uppercase text (Tailwind's `tracking-wide` … stay available; don't use them for caps) |
 | `rounded-none`…`rounded-full`, `shadow-sm`…`shadow-2xl`, `ease-out`, `ease-in-out` | the same names |
 
@@ -201,7 +201,7 @@ Three wrappers are available — `wrapSimpleMessage`, `wrapIncidentAlert`, `wrap
 
 ## Versioning
 
-This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.9.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
+This package is consumed via git, not the npm registry. Versions are tracked as git tags (`v0.1.0`, …, `v0.10.0`) on this repo. When a mark changes, cut a release, then bump each app's pin by hand.
 
 Always pin to a tag in your `package.json` rather than tracking `main` — token changes can be visually breaking even when they're technically backwards-compatible CSS.
 

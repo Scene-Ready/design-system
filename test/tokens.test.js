@@ -62,6 +62,20 @@ describe("emails/tokens.js", () => {
 describe("BRANDING.md", () => {
   // Uppercase text uses --tracking-caps or --tracking-eyebrow (§5.5); the guide's own values must too.
   // The lockup's spacing (marked ≈) is drawn into the artwork, not set as text.
+  it("gives each size the line height its --leading-* token holds (§5.3)", () => {
+    const guide = readFileSync(new URL("../BRANDING.md", import.meta.url), "utf8");
+    const rows = [...guide.matchAll(/^\| `--text-(\w+)` \| [^|]+ \| ([\d.]+) \|/gm)];
+    expect(rows.map((m) => m[1])).toEqual(["xs", "sm", "base", "lg", "xl", "2xl", "3xl", "4xl", "5xl"]);
+    for (const [, size, lineHeight] of rows) expect(resolve(light, `--leading-${size}`), size).toBe(lineHeight);
+  });
+
+  it("maps every --leading-* token onto its Tailwind size", () => {
+    const theme = readFileSync(new URL("../tailwind.css", import.meta.url), "utf8");
+    for (const size of ["xs", "sm", "base", "lg", "xl", "2xl", "3xl", "4xl", "5xl"]) {
+      expect(theme).toContain(`--text-${size}--line-height: var(--leading-${size});`);
+    }
+  });
+
   it("quotes only the tracking tokens' letter-spacing", () => {
     const guide = readFileSync(new URL("../BRANDING.md", import.meta.url), "utf8");
     const allowed = new Set([resolve(light, "--tracking-caps"), resolve(light, "--tracking-eyebrow")]);

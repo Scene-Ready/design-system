@@ -278,6 +278,8 @@ A bundled app may import `@scene-ready/design-system/fonts.css` instead. Use onl
 | Office docs / slides without Barlow installed | Arial | Arial Narrow | Consolas |
 
 ### 5.3 Screen type scale
+Each size's line height is its `--leading-*` token (`--leading-base` for `--text-base`); Tailwind's `text-*` utilities set both.
+
 | Token | Size | Line height | Weight | Use |
 |---|---|---|---|---|
 | `--text-xs` | 12px / 0.75rem | 1.5 | 400 | Captions, timestamps, badges |
