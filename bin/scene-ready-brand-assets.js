@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// Copies the seven parent-brand files from this package into an app's static
+// Copies the nine parent-brand files from this package into an app's static
 // root, so they are served at fixed URLs (/favicon.ico, /scene-ready-favicon.svg …),
 // and the self-hosted fonts into <dir>/fonts/ (/fonts/fonts.css and its woff2 files).
 // Usage: scene-ready-brand-assets <dir> [--skip <file>]...
-// --skip leaves one of the seven out, e.g. `--skip favicon.ico` in an app that
+// --skip leaves one of the nine out, e.g. `--skip favicon.ico` in an app that
 // ships its own product favicon.ico in the same folder.
 import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -17,6 +17,9 @@ const BRAND_FILES = [
   "scene-ready-icon-reversed.svg",
   "scene-ready-brandmark.svg",
   "scene-ready-brandmark-reversed.svg",
+  // PNG exports of the two brandmarks, for email (BRANDING.md §11.2).
+  "scene-ready-brandmark.png",
+  "scene-ready-brandmark-reversed.png",
 ];
 
 const source = join(dirname(fileURLToPath(import.meta.url)), "..", "assets");

@@ -126,11 +126,12 @@ Browsers ask for `/favicon.ico` by itself, and `<link>` tags need stable URLs, s
 }
 ```
 
-`scene-ready-brand-assets <dir>` copies all seven files below, flat, into `<dir>` (less any named with `--skip`), replaces `<dir>/fonts/` with the package's fonts, and exits non-zero if anything is missing from the package. Gitignore them in the app:
+`scene-ready-brand-assets <dir>` copies all nine files below, flat, into `<dir>` (less any named with `--skip`), replaces `<dir>/fonts/` with the package's fonts, and exits non-zero if anything is missing from the package. Gitignore them in the app:
 
 ```gitignore
 public/favicon.ico
 public/scene-ready-*.svg
+public/scene-ready-*.png
 public/fonts/
 ```
 
@@ -176,6 +177,7 @@ import brandmark from "@scene-ready/design-system/assets/scene-ready-brandmark.s
 Available files in `assets/`:
 
 - `scene-ready-brandmark.svg` / `-reversed.svg`: full wordmark
+- `scene-ready-brandmark.png` / `-reversed.png`: the same at 480×240, for email, where SVG doesn't render. An app serving them (via `scene-ready-brand-assets`) gives email senders a URL to pass as `logoUrl` / `logoDarkUrl`
 - `scene-ready-icon.svg` / `-reversed.svg`: icon mark
 - `scene-ready-appicon.svg`: square app icon
 - `scene-ready-favicon.svg` / `favicon.ico`: favicon
