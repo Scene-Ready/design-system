@@ -74,7 +74,7 @@ Every mapped utility compiles to a `var()` of its token (`bg-navy-700` is `backg
 | `success`, `success-bg`, `success-light`, `success-dark` (and `warning`, `danger`, `info`; `danger-pale`, `info-pale`) | status primitives, light-mode values. For dots and icons use `-mark`; for status text, `-fg` |
 | `bg-page`, `bg-card`, `bg-elevated`, `bg-sidebar`, `bg-input`, `bg-hover`, `bg-disabled`, `bg-input-disabled`, `bg-secondary-fill`, `bg-secondary-fill-hover` | `--bg-*` |
 | `text-primary`, `text-secondary`, `text-tertiary`, `text-inverse`, `text-brand`, `text-disabled-fg` | `--text-*` |
-| `border-border`, `border-border-input` | `--border`, `--border-input` |
+| `border-border`, `border-border-input` | `--border`, `--border-input`. Never `border-input` (the input's white fill), `bg-secondary` (grey text colour; the button fill is `bg-secondary-fill`) or `text-disabled` (the disabled background; text is `text-disabled-fg`) |
 | `accent`, `accent-hover`, `danger-hover`, `focus-ring` | the same names (`accent` is the fill: buttons, active bars) |
 | `accent-fg` | `--text-accent`: red text and links. Use `text-accent-fg`, never `text-accent`, for text |
 | `success-fg`, `success-surface`, `success-mark` (and `warning`, `danger`, `info`, `neutral`) | mode-aware status: text, tint, and dots/bars/icons |
@@ -212,7 +212,7 @@ See [`BRANDING.md`](./BRANDING.md) for the full design system specification: col
 
 When changing a token value:
 
-1. Update `tokens.css` (the canonical source).
+1. Update `tokens.css` (the canonical source). Edit dark values in `[data-theme='dark']` only, then run `npm run sync-dark` to regenerate the `prefers-color-scheme` block.
 2. Update any per-section table in `BRANDING.md` that quotes the value inline (the doc and the file must agree).
 3. When adding, renaming or removing a token, update `tailwind.css` to match, and `emails/tokens.js` (email clients can't read CSS variables). After changing `emails/tokens.js`, run `npm run build:emails` to recompile the email pieces. Then run `npm run check`. It fails if `tailwind.css` points at a token `tokens.css` doesn't define, if a token pairing falls below its WCAG contrast minimum in either mode, or if a ratio in `BRANDING.md`'s contrast table doesn't match its colors, or if `emails/compiled.js` is out of date.
 4. If you touch a logo SVG, update the matching file in `assets/` and the inline SVG block in `BRANDING.md` together.

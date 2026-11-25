@@ -141,7 +141,7 @@ This is the same artwork as `assets/scene-ready-icon.svg`; if one changes, chang
 - Tagline: Barlow **400**, all caps, letter-spacing ≈ 0.27em (3px at 11px), Gray 400 (or white at 50% when reversed).
 - The icon sits to the left of the wordmark; its height roughly spans the wordmark cap height plus the tagline.
 - The text in the brandmark files is outlined (paths, not `<text>`), so the lockup renders the same in email clients, Office, print RIPs and design tools with no font installed.
-- **Typeset wordmark** (where images are blocked or a lockup won't fit): Barlow Condensed 700, 18–20px, letter-spacing 0.08em, uppercase, navy or white.
+- **Typeset wordmark** (where images are blocked or a lockup won't fit): Barlow Condensed 700, 18–20px, letter-spacing `--tracking-eyebrow` (0.1em), uppercase, navy or white. The lockup's wider spacing (0.14em, 0.27em) is drawn into the artwork; text never copies it.
 
 ### Clear space and minimum size
 | | Rule |
@@ -190,7 +190,7 @@ All values below live in [`tokens.css`](./tokens.css). Reference the token, not 
 |---|---|---|
 | Gray 900 `--gray-900` | `#111827` | Primary text (light) |
 | Gray 800 `--gray-800` | `#1F2937` | Bold secondary text |
-| Gray 700 `--gray-700` | `#374151` | Emphasized secondary text; email body text |
+| Gray 700 `--gray-700` | `#374151` | Emphasized secondary text |
 | Gray 650 `--gray-650` | `#4B5563` | Neutral status text on tints |
 | Gray 600 `--gray-600` | `#6B7280` | Secondary text, labels, timestamps, icons (light) |
 | Gray 500 `--gray-500` | `#8B95A5` | Input borders (3:1 on white) |
@@ -503,10 +503,10 @@ All buttons use `--font-sans` at weight 600. Icon + text buttons have an 8px gap
 | Padding | 0 12px |
 | Font | 16px Barlow 400, `--text-primary` |
 | Placeholder | `--text-tertiary` |
-| Focus | 2px solid `--focus-ring` + `0 0 0 3px var(--focus-ring-shadow)` |
-| Error | 2px solid `--danger` + `0 0 0 3px rgba(220, 38, 38, 0.15)`; message below in 13px `--danger-fg`, 4px top margin, with an icon |
+| Focus | 2px solid `--focus-ring` + `0 0 0 4px var(--focus-ring-shadow)` (§9.5) |
+| Error | 2px solid `--danger-mark` + `0 0 0 3px rgba(220, 38, 38, 0.15)`; message below in 14px `--danger-fg`, 4px top margin, with an icon |
 | Disabled | `--bg-input-disabled`, `--text-disabled` |
-| Label | 13–14px Barlow 500, `--text-secondary`, 4px above the input; always visible, never placeholder-only |
+| Label | 14px Barlow 500, `--text-secondary` (`--text-primary` on elevated surfaces such as modals, §5.4), 4px above the input; always visible, never placeholder-only |
 
 #### Cards
 | Property | Value |
@@ -545,7 +545,7 @@ All buttons use `--font-sans` at weight 600. Icon + text buttons have an 8px gap
 | Position | Fixed, top right, 16px from the edges |
 | Size | 360px max width, 8px radius, `--shadow-lg` |
 | Style | `--bg-elevated` with a 4px left border in the status mark (`--*-mark`) |
-| Content | 20px status icon + 14px bold title + 13px `--text-secondary` description; X to dismiss |
+| Content | 20px status icon + 14px bold title + 14px `--text-primary` description (toasts are elevated, §5.4); X to dismiss |
 | Dismiss | Success and info after 5s; warning and danger persist |
 | Enter | Slide in from the right, 300ms `--ease-out` |
 
@@ -554,13 +554,13 @@ All buttons use `--font-sans` at weight 600. Icon + text buttons have an 8px gap
 |---|---|
 | Layout | Centered in the parent card or content area, 12px between elements |
 | Icon | 48px, Gray 300 |
-| Heading | 18px Barlow 600, `--text-primary` |
+| Heading | 18px Barlow 600, `--text-brand` |
 | Description | 14px Barlow 400, `--text-secondary` |
 | Action | Primary or outline button, centered below |
 
 ### 9.3 Spacing, radius, elevation
-- **Spacing**: 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96 (`--space-1` … `--space-24`). Use only these values for margin, padding and gap.
-- **Radius**: 0 (tables) · 4 (badges, tags) · 6 (buttons, inputs) · 8 (cards) · 12 (modals, hero) · full (avatars, pills). Don't mix rounded and sharp corners within one card.
+- **Spacing**: 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96 (`--space-1` … `--space-24`). Use only these values for margin, padding and gap. The one exception is the badge's `3px 10px` padding (§7), which keeps a 12px label at 24px tall.
+- **Radius**: 0 (tables) · 4 (tags) · 6 (buttons, inputs) · 8 (cards) · 12 (modals, hero) · full (avatars, badges and other pills). Don't mix rounded and sharp corners within one card.
 - **Shadow**: `--shadow-sm` → `--shadow-2xl`. In dark mode surfaces get lighter as they rise (page Navy 900 → card Navy 700 → elevated Navy 500), and shadows deepen.
 
 ### 9.4 Dark mode
@@ -653,7 +653,7 @@ Marketing pages use the same tokens as the apps with more room to breathe and mo
 | Element | Spec |
 |---|---|
 | Header | White (or Navy 700 over a hero), 64–72px tall, parent lockup left (≥ 160px wide), nav in Barlow 500 16px, one **Red 700 primary CTA** at right ("Request a Demo") |
-| Hero | Navy 900, or a photo with a 60–80% navy overlay. H1 Barlow 700 48–64px white, `letter-spacing: -0.01em`; subhead 18–20px Gray 100 or 300; primary red CTA + white outline secondary |
+| Hero | Navy 900, or a photo with a 60–80% navy overlay. H1 Barlow 700 48px (`--text-5xl`), up to 64px on wide screens, white, `letter-spacing: -0.01em`; subhead 18–20px Gray 100 or 300; primary red CTA + white outline secondary |
 | Section rhythm | 80–96px vertical padding on desktop, 48–64px on mobile. Alternate white and Gray 50 sections, with one Navy 700 band per page at most (e.g. testimonial or final CTA) |
 | Eyebrow labels | Barlow Condensed 600, 14px, uppercase, `--tracking-eyebrow`, **Red 700** on light backgrounds or Red 300 on dark, above section H2s |
 | Content width | 1280px max grid; long-form text 65–75 characters per line (≈ 680px) |
@@ -687,7 +687,7 @@ Gray 50 page background, 600px column
       "Scene Ready · sceneready.tech", why-you-got-this line, support address
 ```
 
-Light is the default (inline styles). Dark activates in clients that honor `prefers-color-scheme` or Outlook's `[data-ogsc]`: surfaces flip to Navy 900 / 700, links lift to Red 300 and status text to the dark tones. New email goes through these wrappers; product-specific templates move to them.
+Light is the default (inline styles). Dark activates in clients that honor `prefers-color-scheme` or Outlook's `[data-ogsc]`: surfaces flip to Navy 900 / 700, links lift to Red 300 and status text to its dark-mode `--*-fg` tones (the lifted and pale colours, §4.3). New email goes through these wrappers; product-specific templates move to them.
 
 ### 11.2 Technical rules
 - The wrappers handle table layout, inline styles and bulletproof buttons (MJML). Hand-built email follows the same rules.
@@ -708,7 +708,7 @@ Firstname Lastname
 Title | Scene Ready
 sceneready.tech
 ```
-Name in Barlow/Arial 600, 14px, Navy 700. Other lines in 13px Gray 600. You may add a 16px red rule and the typeset wordmark. No image-only signatures, quotes, or rows of social icons.
+Name in Barlow/Arial 600, 14px, Navy 700. Other lines in 14px Gray 600. You may add a 16px red rule and the typeset wordmark. No image-only signatures, quotes, or rows of social icons.
 
 ---
 
@@ -721,7 +721,7 @@ Covers reports, letterhead, training handouts, exercise documents (HSEEP situati
 |---|---|---|
 | Margins | 0.75in (19mm) all sides; 1in outer for bound docs | 20mm |
 | Grid | 12 columns, 0.25in (6mm) gutter | same |
-| Header | Icon (6–8mm) + typeset "SCENE READY" in Barlow Condensed 700 8–9pt Navy, left; document title in 8–9pt Gray 600, right; 0.5pt Gray 300 rule below |
+| Header | Icon (6–8mm) + typeset "SCENE READY" in Barlow Condensed 700 8–9pt Navy, +0.1em, left; document title in 8–9pt Gray 600, right; 0.5pt Gray 300 rule below |
 | Footer | "Page 3 of 12" right; classification or "Prepared to Perform." left; 8pt Gray 600 |
 
 ### 12.2 Print type scale
@@ -730,16 +730,16 @@ Covers reports, letterhead, training handouts, exercise documents (HSEEP situati
 | Cover title | 32–40pt / 1.1 | Barlow 700 | Navy 700 |
 | H1 | 20pt / 24pt | Barlow 700 | Navy 700 |
 | H2 | 14pt / 18pt | Barlow 700 | Navy 700 |
-| H3 / eyebrow | 10pt / 12pt, uppercase, +0.08em | Barlow Condensed 600 | Red 700 or Navy 700 |
+| H3 / eyebrow | 10pt / 12pt, uppercase, +0.1em | Barlow Condensed 600 | Navy 700 for an H3; Red 700 for an eyebrow above a heading |
 | Body | **10–11pt / 14–15pt** | Barlow 400 | Gray 900 |
 | Table text | 9pt / 12pt | Barlow 400; numbers in JetBrains Mono | Gray 900 |
-| Table header | 8–9pt uppercase, +0.05em | Barlow Condensed 600 | White on Navy 700, or Gray 700 on Navy 50 |
+| Table header | 9pt uppercase, +0.05em | Barlow Condensed 600 | White on Navy 700, or Gray 700 on Navy 50 |
 | Captions, footnotes | 8pt / 10pt | Barlow 400 | Gray 600 |
 | Minimum | **8pt** captions / **9pt** essential text | | |
 
 ### 12.3 Page elements
 - **Cover page**: full-bleed Navy 700 or 900 panel on the upper 40–60% with the reversed lockup (≥ 60mm wide), title in white, and document metadata (date, version, org) in Gray 100. The lower portion stays white. A 3pt Red 700 rule may mark the panel's edge.
-- **Letterhead**: parent lockup top left (40–50mm wide), contact block top right in 8pt Gray 600, 0.5pt Red 700 rule under the header, nothing else.
+- **Letterhead**: parent lockup top left (40–50mm wide), contact block top right in 9pt Gray 600, 0.5pt Red 700 rule under the header, nothing else.
 - **Callouts**: Navy 50 background, 3pt Navy 700 left rule. Warnings use the warning tint with a warning-tone left rule **plus** a "CAUTION" or "WARNING" label.
 - **Tables**: zebra rows in Gray 100 or Navy 50 at 50%, no vertical rules, 0.5pt Gray 300 horizontal rules.
 - **Status in print**: use the §7 labels. Documents are often photocopied in grayscale, so the words carry the meaning on their own.
@@ -753,7 +753,7 @@ Covers reports, letterhead, training handouts, exercise documents (HSEEP situati
 
 ### 12.5 Word / Google Docs template settings
 Where Barlow can't be embedded, use Arial for headings and body and Arial Narrow for labels.
-Heading 1: 20pt bold Navy `#1B2A4A`, 18pt space before. Heading 2: 14pt bold Navy. Heading 3: 10pt bold caps, Red `#C8102E`. Normal: 10.5pt, 1.15 line spacing, 6pt after, `#111827`. Table style: header row Navy fill with white bold text, banded rows `#F3F4F6`.
+Heading 1: 20pt bold Navy `#1B2A4A`, 18pt space before. Heading 2: 14pt bold Navy. Heading 3: 10pt bold caps, character spacing expanded by 1pt (+0.1em), Navy. Normal: 10.5pt, exactly 15pt line spacing, 6pt after, `#111827`. Table style: header row Navy fill with white bold text, banded rows `#F3F4F6`.
 
 ---
 
@@ -833,7 +833,7 @@ All brand files ship in this package under `assets/`. Apps never commit copies: 
 
 Product icons (`product-icon.svg`, a product's own `favicon.ico`) live in their product's repo.
 
-**To be produced**: PNG exports for email (36/72px icon, 200/400px lockup, light and reversed), monochrome marks (1-color navy, white and black) for embroidery, stamps and fax, the Technology and Training marks, and an OG / social image template.
+**To be produced**: PNG exports for email (36/72px icon, 240/480px lockup to match the email header at 2×, light and reversed), monochrome marks (1-color navy, white and black) for embroidery, stamps and fax, the Technology and Training marks, and an OG / social image template.
 
 ---
 
@@ -857,7 +857,7 @@ Product icons (`product-icon.svg`, a product's own `favicon.ico`) live in their 
 ### Typography
 - ✓ Barlow everywhere, Barlow Condensed for uppercase labels, mono for numbers in columns
 - ✓ Self-host the fonts; use Arial / Arial Narrow where Barlow can't load
-- ✓ Stick to the type scale
+- ✓ Stick to the type scale (the marketing hero H1, §10, is the one size above it)
 - ✗ Don't use more than two weights per view, essential text below 14px (screen) or 9pt (print), italics for emphasis, or gray headings
 - ✗ Don't set essential text, including timestamps, in `--text-tertiary`
 
