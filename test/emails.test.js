@@ -76,6 +76,16 @@ describe("wrapSimpleMessage", () => {
     expect(paddingLeft(style("t-cta"))).toBe(paddingLeft(style("t-text-brand")));
   });
 
+  it("leaves page background above the logo", () => {
+    const html = wrapSimpleMessage(FIXTURES.simple);
+    // A section is a centered 600px div; the body's own wrapper div isn't one.
+    const isSection = (el) =>
+      el.tagName === "div" && /margin:0px auto/.test(el.attrs.find((a) => a.name === "style")?.value ?? "");
+    const firstSection = elements(parse(html)).find(isSection);
+    expect(hasClass(firstSection, "t-bg-page")).toBe(true);
+    expect(text(firstSection).trim()).toBe("");
+  });
+
   it("escapes HTML in user content", () => {
     const html = wrapSimpleMessage({
       ...FIXTURES.simple,

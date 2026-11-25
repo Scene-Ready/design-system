@@ -84,6 +84,7 @@ ${Object.entries(WEB_FONTS)
     <mj-style>${STYLE_BLOCK}</mj-style>
   </mj-head>
   <mj-body css-class="t-bg-page" background-color="${TOKENS.light.bgPage}" width="${TOKENS.layout.contentWidth}">
+    <mj-section css-class="t-bg-page" background-color="${TOKENS.light.bgPage}" padding="${TOKENS.space[6]} 0 0 0"></mj-section>
     <mj-section css-class="t-logo-light-section t-bg-card" background-color="${TOKENS.light.bgCard}" padding="${LOGO_SECTION_PADDING}">
       <mj-column>
         <mj-image src="{{logoUrl}}" alt="Scene Ready" width="180px" align="center" padding="0" />
