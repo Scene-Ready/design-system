@@ -223,7 +223,7 @@ Status colors carry meaning; they are not decoration. Each status has four tones
 | Neutral | `--neutral-surface` | `--neutral-fg` |
 
 **Rules**
-- Never use brand navy or red as a status color. Brand red is not "danger"; danger is `#DC2626`.
+- Never use brand navy or red as a status color, with one exception: the Brand status (§7), which marks a unit On Scene. Brand red is not "danger"; danger is `#DC2626`.
 - Use no more than one semantic color per component.
 - Semantic colors cover less than 5% of any screen or page.
 
@@ -283,7 +283,7 @@ A bundled app may import `@scene-ready/design-system/fonts.css` instead. Use onl
 | `--text-xs` | 12px / 0.75rem | 1.5 | 400 | Captions, timestamps, badges |
 | `--text-sm` | 14px / 0.875rem | 1.5 | 400–500 | Labels, helper text, table cells |
 | `--text-base` | 16px / 1rem | 1.6 | 400 | Body, inputs |
-| `--text-lg` | 18px / 1.125rem | 1.5 | 500–600 | Lead paragraphs, card titles (stay within the page's two weights, §5.5) |
+| `--text-lg` | 18px / 1.125rem | 1.5 | 500–600 | Lead paragraphs, card titles |
 | `--text-xl` | 20px / 1.25rem | 1.4 | 600 | Card headings, section labels, modal titles |
 | `--text-2xl` | 24px / 1.5rem | 1.3 | 600–700 | Page section headings (H3) |
 | `--text-3xl` | 30px / 1.875rem | 1.25 | 700 | Page headings (H2) |
@@ -308,7 +308,7 @@ These are **semantic aliases**: dark mode flips them automatically (§9.4). Alwa
 On dark-mode **elevated surfaces** (menus, popovers, dropdowns on Navy 500), use `--text-primary` only: secondary text there is 4.1:1.
 
 ### 5.5 Rules
-- Use no more than **two weights** per screen or page (typically 400 plus 600 or 700).
+- Take weights from the type scale (§5.3) and the component specs; never add a weight for emphasis. Running text stays at 400, with 600 for bold.
 - Headings are Navy 700 (or white on dark), never gray and never red.
 - Red text is for links and highlighted terms only. Never set body paragraphs in red.
 - The minimum size for essential text is **14px** on screen and **9pt** in print. Anything smaller is a caption, badge or timestamp.
@@ -326,7 +326,7 @@ On dark-mode **elevated surfaces** (menus, popovers, dropdowns on Navy 500), use
 | Style | Outline only, stroke 1.5–2, round caps and joins. **Never filled** |
 | Sizes | 16px in buttons · 20px default (nav, tables) · 24px in cards and headers · 32–48px in empty states |
 | Color | Inherit from text color. Interactive hover goes to Red 700 or Navy 500 |
-| Touch target | ≥ 44×44px (pad icon buttons) |
+| Touch target | ≥ 44×44px hit area on touch screens (`pointer: coarse`); at least 24×24px elsewhere. Smaller controls (32px and 40px buttons, 40px inputs) extend their hit area with padding or a pseudo-element, not their visible size |
 
 **Custom domain icons** (SCBA mask, Maltese cross, SAR grid, rope hardware): draw on a 24px grid with a 1.5px stroke, round caps and joins, no fill, so they sit naturally beside Lucide icons.
 
@@ -365,7 +365,7 @@ These operational states are shared across every product and every medium. A pri
 | Danger | `--danger-surface` | `--danger-fg` | `--danger-mark` |
 | Info | `--info-surface` | `--info-fg` | `--info-mark` |
 | Neutral | `--neutral-surface` | `--neutral-fg` | `--neutral-mark` |
-| Brand | Navy 700 at 8% | `--text-brand` | Red 700 |
+| Brand | `--brand-surface` (Navy 700 at 8%; white at 8% in dark) | `--text-brand` | `--brand-mark` (Red 700; Red 300 in dark) |
 
 | Domain | State | Label | Status |
 |---|---|---|---|
@@ -382,7 +382,7 @@ These operational states are shared across every product and every medium. A pri
 | Preplans | Current / Review Needed / Expired | CURRENT / REVIEW / EXPIRED | success / warning / danger |
 | Certifications | Current / Expiring Soon / Expired | CURRENT / EXPIRING / EXPIRED | success / warning / danger |
 
-**In print or grayscale**, the label carries the meaning on its own. Optionally add a shape: ● success, ▲ warning, ■ danger, ◆ info, ○ neutral.
+**In print or grayscale**, the label carries the meaning on its own. Optionally add a shape: ● success, ▲ warning, ■ danger, ◆ info, ○ neutral, ▼ brand.
 
 ---
 
@@ -394,7 +394,7 @@ Target **WCAG 2.2 Level AA** for all digital output. Apply the same contrast min
 - **Color**: never the only signal (§1, principle 3). Errors always pair an icon with a text message.
 - **Focus**: visible on every interactive element (§9.5), and never hidden behind sticky headers or overlays.
 - **Keyboard**: every function is operable, and tab order is logical.
-- **Targets**: at least 44×44px (WCAG 2.2 asks for 24×24; we exceed it).
+- **Targets**: at least 44×44px hit area on touch screens, and 24×24px elsewhere (WCAG 2.2 asks for 24×24). The visible control can be smaller: see §6.
 - **Dragging**: anything done by dragging (canvas editors, reordering) also has a single-pointer alternative.
 - **Authentication**: no cognitive tests to sign in; allow paste and password managers.
 - **Text alternatives**: meaningful images get alt text. Icon-only buttons get `aria-label`. Decorative marks get `aria-hidden`. Form inputs have associated labels.
@@ -480,7 +480,7 @@ Dark-mode status text on its surface (all ≥ 4.5:1) and the dark-mode input bor
 |---|---|---|---|---|---|
 | Primary | `--accent` (Red 700, both modes) | `--text-inverse` | None | `--accent-hover` (Red 900) | Main CTAs: Save, Submit, Confirm. One per view region |
 | Secondary | `--bg-secondary` (Navy 700; dark Navy 500) | `--text-inverse` | None | `--bg-secondary-hover` | Secondary actions: View, Details |
-| Outline | Transparent | `--text-brand` | 1px Navy 700 | Navy 700 bg, white text | Tertiary: Cancel, Back, Filter |
+| Outline | Transparent | `--text-brand` | 1px `--text-brand` | `--bg-secondary` bg, `--text-inverse` | Tertiary: Cancel, Back, Filter |
 | Ghost | Transparent | `--text-brand` | None | `--bg-hover` | Inline actions, icon buttons |
 | Danger | `--danger` | `--text-inverse` | None | `--danger-hover` | Destructive: Delete, Remove |
 | Disabled | `--bg-disabled` | `--text-disabled` | None | No change (`cursor: default`) | Any inactive button |
@@ -525,7 +525,7 @@ All buttons use `--font-sans` at weight 600. Icon + text buttons have an 8px gap
 | Header | `--bg-page` background; 12px Barlow Condensed 600, uppercase, `--text-secondary`, letter-spacing `--tracking-caps` |
 | Rows | Bottom 1px `--border`; hover `--bg-hover` |
 | Cells | 12px 16px padding; 14px Barlow 400, `--text-primary`; numbers in JetBrains Mono 500 |
-| Selected row | Navy 700 at 5% background + 3px Navy 700 left border |
+| Selected row | `--brand-surface` background + 3px `--text-brand` left border |
 | Empty state | Centered, 14px `--text-secondary`, optional 32px icon above |
 
 #### Modals
@@ -534,7 +534,7 @@ All buttons use `--font-sans` at weight 600. Icon + text buttons have an 8px gap
 | Overlay | Black at 50% |
 | Panel | `--bg-elevated`, 12px radius, 24px padding, `--shadow-2xl` |
 | Max widths | 480px (sm) / 640px (md) / 800px (lg) |
-| Header | 20px Barlow 700, `--text-brand`, bottom 1px `--border`, 16px 24px padding |
+| Header | 20px Barlow 600, `--text-brand`, bottom 1px `--border`, 16px 24px padding |
 | Footer | Top 1px `--border`, 16px 24px padding, right-aligned buttons |
 | Enter | Fade + scale 95% → 100%, 200ms `--ease-out` |
 | Close | Top right, ghost button, 20px X icon |
@@ -560,7 +560,7 @@ All buttons use `--font-sans` at weight 600. Icon + text buttons have an 8px gap
 
 ### 9.3 Spacing, radius, elevation
 - **Spacing**: 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96 (`--space-1` … `--space-24`). Use only these values for margin, padding and gap. The one exception is the badge's `3px 10px` padding (§7), which keeps a 12px label at 24px tall.
-- **Radius**: 0 (tables) · 4 (tags) · 6 (buttons, inputs) · 8 (cards) · 12 (modals, hero) · full (avatars, badges and other pills). Don't mix rounded and sharp corners within one card.
+- **Radius**: 0 (tables) · 4 (tags) · 6 (sm and md buttons, inputs) · 8 (cards, lg buttons) · 12 (modals, hero) · full (avatars, badges and other pills). Don't mix rounded and sharp corners within one card.
 - **Shadow**: `--shadow-sm` → `--shadow-2xl`. In dark mode surfaces get lighter as they rise (page Navy 900 → card Navy 700 → elevated Navy 500), and shadows deepen.
 
 ### 9.4 Dark mode
@@ -595,6 +595,7 @@ Set it before first paint (an inline script in `<head>` or server-rendered) so t
 | Status text | `--success-fg` … `--neutral-fg` | Text tones (§4.3) | Lifted / pale tones (§4.3) |
 | Status surfaces | `--success-surface` … | `-bg` tints | Lifted color at 14% opacity |
 | Status marks | `--success-mark` … | Base tones | Lifted (`-light`) tones; neutral Gray 400 |
+| Brand status | `--brand-surface`, `--brand-mark` | Navy 700 at 8%, Red 700 | White at 8%, Red 300 |
 | Neutral surface | `--neutral-surface` | `#F3F4F6` | `rgba(255,255,255,0.08)` |
 | Hover overlay | `--bg-hover` | `#F3F4F6` | `rgba(255,255,255,0.08)` |
 | Disabled button / input | `--bg-disabled` / `--bg-input-disabled` | `#E5E7EB` / `#F3F4F6` | white at 8% / 5% |
@@ -851,14 +852,14 @@ Product icons (`product-icon.svg`, a product's own `favicon.ico`) live in their 
 - ✓ Use the `-fg` / `-surface` tokens for status text and backgrounds; `--*-mark` for dots, bars and icons
 - ✓ Check contrast for every new pairing (`npm run check` covers the tokens)
 - ✗ Don't fill large backgrounds with Red 700
-- ✗ Don't use brand colors as status indicators, or more than one semantic color in a component
+- ✗ Don't use brand colors as status indicators (the §7 Brand status is the one exception), or more than one semantic color in a component
 - ✗ Don't put red text on navy; in dark mode red text is Red 300
 
 ### Typography
 - ✓ Barlow everywhere, Barlow Condensed for uppercase labels, mono for numbers in columns
 - ✓ Self-host the fonts; use Arial / Arial Narrow where Barlow can't load
 - ✓ Stick to the type scale (the marketing hero H1, §10, is the one size above it)
-- ✗ Don't use more than two weights per view, essential text below 14px (screen) or 9pt (print), italics for emphasis, or gray headings
+- ✗ Don't add weights outside the type scale and component specs, essential text below 14px (screen) or 9pt (print), italics for emphasis, or gray headings
 - ✗ Don't set essential text, including timestamps, in `--text-tertiary`
 
 ### Layout and components

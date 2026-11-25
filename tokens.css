@@ -191,6 +191,10 @@
   --danger-mark:  var(--danger);
   --info-mark:    var(--info);
   --neutral-mark: var(--gray-600);
+
+  /* The Brand status (§7, ON SCENE): the one status in brand colours. */
+  --brand-surface: rgba(27, 42, 74, 0.08);  /* Navy 700 at 8% */
+  --brand-mark:    var(--red-700);
 }
 
 [data-theme='dark'] {
@@ -248,6 +252,10 @@
   --danger-mark:  var(--danger-light);
   --info-mark:    var(--info-light);
   --neutral-mark: var(--gray-400);
+
+  /* Brand status: navy tints vanish on Navy 700, and Red 700 is 2.4:1 there */
+  --brand-surface: rgba(255, 255, 255, 0.08);
+  --brand-mark:    var(--red-300);
 
   /* Heavier shadows in dark mode for visible depth */
   --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.30);
@@ -314,6 +322,10 @@
     --danger-mark:  var(--danger-light);
     --info-mark:    var(--info-light);
     --neutral-mark: var(--gray-400);
+
+    /* Brand status: navy tints vanish on Navy 700, and Red 700 is 2.4:1 there */
+    --brand-surface: rgba(255, 255, 255, 0.08);
+    --brand-mark:    var(--red-300);
 
     /* Heavier shadows in dark mode for visible depth */
     --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.30);

@@ -30,7 +30,7 @@ Consumers install from git (a `codeload.github.com` tarball URL pinned to a tag;
 **Logo assets must stay in sync with the inline SVG in `BRANDING.md`.** The "SVG Icon Mark (inline use)" block in BRANDING.md and the files in `assets/` are the same artwork — if one is updated, update the other. Do not introduce new logo variants without a corresponding entry in the Variants table.
 
 **Brand-color rules that are easy to violate:**
-- Navy and Red are brand colors only — never use them as status colors. Status uses the semantic palette (success/warning/danger/info).
+- Navy and Red are brand colors only — never use them as status colors, except the Brand status (BRANDING.md §7, ON SCENE), which uses `--brand-surface` and `--brand-mark`. Status uses the semantic palette (success/warning/danger/info/neutral).
 - Red 700 (`#C8102E`) is for accents, CTAs, and active states only — never large background fills.
 - Dark mode does not invert brand colors. Red **text** lifts to Red 300; red **fills** (primary button) stay Red 700; Red 500 is decorative only. See the dark-mode table (BRANDING.md §9.4).
 - Status text uses `--*-fg` on `--*-surface`. Dots, bars, icons and borders use `--*-mark`, which lifts in dark mode. The base tones (`--success` …) fail AA as small text and fall under 3:1 on dark surfaces; they're for fills that don't change with the mode (the danger button).

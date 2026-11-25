@@ -156,6 +156,9 @@
   --color-danger-mark: var(--danger-mark);
   --color-info-mark: var(--info-mark);
   --color-neutral-mark: var(--neutral-mark);
+  /* Brand status (ON SCENE): bg-brand-surface text-brand, dot bg-brand-mark */
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-mark: var(--brand-mark);
 }
 
 @theme inline reference {
