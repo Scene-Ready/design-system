@@ -141,7 +141,7 @@ This is the same artwork as `assets/scene-ready-icon.svg`; if one changes, chang
 - Tagline: Barlow **400**, all caps, letter-spacing ≈ 0.27em (3px at 11px), Gray 400 (or white at 50% when reversed).
 - The icon sits to the left of the wordmark; its height roughly spans the wordmark cap height plus the tagline.
 - The text in the brandmark files is outlined (paths, not `<text>`), so the lockup renders the same in email clients, Office, print RIPs and design tools with no font installed.
-- **Typeset wordmark** (where images are blocked or a lockup won't fit): Barlow Condensed 700, 18–20px, letter-spacing `--tracking-eyebrow` (0.1em), uppercase, navy or white. The lockup's wider spacing (0.14em, 0.27em) is drawn into the artwork; text never copies it.
+- **Typeset wordmark** (where images are blocked or a lockup won't fit): Barlow Condensed 700, `--text-lg`–`--text-xl` (18–20px), letter-spacing `--tracking-eyebrow` (0.1em), uppercase, navy or white. The lockup's wider spacing (0.14em, 0.27em) is drawn into the artwork; text never copies it.
 
 ### Clear space and minimum size
 | | Rule |
@@ -223,7 +223,7 @@ Status colors carry meaning; they are not decoration. Each status has four tones
 | Neutral | `--neutral-surface` | `--neutral-fg` |
 
 **Rules**
-- Never use brand navy or red as a status color, with one exception: the Brand status (§7), which marks a unit On Scene. Brand red is not "danger"; danger is `#DC2626`.
+- Never use brand navy or red as a status color, with one exception: the Brand status (§7), which marks a unit On Scene. Brand red is not "danger"; danger is `--danger` (and `--danger-fg` / `--danger-mark`).
 - Use no more than one semantic color per component.
 - Semantic colors cover less than 5% of any screen or page.
 
@@ -313,7 +313,7 @@ On dark-mode **elevated surfaces** (menus, popovers, dropdowns on Navy 500), use
 - Take weights from the type scale (§5.3) and the component specs; never add a weight for emphasis. Running text stays at 400, with 600 for bold.
 - Headings are Navy 700 (or white on dark), never gray and never red.
 - Red text is for links and highlighted terms only. Never set body paragraphs in red.
-- The minimum size for essential text is **14px** on screen and **9pt** in print. Anything smaller is a caption, badge or timestamp.
+- The minimum size for essential text is **14px** (`--text-sm`) on screen and **9pt** in print. Anything smaller is a caption, badge or timestamp.
 - All-caps text always gets letter-spacing: **`--tracking-caps` (0.05em)** for badges, table headers and small labels, **`--tracking-eyebrow` (0.1em)** for eyebrow labels. Nothing outside 0.05–0.1em. Set it in Barlow Condensed at 14px and below.
 - Set numbers compared in columns in JetBrains Mono (or Barlow with `font-variant-numeric: tabular-nums`).
 
@@ -327,7 +327,7 @@ On dark-mode **elevated surfaces** (menus, popovers, dropdowns on Navy 500), use
 | Library | **Lucide** (`lucide-react` in React apps; SVG export elsewhere) |
 | Style | Outline only, stroke 1.5–2, round caps and joins. **Never filled** |
 | Sizes | 16px in buttons · 20px default (nav, tables) · 24px in cards and headers · 32–48px in empty states |
-| Color | Inherit from text color. Interactive hover goes to Red 700 or Navy 500 |
+| Color | Inherit from text color. Interactive hover goes to `--text-accent` or `--text-brand`, which lift in dark mode |
 | Touch target | ≥ 44×44px hit area on touch screens (`pointer: coarse`); at least 24×24px elsewhere. Smaller controls (32px and 40px buttons, 40px inputs) extend their hit area with padding or a pseudo-element, not their visible size |
 
 **Custom domain icons** (SCBA mask, Maltese cross, SAR grid, rope hardware): draw on a 24px grid with a 1.5px stroke, round caps and joins, no fill, so they sit naturally beside Lucide icons.
@@ -358,7 +358,7 @@ These operational states are shared across every product and every medium. A pri
 └───────────┘
 ```
 
-`font-size: 12px; font-weight: 600; font-family: var(--font-condensed); text-transform: uppercase; letter-spacing: var(--tracking-caps); padding: 3px 10px; border-radius: 9999px;` The label uses the status text token (`--*-fg`), the background the surface token (`--*-surface`), and the dot the mark token (`--*-mark`).
+`font-size: var(--text-xs); font-weight: 600; font-family: var(--font-condensed); text-transform: uppercase; letter-spacing: var(--tracking-caps); padding: 3px 10px; border-radius: var(--radius-full);` The label uses the status text token (`--*-fg`), the background the surface token (`--*-surface`), and the dot the mark token (`--*-mark`).
 
 | Status | Background | Label | Dot |
 |---|---|---|---|
@@ -467,11 +467,11 @@ Dark-mode status text on its surface (all ≥ 4.5:1) and the dark-mode input bor
 
 | Region | Spec |
 |---|---|
-| Sidebar (collapsed) | 64px wide, `--bg-sidebar`, icon-only nav |
-| Sidebar (expanded) | 256px wide, `--bg-sidebar`, icon + label nav |
-| Top bar | Remaining width, 64px tall, `--bg-card`, bottom 1px `--border` |
-| Main content | `--bg-page`, 24px padding |
-| Content cards | Fluid width, `--bg-card`, 1px `--border`, 8px radius |
+| Sidebar (collapsed) | `--sidebar-collapsed` (64px) wide, `--bg-sidebar`, icon-only nav |
+| Sidebar (expanded) | `--sidebar-width` (256px) wide, `--bg-sidebar`, icon + label nav |
+| Top bar | Remaining width, `--topbar-height` (64px) tall, `--bg-card`, bottom 1px `--border` |
+| Main content | `--bg-page`, `--space-6` padding |
+| Content cards | Fluid width, `--bg-card`, 1px `--border`, `--radius-lg` |
 
 - **Standard shell**: the layout above (Scheduler, Scenario Prep, Auth).
 - **Dense tool shell**: full-screen canvas and editor apps (RigPrep Sim) use a 48px **navy** top bar with left and right panels (280px / 320px) around the canvas. This is an approved variant.
@@ -479,12 +479,12 @@ Dark-mode status text on its surface (all ≥ 4.5:1) and the dark-mode input bor
 **Navigation sidebar**
 | Property | Value |
 |---|---|
-| Nav item | 44px tall, padding 0 16px (centered when collapsed), 14px Barlow 500, white at 70% |
+| Nav item | 44px tall, padding 0 `--space-4` (centered when collapsed), `--text-sm` Barlow 500, white at 70% |
 | Nav icon | 20px, white at 70% |
 | Hover | White at 10% background |
-| Active | White text at 100%, 3px Red 700 left border, white at 10% background |
+| Active | White text at 100%, 3px `--accent` (Red 700) left border, white at 10% background |
 | Section divider | 1px white at 10% |
-| Logo area | 64px tall, vertically centered |
+| Logo area | `--topbar-height` tall, vertically centered |
 
 ### 9.2 Components
 
@@ -500,11 +500,11 @@ Dark-mode status text on its surface (all ≥ 4.5:1) and the dark-mode input bor
 
 | Size | Height | Horizontal padding | Font | Radius |
 |---|---|---|---|---|
-| sm | 32px | 12px | 14px / 600 | 6px |
-| md | 40px | 16px | 14px / 600 | 6px |
-| lg | 48px | 24px | 16px / 600 | 8px |
+| sm | 32px | `--space-3` | `--text-sm` / 600 | `--radius-md` |
+| md | 40px | `--space-4` | `--text-sm` / 600 | `--radius-md` |
+| lg | 48px | `--space-6` | `--text-base` / 600 | `--radius-lg` |
 
-All buttons use `--font-sans` at weight 600. Icon + text buttons have an 8px gap; icons in buttons are 16px.
+All buttons use `--font-sans` at weight 600. Icon + text buttons have a `--space-2` gap; icons in buttons are 16px.
 
 #### Form inputs
 | Property | Value |
@@ -512,68 +512,68 @@ All buttons use `--font-sans` at weight 600. Icon + text buttons have an 8px gap
 | Height | 40px (md) / 48px (lg) |
 | Background | `--bg-input` |
 | Border | 1px solid `--border-input` (Gray 500 light; white at 35% dark: both 3:1) |
-| Radius | 6px |
-| Padding | 0 12px |
-| Font | 16px Barlow 400, `--text-primary` |
+| Radius | `--radius-md` |
+| Padding | 0 `--space-3` |
+| Font | `--text-base` Barlow 400, `--text-primary` |
 | Placeholder | `--text-tertiary` |
 | Focus | 2px solid `--focus-ring` + `0 0 0 4px var(--focus-ring-shadow)` (§9.5) |
-| Error | 2px solid `--danger-mark` + `0 0 0 3px rgba(220, 38, 38, 0.15)`; message below in 14px `--danger-fg`, 4px top margin, with an icon |
+| Error | 2px solid `--danger-mark` + `0 0 0 3px var(--danger-ring-shadow)`; message below in `--text-sm` `--danger-fg`, `--space-1` top margin, with an icon |
 | Disabled | `--bg-input-disabled`, `--text-disabled` |
-| Label | 14px Barlow 500, `--text-secondary` (`--text-primary` on elevated surfaces such as modals, §5.4), 4px above the input; always visible, never placeholder-only |
+| Label | `--text-sm` Barlow 500, `--text-secondary` (`--text-primary` on elevated surfaces such as modals, §5.4), `--space-1` above the input; always visible, never placeholder-only |
 
 #### Cards
 | Property | Value |
 |---|---|
 | Background | `--bg-card` |
 | Border | 1px solid `--border` |
-| Radius | 8px |
-| Padding | 24px body / 16px 24px header and footer |
+| Radius | `--radius-lg` |
+| Padding | `--space-6` body / `--space-4` `--space-6` header and footer |
 | Shadow | `--shadow-md`; interactive hover `--shadow-lg` |
-| Header | 18px Barlow 600, `--text-brand`, bottom 1px `--border` |
-| Section divider | 1px `--border`, 16px vertical margin |
+| Header | `--text-lg` Barlow 600, `--text-brand`, bottom 1px `--border` |
+| Section divider | 1px `--border`, `--space-4` vertical margin |
 
 #### Tables
 | Property | Value |
 |---|---|
-| Header | `--bg-page` background; 12px Barlow Condensed 600, uppercase, `--text-secondary`, letter-spacing `--tracking-caps` |
+| Header | `--bg-page` background; `--text-xs` Barlow Condensed 600, uppercase, `--text-secondary`, letter-spacing `--tracking-caps` |
 | Rows | Bottom 1px `--border`; hover `--bg-hover` |
-| Cells | 12px 16px padding; 14px Barlow 400, `--text-primary`; numbers in JetBrains Mono 500 |
+| Cells | `--space-3` `--space-4` padding; `--text-sm` Barlow 400, `--text-primary`; numbers in JetBrains Mono 500 |
 | Selected row | `--brand-surface` background + 3px `--text-brand` left border |
-| Empty state | Centered, 14px `--text-secondary`, optional 32px icon above |
+| Empty state | Centered, `--text-sm` `--text-secondary`, optional 32px icon above |
 
 #### Modals
 | Property | Value |
 |---|---|
 | Overlay | Black at 50% |
-| Panel | `--bg-elevated`, 12px radius, 24px padding, `--shadow-2xl` |
+| Panel | `--bg-elevated`, `--radius-xl`, `--space-6` padding, `--shadow-2xl` |
 | Max widths | 480px (sm) / 640px (md) / 800px (lg) |
-| Header | 20px Barlow 600, `--text-brand`, bottom 1px `--border`, 16px 24px padding |
-| Footer | Top 1px `--border`, 16px 24px padding, right-aligned buttons |
-| Enter | Fade + scale 95% → 100%, 200ms `--ease-out` |
+| Header | `--text-xl` Barlow 600, `--text-brand`, bottom 1px `--border`, `--space-4` `--space-6` padding |
+| Footer | Top 1px `--border`, `--space-4` `--space-6` padding, right-aligned buttons |
+| Enter | Fade + scale 95% → 100%, `--duration-normal` `--ease-out` |
 | Close | Top right, ghost button, 20px X icon |
 
 #### Toasts
 | Property | Value |
 |---|---|
-| Position | Fixed, top right, 16px from the edges |
-| Size | 360px max width, 8px radius, `--shadow-lg` |
+| Position | Fixed, top right, `--space-4` from the edges |
+| Size | 360px max width, `--radius-lg`, `--shadow-lg` |
 | Style | `--bg-elevated` with a 4px left border in the status mark (`--*-mark`) |
-| Content | 20px status icon + 14px bold title + 14px `--text-primary` description (toasts are elevated, §5.4); X to dismiss |
+| Content | 20px status icon + `--text-sm` bold title + `--text-sm` `--text-primary` description (toasts are elevated, §5.4); X to dismiss |
 | Dismiss | Success and info after 5s; warning and danger persist |
-| Enter | Slide in from the right, 300ms `--ease-out` |
+| Enter | Slide in from the right, `--duration-slow` `--ease-out` |
 
 #### Empty states
 | Property | Value |
 |---|---|
-| Layout | Centered in the parent card or content area, 12px between elements |
-| Icon | 48px, Gray 300 |
-| Heading | 18px Barlow 600, `--text-brand` |
-| Description | 14px Barlow 400, `--text-secondary` |
+| Layout | Centered in the parent card or content area, `--space-3` between elements |
+| Icon | 48px, `--text-tertiary` (decorative) |
+| Heading | `--text-lg` Barlow 600, `--text-brand` |
+| Description | `--text-sm` Barlow 400, `--text-secondary` |
 | Action | Primary or outline button, centered below |
 
 ### 9.3 Spacing, radius, elevation
 - **Spacing**: 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96 (`--space-1` … `--space-24`). Use only these values for margin, padding and gap. The one exception is the badge's `3px 10px` padding (§7), which keeps a 12px label at 24px tall.
-- **Radius**: 0 (tables) · 4 (tags) · 6 (sm and md buttons, inputs) · 8 (cards, lg buttons) · 12 (modals, hero) · full (avatars, badges and other pills). Don't mix rounded and sharp corners within one card.
+- **Radius**: `--radius-none` (tables) · `--radius-sm` 4 (tags) · `--radius-md` 6 (sm and md buttons, inputs) · `--radius-lg` 8 (cards, lg buttons) · `--radius-xl` 12 (modals, hero) · `--radius-full` (avatars, badges and other pills). Don't mix rounded and sharp corners within one card.
 - **Shadow**: `--shadow-sm` → `--shadow-2xl`. In dark mode surfaces get lighter as they rise (page Navy 900 → card Navy 700 → elevated Navy 500), and shadows deepen.
 
 ### 9.4 Dark mode
@@ -605,6 +605,7 @@ Set it before first paint (an inline script in `<head>` or server-rendered) so t
 | Primary button | `--accent` / `--accent-hover` | `#C8102E` / `#9A0C24` | `#C8102E` / `#9A0C24` |
 | Secondary button | `--bg-secondary` / `--bg-secondary-hover` | `#1B2A4A` / `#0F1A30` | `#2A3F6A` / `#4A6491` |
 | Focus ring | `--focus-ring` | `#2A3F6A` Navy 500 | `#F28C9A` Red 300 |
+| Input error glow | `--danger-ring-shadow` | `rgba(220,38,38,0.15)` Danger at 15% | `rgba(248,113,113,0.25)` Danger lifted at 25% |
 | Status text | `--success-fg` … `--neutral-fg` | Text tones (§4.3) | Lifted / pale tones (§4.3) |
 | Status surfaces | `--success-surface` … | `-bg` tints | Lifted color at 14% opacity |
 | Status marks | `--success-mark` … | Base tones | Lifted (`-light`) tones; neutral Gray 400 |
@@ -644,7 +645,7 @@ One rule; `--focus-ring` and `--focus-ring-shadow` flip in dark mode.
 - Animate only `transform` and `opacity`.
 - **No entrance animations on page load.** Content must be visible immediately.
 - Under `prefers-reduced-motion: reduce`, cut durations to about 0 and replace slides with fades.
-- Sidebar expand/collapse: 200ms. Modal enter: fade + scale, 200ms. Toast enter: slide, 300ms. Hover: 100ms on background, color and border color.
+- Sidebar expand/collapse: `--duration-normal`. Modal enter: fade + scale, `--duration-normal`. Toast enter: slide, `--duration-slow`. Hover: `--duration-fast` on background, color and border color.
 
 ### 9.7 Responsive breakpoints
 | Min width | Name | Max content | Columns | Gutter | Margin |
@@ -654,7 +655,7 @@ One rule; `--focus-ring` and `--focus-ring-shadow` flip in dark mode.
 | 768px | Tablet | 768px | 8 | 24px | 32px |
 | 1024px | Desktop | 1024px | 12 | 24px | 32px |
 | 1280px | Large | 1280px | 12 | 24px | auto |
-| 1536px | Wide | 1440px | 12 | 32px | auto |
+| 1536px | Wide | 1280px (`--content-max-width`) | 12 | 32px | auto |
 
 Below 1024px, the sidebar collapses to an off-canvas drawer.
 
@@ -666,14 +667,14 @@ Marketing pages use the same tokens as the apps with more room to breathe and mo
 
 | Element | Spec |
 |---|---|
-| Header | White (or Navy 700 over a hero), 64–72px tall, parent lockup left (≥ 160px wide), nav in Barlow 500 16px, one **Red 700 primary CTA** at right ("Request a Demo") |
-| Hero | Navy 900, or a photo with a 60–80% navy overlay. H1 Barlow 700 48px (`--text-5xl`), up to 64px on wide screens, white, `letter-spacing: -0.01em`; subhead 18–20px Gray 100 or 300; primary red CTA + white outline secondary |
-| Section rhythm | 80–96px vertical padding on desktop, 48–64px on mobile. Alternate white and Gray 50 sections, with one Navy 700 band per page at most (e.g. testimonial or final CTA) |
-| Eyebrow labels | Barlow Condensed 600, 14px, uppercase, `--tracking-eyebrow`, **Red 700** on light backgrounds or Red 300 on dark, above section H2s |
-| Content width | 1280px max grid; long-form text 65–75 characters per line (≈ 680px) |
-| Feature cards | App card spec; Lucide icon 24–32px in a Navy 50 rounded square (12px radius) |
+| Header | White (or Navy 700 over a hero), 64–72px tall, parent lockup left (≥ 160px wide), nav in Barlow 500 `--text-base`, one **`--accent` primary CTA** at right ("Request a Demo") |
+| Hero | Navy 900, or a photo with a 60–80% navy overlay. H1 Barlow 700 48px (`--text-5xl`), up to 64px on wide screens, white, `letter-spacing: -0.01em`; subhead `--text-lg`–`--text-xl` (18–20px), Gray 100 or 300; primary red CTA + white outline secondary |
+| Section rhythm | `--space-20`–`--space-24` vertical padding on desktop, `--space-12`–`--space-16` on mobile. Alternate white and Gray 50 sections, with one Navy 700 band per page at most (e.g. testimonial or final CTA) |
+| Eyebrow labels | Barlow Condensed 600, `--text-sm`, uppercase, `--tracking-eyebrow`, **`--text-accent`** (Red 700 on light backgrounds, Red 300 on dark), above section H2s |
+| Content width | `--content-max-width` (1280px) max grid; long-form text 65–75 characters per line (≈ 680px) |
+| Feature cards | App card spec; Lucide icon 24–32px in a `--brand-surface` rounded square (`--radius-xl`) |
 | Accent rule | A 48px × 3px Red 700 bar under key headings echoes the lockup's rule. Use it sparingly |
-| Footer | Navy 900; reversed lockup; links in Gray 400 → white on hover; tagline "Prepared to Perform."; © line in 12px Gray 400 |
+| Footer | Navy 900; reversed lockup; links in Gray 400 → white on hover; tagline "Prepared to Perform."; © line in `--text-xs` Gray 400 |
 | Forms | App input spec; always show visible labels, never placeholder-only |
 
 Keep the product-UI restraint: no gradients on the brand colors, no glassmorphism, no illustration styles that clash with outline icons.
