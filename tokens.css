@@ -167,6 +167,7 @@
   --accent:            var(--red-700);
   --focus-ring:        var(--navy-500);
   --focus-ring-shadow: rgba(42, 63, 106, 0.2);
+  --danger-ring-shadow: rgba(220, 38, 38, 0.15);   /* input error glow: --danger at 15% */
 
   /* Interaction states */
   --accent-hover:        var(--red-900);   /* primary button hover */
@@ -232,6 +233,7 @@
   --accent:            var(--red-700);   /* fills stay Red 700: white text on Red 500 is 4.2:1 */
   --focus-ring:        var(--red-300);   /* 3:1 on every dark surface; Red 500 is 2.5:1 on elevated */
   --focus-ring-shadow: rgba(242, 140, 154, 0.25);
+  --danger-ring-shadow: rgba(248, 113, 113, 0.25);   /* --danger-light: the base tone barely shows on navy */
 
   /* Interaction states */
   --accent-hover:        var(--red-900);
@@ -302,6 +304,7 @@
     --accent:            var(--red-700);   /* fills stay Red 700: white text on Red 500 is 4.2:1 */
     --focus-ring:        var(--red-300);   /* 3:1 on every dark surface; Red 500 is 2.5:1 on elevated */
     --focus-ring-shadow: rgba(242, 140, 154, 0.25);
+    --danger-ring-shadow: rgba(248, 113, 113, 0.25);   /* --danger-light: the base tone barely shows on navy */
 
     /* Interaction states */
     --accent-hover:        var(--red-900);
