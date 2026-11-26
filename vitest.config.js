@@ -1,4 +1,4 @@
-import { cloudflareTest } from "@cloudflare/vitest-pool-workers";
+import { cloudflareTest } from "@cloudflare/vitest-plugin";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -12,7 +12,7 @@ export default defineConfig({
         plugins: [
           cloudflareTest({
             miniflare: {
-              compatibilityDate: "2026-04-14",
+              compatibilityDate: "2026-11-23",
               compatibilityFlags: ["nodejs_compat"],
             },
           }),
