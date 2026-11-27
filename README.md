@@ -73,10 +73,10 @@ Every mapped utility compiles to a `var()` of its token (`bg-navy-700` is `backg
 | `navy-50`…`navy-950`, `red-50`…`red-900`, `gray-50`…`gray-900` | the primitives of the same name |
 | `success`, `success-bg`, `success-light`, `success-dark` (and `warning`, `danger`, `info`; `danger-pale`, `info-pale`) | status primitives, light-mode values. For dots and icons use `-mark`; for status text, `-fg` |
 | `bg-page`, `bg-card`, `bg-elevated`, `bg-sidebar`, `bg-input`, `bg-hover`, `bg-disabled`, `bg-input-disabled`, `bg-secondary-fill`, `bg-secondary-fill-hover` | `--bg-*` |
-| `text-primary`, `text-secondary`, `text-tertiary`, `text-inverse`, `text-brand`, `text-disabled-fg` | `--text-*` |
+| `text-primary`, `text-secondary`, `text-tertiary`, `text-inverse`, `text-brand`, `text-brand-hover`, `text-disabled-fg` | `--text-*` (`hover:text-brand-hover` is a brand link's hover) |
 | `border-border`, `border-border-input` | `--border`, `--border-input`. Never `border-input` (the input's white fill), `bg-secondary` (grey text colour; the button fill is `bg-secondary-fill`) or `text-disabled` (the disabled background; text is `text-disabled-fg`) |
 | `accent`, `accent-hover`, `danger-hover`, `focus-ring` | the same names (`accent` is the fill: buttons, active bars) |
-| `accent-fg` | `--text-accent`: red text and links. Use `text-accent-fg`, never `text-accent`, for text |
+| `accent-fg`, `accent-fg-hover` | `--text-accent`, `--text-accent-hover`: red text and links, and a red link's hover (`hover:text-accent-fg-hover`). Use `text-accent-fg`, never `text-accent`, for text |
 | `success-fg`, `success-surface`, `success-mark` (and `warning`, `danger`, `info`, `neutral`) | mode-aware status: text, tint, and dots/bars/icons |
 | `brand-surface`, `brand-mark` | the Brand status (ON SCENE): `bg-brand-surface text-brand`, dot `bg-brand-mark` |
 | `font-sans`, `font-condensed`, `font-mono`; `text-xs`…`text-5xl` | type tokens; each size sets its §5.3 line height (`--leading-*`) |
