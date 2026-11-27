@@ -76,6 +76,8 @@ const RULES = [
   [["dark"], "--text-tertiary", surfaces, TEXT],
   [["light", "dark"], "--text-brand", surfaces, TEXT],
   [["light", "dark"], "--text-accent", surfaces, TEXT],
+  [["light", "dark"], "--text-brand-hover", surfaces, TEXT],
+  [["light", "dark"], "--text-accent-hover", surfaces, TEXT],
   [["light", "dark"], "--text-inverse", ["--accent", "--accent-hover", "--bg-secondary", "--bg-secondary-hover", "--danger", "--danger-hover", "--bg-sidebar"], TEXT],
   ...["success", "warning", "danger", "info", "neutral"].map((s) => [["light", "dark"], `--${s}-fg`, [`--${s}-surface`, ...surfaces], TEXT]),
   // Status marks (badge dots, strip bars, icons) are non-text: 3:1 on the page and card.

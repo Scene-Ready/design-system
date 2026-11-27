@@ -124,6 +124,7 @@
   --color-tertiary: var(--text-tertiary);
   --color-inverse: var(--text-inverse);
   --color-brand: var(--text-brand);
+  --color-brand-hover: var(--text-brand-hover);
   --color-disabled-fg: var(--text-disabled);
 
   /* Borders: border-border, border-border-input */
@@ -135,6 +136,7 @@
      use text-accent for text: in dark mode it is Red 700 on navy (2.4:1). */
   --color-accent: var(--accent);
   --color-accent-fg: var(--text-accent);
+  --color-accent-fg-hover: var(--text-accent-hover);
   --color-accent-hover: var(--accent-hover);
   --color-danger-hover: var(--danger-hover);
   --color-focus-ring: var(--focus-ring);

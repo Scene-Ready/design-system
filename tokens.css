@@ -158,6 +158,8 @@
   --text-inverse:   var(--white);
   --text-brand:     var(--navy-700);
   --text-accent:    var(--red-700);
+  --text-brand-hover:  var(--navy-300);   /* text-link hover: navy lightens (Navy 900 is only 1.2:1 from Navy 700) */
+  --text-accent-hover: var(--red-900);    /* red darkens */
 
   /* Borders */
   --border:       var(--gray-200);
@@ -224,6 +226,8 @@
   --text-inverse:   var(--white);
   --text-brand:     var(--white);
   --text-accent:    var(--red-300);   /* red text lifts to 300: Red 500 is 3.4:1 on cards */
+  --text-brand-hover:  var(--navy-100);   /* text-link hover: white dims, red lightens */
+  --text-accent-hover: var(--red-100);
 
   /* Borders use opacity for layered depth */
   --border:       rgba(255, 255, 255, 0.10);
@@ -295,6 +299,8 @@
     --text-inverse:   var(--white);
     --text-brand:     var(--white);
     --text-accent:    var(--red-300);   /* red text lifts to 300: Red 500 is 3.4:1 on cards */
+    --text-brand-hover:  var(--navy-100);   /* text-link hover: white dims, red lightens */
+    --text-accent-hover: var(--red-100);
 
     /* Borders use opacity for layered depth */
     --border:       rgba(255, 255, 255, 0.10);
