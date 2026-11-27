@@ -158,8 +158,8 @@
   --text-inverse:   var(--white);
   --text-brand:     var(--navy-700);
   --text-accent:    var(--red-700);
-  --text-brand-hover:  var(--navy-900);   /* text-link hover: darkens on light surfaces */
-  --text-accent-hover: var(--red-900);
+  --text-brand-hover:  var(--navy-300);   /* text-link hover: navy lightens (Navy 900 is only 1.2:1 from Navy 700) */
+  --text-accent-hover: var(--red-900);    /* red darkens */
 
   /* Borders */
   --border:       var(--gray-200);

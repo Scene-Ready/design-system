@@ -172,10 +172,10 @@ All values below live in [`tokens.css`](./tokens.css). Reference the token, not 
 | Token | Hex | RGB | Role |
 |---|---|---|---|
 | Navy 950 `--navy-950` | `#0A1220` | 10 18 32 | Dark-mode sidebar only |
-| Navy 900 `--navy-900` | `#0F1A30` | 15 26 48 | Dark-mode page background, deepest surfaces; light-mode brand link hover |
+| Navy 900 `--navy-900` | `#0F1A30` | 15 26 48 | Dark-mode page background, deepest surfaces |
 | **Navy 700** ★ `--navy-700` | `#1B2A4A` | 27 42 74 | **Primary brand color**: headings, nav, sidebar, header bands |
 | Navy 500 `--navy-500` | `#2A3F6A` | 42 63 106 | Focus rings (light), hover states, dark-mode elevated surfaces |
-| Navy 300 `--navy-300` | `#4A6491` | 74 100 145 | Decorative accents, chart secondary |
+| Navy 300 `--navy-300` | `#4A6491` | 74 100 145 | Decorative accents, chart secondary; light-mode brand link hover |
 | Navy 100 `--navy-100` | `#C5D0E0` | 197 208 224 | Tints, tag backgrounds, table zebra (print); dark-mode brand link hover |
 | Navy 50 `--navy-50` | `#E8ECF2` | 232 236 242 | Subtle panels, callout backgrounds |
 | Red 900 `--red-900` | `#9A0C24` | 154 12 36 | Primary button hover; light-mode accent link hover |
@@ -305,7 +305,7 @@ These are **semantic aliases**: dark mode flips them automatically (§9.4). Alwa
 | `--text-inverse` | `#FFFFFF` | `#FFFFFF` | Text on dark surfaces (sidebar, buttons) |
 | `--text-brand` | `#1B2A4A` | `#FFFFFF` | Branded headings, navigation items |
 | `--text-accent` | `#C8102E` | `#F28C9A` | Links, highlighted terms |
-| `--text-brand-hover` | `#0F1A30` | `#C5D0E0` | Hover on a `--text-brand` link |
+| `--text-brand-hover` | `#4A6491` | `#C5D0E0` | Hover on a `--text-brand` link |
 | `--text-accent-hover` | `#9A0C24` | `#FCE4E8` | Hover on a `--text-accent` link |
 | `--text-disabled` | `#9CA3AF` | `#6B7280` | Disabled controls only |
 
@@ -315,7 +315,7 @@ On dark-mode **elevated surfaces** (menus, popovers, dropdowns on Navy 500), use
 - Take weights from the type scale (§5.3) and the component specs; never add a weight for emphasis. Running text stays at 400, with 600 for bold.
 - Headings are Navy 700 (or white on dark), never gray and never red.
 - Red text is for links and highlighted terms only. Never set body paragraphs in red.
-- A text link shows hover by moving to its hover token: `--text-brand` → `--text-brand-hover`, `--text-accent` → `--text-accent-hover`. A link that isn't underlined at rest may add an underline on hover too. An underline alone is never the hover state of a link that's already underlined. Never hover to a primitive (Navy 900, Red 900): it doesn't lift in dark mode.
+- A text link shows hover by moving to its hover token: `--text-brand` → `--text-brand-hover`, `--text-accent` → `--text-accent-hover`. A link that isn't underlined at rest may add an underline on hover too. An underline alone is never the hover state of a link that's already underlined. On mode-aware surfaces, never hover to a primitive (Navy 900, Red 900): it doesn't lift in dark mode. Surfaces fixed in one mode, such as the marketing footer on Navy 900, may name primitives.
 - The minimum size for essential text is **14px** (`--text-sm`) on screen and **9pt** in print. Anything smaller is a caption, badge or timestamp.
 - All-caps text always gets letter-spacing: **`--tracking-caps` (0.05em)** for badges, table headers and small labels, **`--tracking-eyebrow` (0.1em)** for eyebrow labels. Nothing outside 0.05–0.1em. Set it in Barlow Condensed at 14px and below.
 - Set numbers compared in columns in JetBrains Mono (or Barlow with `font-variant-numeric: tabular-nums`).
@@ -330,7 +330,7 @@ On dark-mode **elevated surfaces** (menus, popovers, dropdowns on Navy 500), use
 | Library | **Lucide** (`lucide-react` in React apps; SVG export elsewhere) |
 | Style | Outline only, stroke 1.5–2, round caps and joins. **Never filled** |
 | Sizes | 16px in buttons · 20px default (nav, tables) · 24px in cards and headers · 32–48px in empty states |
-| Color | Inherit from text color. Interactive hover goes to `--text-accent` or `--text-brand`, which lift in dark mode. An icon inside a text link follows the link's hover token (§5.5) |
+| Color | Inherit from text color. Interactive hover goes to `--text-accent` or `--text-brand`, which lift in dark mode. An icon already in one of those colours, or inside a text link, goes to its `-hover` token instead (§5.5) |
 | Touch target | ≥ 44×44px hit area on touch screens (`pointer: coarse`); at least 24×24px elsewhere. Smaller controls (32px and 40px buttons, 40px inputs) extend their hit area with padding or a pseudo-element, not their visible size |
 
 **Custom domain icons** (SCBA mask, Maltese cross, SAR grid, rope hardware): draw on a 24px grid with a 1.5px stroke, round caps and joins, no fill, so they sit naturally beside Lucide icons.
@@ -431,10 +431,12 @@ Computed with the WCAG 2.x relative-luminance formula. `npm run check` recompute
 | Red 700 `#C8102E` | White `#FFFFFF` | 5.9:1 | ✅ AA | Links, accent text (light) |
 | Red 300 `#F28C9A` | Navy 700 `#1B2A4A` | 6.1:1 | ✅ AA | Links, accent text (dark), on cards |
 | Red 300 `#F28C9A` | Navy 900 `#0F1A30` | 7.4:1 | ✅ AAA | Links, accent text (dark), on the page |
-| Navy 900 `#0F1A30` | White `#FFFFFF` | 17.3:1 | ✅ AAA | Brand link hover (light) |
+| Navy 300 `#4A6491` | White `#FFFFFF` | 6.0:1 | ✅ AA | Brand link hover (light) |
 | Red 900 `#9A0C24` | White `#FFFFFF` | 8.6:1 | ✅ AAA | Accent link hover (light) |
 | Navy 100 `#C5D0E0` | Navy 700 `#1B2A4A` | 9.1:1 | ✅ AAA | Brand link hover (dark), on cards |
+| Navy 100 `#C5D0E0` | Navy 900 `#0F1A30` | 11.1:1 | ✅ AAA | Brand link hover (dark), on the page |
 | Red 100 `#FCE4E8` | Navy 700 `#1B2A4A` | 11.8:1 | ✅ AAA | Accent link hover (dark), on cards |
+| Red 100 `#FCE4E8` | Navy 900 `#0F1A30` | 14.4:1 | ✅ AAA | Accent link hover (dark), on the page |
 | Gray 600 `#6B7280` | White `#FFFFFF` | 4.8:1 | ✅ AA | Secondary text, timestamps (light) |
 | Gray 400 `#9CA3AF` | Navy 700 `#1B2A4A` | 5.6:1 | ✅ AA | Secondary and tertiary text (dark), on cards |
 | Gray 400 `#9CA3AF` | Navy 900 `#0F1A30` | 6.8:1 | ✅ AA | Secondary and tertiary text (dark), on the page |
@@ -607,7 +609,7 @@ Set it before first paint (an inline script in `<head>` or server-rendered) so t
 | Secondary text | `--text-secondary` | `#6B7280` | `#9CA3AF` |
 | Tertiary text | `--text-tertiary` | `#9CA3AF` | `#9CA3AF` |
 | Link / accent text | `--text-accent` | `#C8102E` Red 700 | `#F28C9A` Red 300 |
-| Link hover | `--text-brand-hover` / `--text-accent-hover` | `#0F1A30` Navy 900 / `#9A0C24` Red 900 | `#C5D0E0` Navy 100 / `#FCE4E8` Red 100 |
+| Link hover | `--text-brand-hover` / `--text-accent-hover` | `#4A6491` Navy 300 / `#9A0C24` Red 900 | `#C5D0E0` Navy 100 / `#FCE4E8` Red 100 |
 | Borders | `--border` | `#E5E7EB` | `rgba(255,255,255,0.10)` |
 | Input border | `--border-input` | `#8B95A5` Gray 500 | `rgba(255,255,255,0.35)` |
 | Primary button | `--accent` / `--accent-hover` | `#C8102E` / `#9A0C24` | `#C8102E` / `#9A0C24` |
